@@ -1,0 +1,27 @@
+ext.with {
+    androidTools = '3.1.2'
+    appcompat = '27.1.1'
+    buildTools = '27.0.3'
+    benManes = '0.17.0'
+    espresso = '3.0.2'
+    junit = '4.12'
+    sdkCompile = 27
+    sdkMin = 14
+    sdkTarget = 27
+    kotlins = '1.2.41'
+    codeVersion = 1
+    versionName = '1.0'
+    workManager = '1.0.0-alpha02'
+    dependency_jvm = [
+            kotlin_stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlins",
+            kotlin_test  : [
+                    "org.jetbrains.kotlin:kotlin-test:$kotlins",
+                    "org.jetbrains.kotlin:kotlin-test-junit:$kotlins"
+            ],
+    ]
+    dependency_android = [
+            appcompat  : "com.android.support:appcompat-v7:$appcompat",
+            espresso   : "com.android.support.test.espresso:espresso-core:$espresso",
+            work_manager: "android.arch.work:work-runtime-ktx:$workManager"
+    ]
+}

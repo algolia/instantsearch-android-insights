@@ -1,0 +1,37 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion sdkCompile
+    buildToolsVersion buildTools
+
+    defaultConfig {
+        applicationId "com.algolia.insights"
+        minSdkVersion sdkMin
+        targetSdkVersion sdkTarget
+        versionCode versionCode
+        versionName versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main.java.srcDirs += "src/main/kotlin"
+    }
+
+    packagingOptions {
+        exclude 'META-INF/main.kotlin_module'
+    }
+}
+
+dependencies {
+    implementation project(':insights')
+
+    implementation dependency_jvm.kotlin_stdlib
+    implementation dependency_android.appcompat
+}
