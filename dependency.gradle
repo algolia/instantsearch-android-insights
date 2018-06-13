@@ -4,7 +4,6 @@ ext.with {
     buildTools = '27.0.3'
     benManes = '0.17.0'
     espresso = '3.0.2'
-    junit = '4.12'
     sdkCompile = 27
     sdkMin = 14
     sdkTarget = 27
