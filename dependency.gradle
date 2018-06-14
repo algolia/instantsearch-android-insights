@@ -7,7 +7,7 @@ ext.with {
     sdkCompile = 27
     sdkMin = 14
     sdkTarget = 27
-    kotlins = '1.2.41'
+    kotlins = '1.2.50'
     codeVersion = 1
     versionName = '1.0'
     workManager = '1.0.0-alpha02'
