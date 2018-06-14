@@ -8,6 +8,6 @@ internal object Logger {
     var enabled: Boolean = false
 
     fun log(indexName: String, message: String) {
-        Log.d(indexName, message)
+        Log.d("Algolia Insights - $indexName", message)
     }
 }
