@@ -52,16 +52,13 @@ internal class WorkerEvent : Worker() {
 
     override fun doWork(): WorkerResult {
         val (credentials, configuration, environment) = inputData.getInputData()
-        return try {
-            val preferences = applicationContext.sharedPreferences(credentials.indexName)
-            val networkManager = NetworkManager(credentials.appId, credentials.apiKey, environment, configuration)
-            val failedEvents = preferences.consumeEvents(networkManager.eventConsumer(credentials.indexName))
+        val preferences = applicationContext.sharedPreferences(credentials.indexName)
+        val networkManager = NetworkManager(credentials.appId, credentials.apiKey, environment, configuration)
 
-            Logger.log(credentials.indexName, "Flushing remaining ${failedEvents.size} events.")
-            if (failedEvents.isEmpty()) WorkerResult.SUCCESS else WorkerResult.RETRY
-        } catch (exception: Exception) {
-            Logger.log(credentials.indexName, "Error syncing event: ${exception.localizedMessage}.")
-            WorkerResult.RETRY
-        }
+        Logger.log(credentials.indexName, "Flushing remaining ${preferences.events.size} events.")
+
+        val failedEvents = preferences.consumeEvents(networkManager.eventConsumer(credentials.indexName))
+
+        return if (failedEvents.isEmpty()) WorkerResult.SUCCESS else WorkerResult.RETRY
     }
 }

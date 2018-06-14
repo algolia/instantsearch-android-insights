@@ -86,16 +86,28 @@ class InsightsTests {
 
     @Test
     fun testClickEvent() {
-        assertEquals(200, networkManager.sendEvent(Event.Click(eventParametersA)))
+        val response = NetworkManager.Response(
+            errorMessage = null,
+            code = 200
+        )
+        assertEquals(response, networkManager.sendEvent(Event.Click(eventParametersA)))
     }
 
     @Test
     fun testViewEvent() {
-        assertEquals(200, networkManager.sendEvent(Event.View(eventParametersA)))
+        val response = NetworkManager.Response(
+            errorMessage = "Method Not Allowed\n",
+            code = 405
+        )
+        assertEquals(response, networkManager.sendEvent(Event.View(eventParametersA)))
     }
 
     @Test
     fun testConversionEvent() {
-        assertEquals(200, networkManager.sendEvent(Event.Conversion(eventParametersA)))
+        val response = NetworkManager.Response(
+            errorMessage = null,
+            code = 200
+        )
+        assertEquals(response, networkManager.sendEvent(Event.Conversion(eventParametersA)))
     }
 }

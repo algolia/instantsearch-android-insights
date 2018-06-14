@@ -31,10 +31,8 @@ class InstantSearchInsights internal constructor(
 
                 it.setInputData(inputData)
             }.build()
-            WorkManager.getInstance().also {
-                it.enqueue(worker)
-            }
             preferences.workerId = worker.id.toString()
+            WorkManager.getInstance().enqueue(worker)
         }
     }
 

@@ -20,7 +20,12 @@ internal class NetworkManager(
         }
     }
 
-    fun sendEvent(event: Event): Int {
+    data class Response(
+        val errorMessage: String?,
+        val code: Int
+    )
+
+    fun sendEvent(event: Event): Response {
         val eventType = when (event) {
             is Event.Click -> EventType.Click
             is Event.View -> EventType.View
@@ -42,7 +47,11 @@ internal class NetworkManager(
         }
         connection.outputStream.write(string.toByteArray())
         val responseCode = connection.responseCode
+        val errorMessage = connection.errorStream?.bufferedReader()?.readText()
         connection.disconnect()
-        return responseCode
+        return Response(
+            errorMessage = errorMessage,
+            code = responseCode
+        )
     }
 }
