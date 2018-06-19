@@ -29,6 +29,12 @@ android {
     }
 }
 
+tasks.withType(Test) {
+    testLogging {
+        events "started", "passed", "skipped", "failed"
+    }
+}
+
 dependencies {
     implementation project(':insights')
 
