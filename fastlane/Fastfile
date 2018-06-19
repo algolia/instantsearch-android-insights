@@ -1,0 +1,116 @@
+fastlane_require "increment_semver"
+fastlane_require "json"
+fastlane_require "httparty"
+
+fastlane_version "2.61.0"
+default_platform(:android)
+
+platform :android do
+  desc "Runs all the tests"
+  lane :test do
+    update_deps_to_use_commit_hash_if_workflow_triggered_by_client()
+    gradle(task: "clean test", build_type: "Release")
+  end
+
+  desc "Deploy the library. Available options: type:major|minor|patch optional: notest:true|false (default false)"
+  lane :deploy do |options|
+    # Arguments handling
+    notest = options[:notest] || false
+    type = options[:type]
+    UI.user_error!("You need to specify a type.") unless type != nil
+    UI.user_error!("Type #{type} is not a valid type (patch/minor/major") unless ["major","minor","patch"].include? type
+
+    # Compute next version number
+    current_version = get_version_name(
+      gradle_file_path:"insights/build.gradle",
+      ext_constant_name:"VERSION"
+    ).tr("'", "")
+    puts "Current version: #{current_version}"
+    version_number = increment_semver(current_version, type)
+    puts "New version: #{version_number}"
+
+    # Ensure branch is master & WC clean, then pull changes
+    Dir.chdir ".." do
+      sh("git checkout Gemfile.lock") # Ignore different bundle version changing Gemfile https://discuss.bitrise.io/t/5176/5
+    end
+    prepare_git()
+
+    # Generate changelog updates
+    changes = sh("conventional-changelog --preset angular --output-unreleased", log:false)
+    changes_lines = changes.split(/\n+/)[1..-1] # Remove header
+    changes_lines[0] = "## #{version_number}"
+    puts "after regex lines: #{changes_lines.join("\n")}"
+    changes = changes_lines.join("\n")
+    puts "Changes: #{changes}"
+    file_edit("../CHANGELOG.md", /^(# Changelog\n+)/, "\\1\n#{changes}\n")
+
+    # Tests / deployment
+    if notest == false
+      test()
+    end
+
+    Dir.chdir ".." do
+      sh("./release.sh #{version_number}")
+    end
+
+    post_github_release(version_number, changes)
+    # Remove temporary version tags
+    sh("git tag --delete minor major patch | true")
+    sh("git push origin :refs/tag/patch :refs/tag/minor :refs/tag/major")
+  end
+end
+
+def update_deps_to_use_commit_hash_if_workflow_triggered_by_client()
+  if ENV['GIT_DEPENDENT_COMMIT_HASH']
+    file_name = "../insights/build.gradle"
+    replacement = "    compile 'com.github.algolia:algoliasearch-client-android:#{ENV["GIT_DEPENDENT_COMMIT_HASH"]}'"
+    client_regex = /^.*com.algolia:algoliasearch-android:.*$/m
+    file_edit(file_name, client_regex, replacement)
+    puts "Changed gradle script to build with algolia/algoliasearch-client-android with commit #{ENV["GIT_DEPENDENT_COMMIT_HASH"]}"
+  else
+    puts "No specific dependencies to test, proceeding with latest release of API Client."
+  end
+end
+
+def prepare_git(ensure_clean=true)
+  masterHash = sh("git rev-parse origin/master")
+  headHash = sh("git rev-parse HEAD")
+
+  if masterHash != headHash
+    raise "Error: Master and Head Hashes do not match, meaning that we are probably not on Master and therefore can't deploy"
+    #TODO: Does it make sense to checkout master if we raise error when HEAD != master?
+  end
+  sh("git checkout master")
+
+  git_pull
+  if ensure_clean
+    ensure_git_status_clean(show_uncommitted_changes:true)
+  end
+end
+
+def file_edit(filename, regexp, replacement)
+  Tempfile.open(".#{File.basename(filename)}", File.dirname(filename)) do |tempfile|
+    File.open(filename).each do |line|
+      tempfile.puts line.gsub(regexp, replacement)
+    end
+    tempfile.fdatasync
+    tempfile.close
+    stat = File.stat(filename)
+    FileUtils.chown stat.uid, stat.gid, tempfile.path
+    FileUtils.chmod stat.mode, tempfile.path
+    FileUtils.mv tempfile.path, filename
+  end
+end
+
+def post_github_release(version, changes, token=ENV['GITHUB_TOKEN'])
+  release_changes = changes.gsub(/^## #{version} /m, "## ").gsub("\n", "\\n")
+  url = "https://api.github.com/repos/algolia/instantsearch-android-insights/releases?access_token=#{token}"
+  result = HTTParty.post(url, :body => {
+    :tag_name => version,
+    :target_commitish => "master",
+    :name => version,
+    :body => release_changes,
+    :draft => false,
+    :prerelease => false}.to_json)
+  puts "Release posted: #{result}."
+end
