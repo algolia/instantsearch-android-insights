@@ -21,6 +21,7 @@ Once a search has been initialized and the queryID received, the library current
 You first need to initialize the Insights client. For that you need your **Application ID**, **API Key** and the **index name**.
 You can find them on [your Algolia account](https://www.algolia.com/api-keys).
 
+**Kotlin**
 ```kotlin
 val configuration = InstantSearchInsights.Configuration(
     connectTimeoutInMilliseconds= 5000,
@@ -29,6 +30,7 @@ val configuration = InstantSearchInsights.Configuration(
 InstantSearchInsights.register("testApp", "testKey", "indexName", configuration)
 ```
 
+**Java**
 ```java
 InstantSearchInsights.Configuration configuration = new InstantSearchInsights.Configuration(5000, 5000);
 InstantSearchInsights.register(context,  "testApp", "testKey",  "indexName", configuration);
@@ -38,23 +40,20 @@ InstantSearchInsights.register(context,  "testApp", "testKey",  "indexName", con
 
 Once that you registered your **index** with the **Application ID** and the **API Key** you can easily start sending metrics
 
+*Click events*
+
+**Kotlin**
 ```kotlin
-val clickParams = mapOf(
+val params = mapOf(
     "queryID" to "74e382ecaf889f9f2a3df0d4a9742dfb",
     "objectID" to "85725102",
     "position" to 1
 )
 
-InstantSearchInsights.shared(index = "indexName").click(clickParams)
-
-val conversionParams = mapOf(
-    "queryID" to "74e382ecaf889f9f2a3df0d4a9742dfb",
-    "objectID" to "85725102"
-)
-
-InstantSearchInsights.shared(index = "indexName").conversion(conversionParams)
+InstantSearchInsights.shared(index = "indexName").click(params)
 ```
 
+**Java**
 ```java
 HashMap<String, Object> clickParams = new HashMap<>();
 
@@ -62,7 +61,22 @@ map.put("queryID", "74e382ecaf889f9f2a3df0d4a9742dfb");
 map.put("objectID", "85725102");
 map.put("position", 1);
 InstantSearchInsights.shared("indexName").click(clickParams);
+```
 
+*Conversion events*
+
+**Kotlin**
+```
+val params = mapOf(
+    "queryID" to "74e382ecaf889f9f2a3df0d4a9742dfb",
+    "objectID" to "85725102"
+)
+
+InstantSearchInsights.shared(index = "indexName").conversion(params)
+```
+
+**Java**
+```java
 HashMap<String, Object> conversionParams = new HashMap<>();
 
 map.put("queryID", "74e382ecaf889f9f2a3df0d4a9742dfb");
