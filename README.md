@@ -22,7 +22,16 @@ You first need to initialize the Insights client. For that you need your **Appli
 You can find them on [your Algolia account](https://www.algolia.com/api-keys).
 
 ```kotlin
-InstantSearchInsights.register(appId = "testApp", apiKey = "testKey", indexName = "indexName")
+val configuration = InstantSearchInsights.Configuration(
+  connectTimeoutInMilliseconds= 5000,
+  readTimeoutInMilliseconds = 5000
+)
+InstantSearchInsights.register("testApp", "testKey", "indexName", configuration)
+```
+
+```java
+InstantSearchInsights.Configuration configuration = new InstantSearchInsights.Configuration(5000, 5000);
+InstantSearchInsights.register(context,  "testApp", "testKey",  "indexName", configuration);
 ```
 
 ### Sending metrics
@@ -33,7 +42,7 @@ Once that you registered your **index** with the **Application ID** and the **AP
 val clickParams = mapOf(
   "queryID" to "74e382ecaf889f9f2a3df0d4a9742dfb",
   "objectID" to "85725102",
-  "position" to 2
+  "position" to 1
 )
 
 InstantSearchInsights.shared(index = "indexName").click(clickParams)
@@ -44,6 +53,21 @@ val conversionParams = mapOf(
 )
 
 InstantSearchInsights.shared(index = "indexName").conversion(conversionParams)
+```
+
+```java
+HashMap<String, Object> clickParams = new HashMap<>();
+
+map.put("queryID", "74e382ecaf889f9f2a3df0d4a9742dfb");
+map.put("objectID", "85725102");
+map.put("position", 1);
+InstantSearchInsights.shared("indexName").click(clickParams);
+
+HashMap<String, Object> conversionParams = new HashMap<>();
+
+map.put("queryID", "74e382ecaf889f9f2a3df0d4a9742dfb");
+map.put("objectID", "85725102");
+InstantSearchInsights.shared("indexName").conversion(conversionParams);
 ```
 
 ### Logging and debuging
