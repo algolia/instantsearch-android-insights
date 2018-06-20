@@ -23,8 +23,8 @@ You can find them on [your Algolia account](https://www.algolia.com/api-keys).
 
 ```kotlin
 val configuration = InstantSearchInsights.Configuration(
-  connectTimeoutInMilliseconds= 5000,
-  readTimeoutInMilliseconds = 5000
+    connectTimeoutInMilliseconds= 5000,
+    readTimeoutInMilliseconds = 5000
 )
 InstantSearchInsights.register("testApp", "testKey", "indexName", configuration)
 ```
@@ -40,16 +40,16 @@ Once that you registered your **index** with the **Application ID** and the **AP
 
 ```kotlin
 val clickParams = mapOf(
-  "queryID" to "74e382ecaf889f9f2a3df0d4a9742dfb",
-  "objectID" to "85725102",
-  "position" to 1
+    "queryID" to "74e382ecaf889f9f2a3df0d4a9742dfb",
+    "objectID" to "85725102",
+    "position" to 1
 )
 
 InstantSearchInsights.shared(index = "indexName").click(clickParams)
 
 val conversionParams = mapOf(
-  "queryID" to "74e382ecaf889f9f2a3df0d4a9742dfb",
-  "objectID" to "85725102"
+    "queryID" to "74e382ecaf889f9f2a3df0d4a9742dfb",
+    "objectID" to "85725102"
 )
 
 InstantSearchInsights.shared(index = "indexName").conversion(conversionParams)
