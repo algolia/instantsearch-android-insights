@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion sdkCompile
@@ -19,11 +18,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    sourceSets {
-        main.java.srcDirs += "src/main/kotlin"
-    }
-
     packagingOptions {
         exclude 'META-INF/main.kotlin_module'
     }
@@ -38,6 +32,9 @@ tasks.withType(Test) {
 dependencies {
     implementation project(':insights')
 
-    implementation dependency_jvm.kotlin_stdlib
     implementation dependency_android.appcompat
+    implementation dependency_android.recycler_view
+    implementation dependency_android.algolia_client
+    implementation dependency_android.constraint_layout
+    implementation dependency_android.glide
 }
