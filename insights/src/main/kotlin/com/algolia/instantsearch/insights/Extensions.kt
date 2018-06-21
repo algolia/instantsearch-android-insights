@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 
 
-internal const val Type = "type"
+internal const val EventTypeKey = "type"
 
 internal var SharedPreferences.events by SharedPreferencesDelegate.StringSet(setOf())
 internal var SharedPreferences.workerId by SharedPreferencesDelegate.String()

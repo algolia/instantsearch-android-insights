@@ -12,7 +12,7 @@ internal object ConverterEventToString : Converter<Event, String> {
             is Event.Conversion -> EventType.Conversion.name
         }
         return JSONObject().also { json ->
-            json.put(Type, type)
+            json.put(EventTypeKey, type)
             input.params.entries.forEach { json.put(it.key, it.value) }
         }.toString()
     }

@@ -7,10 +7,10 @@ internal object ConverterStringToEvent : Converter<String, Event> {
 
     override fun convert(input: String): Event {
         val json = JSONObject(input)
-        val type = EventType.valueOf(json[Type].toString())
+        val type = EventType.valueOf(json[EventTypeKey].toString())
         val params: Map<String, Any> = json.keys()
             .asSequence()
-            .filterNot { it == Type }
+            .filterNot { it == EventTypeKey }
             .map { it to json.get(it) }
             .toMap()
 
