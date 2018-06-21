@@ -1,0 +1,33 @@
+ext.with {
+    androidTools = '3.1.2'
+    algolia_client = '3.23.13'
+    appcompat = '27.1.1'
+    buildTools = '28.0.0'
+    benManes = '0.17.0'
+    constraintLayout = '1.1.2'
+    espresso = '3.0.2'
+    glide = '4.7.1'
+    sdkCompile = 28
+    sdkMin = 14
+    sdkTarget = 28
+    kotlins = '1.2.41'
+    codeVersion = 1
+    versionName = '1.0'
+    workManager = '1.0.0-alpha02'
+    dependency_jvm = [
+            kotlin_stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlins",
+            kotlin_test  : [
+                    "org.jetbrains.kotlin:kotlin-test:$kotlins",
+                    "org.jetbrains.kotlin:kotlin-test-junit:$kotlins"
+            ],
+    ]
+    dependency_android = [
+            appcompat        : "com.android.support:appcompat-v7:$appcompat",
+            recycler_view    : "com.android.support:recyclerview-v7:$appcompat",
+            espresso         : "com.android.support.test.espresso:espresso-core:$espresso",
+            work_manager     : "android.arch.work:work-runtime-ktx:$workManager",
+            algolia_client   : "com.algolia:algoliasearch-android:$algolia_client",
+            constraint_layout: "com.android.support.constraint:constraint-layout:$constraintLayout",
+            glide            : "com.github.bumptech.glide:glide:$glide"
+    ]
+}

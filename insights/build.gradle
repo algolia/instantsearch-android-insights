@@ -1,0 +1,49 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion sdkCompile
+    buildToolsVersion buildTools
+
+    defaultConfig {
+        minSdkVersion sdkMin
+        targetSdkVersion sdkTarget
+        versionCode versionCode
+        versionName versionName
+        consumerProguardFiles "proguard-rules.pro"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    buildTypes {
+        all {
+            buildConfigField "String", "ALGOLIA_APPLICATION_ID", "\"$System.env.ALGOLIA_APPLICATION_ID\""
+            buildConfigField "String", "ALGOLIA_API_KEY", "\"$System.env.ALGOLIA_API_KEY\""
+        }
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main.java.srcDirs += "src/main/kotlin"
+        androidTest.java.srcDirs += "src/androidTest/kotlin"
+    }
+
+    packagingOptions {
+        exclude 'META-INF/main.kotlin_module'
+    }
+}
+
+dependencies {
+    implementation dependency_jvm.kotlin_stdlib
+    implementation dependency_jvm.kotlin_test
+
+    implementation dependency_android.appcompat
+    implementation dependency_android.work_manager
+    implementation dependency_android.espresso
+}
+
+repositories {
+    mavenCentral()
+}
