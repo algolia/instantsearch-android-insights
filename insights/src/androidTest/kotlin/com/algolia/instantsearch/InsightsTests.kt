@@ -16,7 +16,7 @@ class InsightsTests {
 
     private val appId = BuildConfig.ALGOLIA_APPLICATION_ID
     private val apiKey = BuildConfig.ALGOLIA_API_KEY
-    private val indexName = "support_rmogos"
+    private val indexName = "latency"
     private val eventParametersA get() = eventParameters("EventA")
     private val eventParametersB get() = eventParameters("EventB")
     private val configuration = InstantSearchInsights.Configuration(
