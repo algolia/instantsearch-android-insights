@@ -14,8 +14,8 @@ class InsightsTests {
 
     private val context get() = InstrumentationRegistry.getContext()
 
-    private val appId = "SPH6CBEPLC"
-    private val apiKey = "064f4f03e7c37d8d7cfb40cdbf852f3d"
+    private val appId = BuildConfig.ALGOLIA_APPLICATION_ID
+    private val apiKey = BuildConfig.ALGOLIA_API_KEY
     private val indexName = "support_rmogos"
     private val eventParametersA get() = eventParameters("EventA")
     private val eventParametersB get() = eventParameters("EventB")
