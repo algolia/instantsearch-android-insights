@@ -49,7 +49,6 @@ class InsightsTests {
     fun testInitShouldWork() {
         val insights = InstantSearchInsights.register(context, "testApp", "testKey", "index", configuration)
         val insightsShared = InstantSearchInsights.shared("index")
-
         assertEquals(insights, insightsShared)
     }
 
