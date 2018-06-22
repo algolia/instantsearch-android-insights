@@ -12,7 +12,28 @@ Once a search has been initialized and the queryID received, the library current
 
 # Install
 
-...
+Add the following dependecies to your `Gradle` file
+
+```gradle
+    // For now we need to specify our maven repo. Will be added on jCenter soon
+    repositories {
+        // [...]
+        maven {
+            url "https://dl.bintray.com/algolia/maven"
+        }
+    }
+```
+
+```gradle
+dependencies {
+    // [...]
+    implementation 'com.algolia:insights:1.0.0'
+    implementation dependency_jvm.kotlin_stdlib
+    // [...]
+}
+```
+
+
 
 ## Quick Start
 
@@ -23,17 +44,17 @@ You can find them on [your Algolia account](https://www.algolia.com/api-keys).
 
 **Kotlin**
 ```kotlin
-val configuration = InstantSearchInsights.Configuration(
+val configuration = Insights.Configuration(
     connectTimeoutInMilliseconds= 5000,
     readTimeoutInMilliseconds = 5000
 )
-InstantSearchInsights.register("testApp", "testKey", "indexName", configuration)
+Insights.register("testApp", "testKey", "indexName", configuration)
 ```
 
 **Java**
 ```java
-InstantSearchInsights.Configuration configuration = new InstantSearchInsights.Configuration(5000, 5000);
-InstantSearchInsights.register(context,  "testApp", "testKey",  "indexName", configuration);
+Insights.Configuration configuration = new Insights.Configuration(5000, 5000);
+Insights.register(context,  "testApp", "testKey",  "indexName", configuration);
 ```
 
 ### Sending metrics
@@ -50,7 +71,7 @@ val params = mapOf(
     "position" to 1
 )
 
-InstantSearchInsights.shared(index = "indexName").click(params)
+Insights.shared(index = "indexName").click(params)
 ```
 
 **Java**
@@ -60,7 +81,7 @@ HashMap<String, Object> clickParams = new HashMap<>();
 map.put("queryID", "74e382ecaf889f9f2a3df0d4a9742dfb");
 map.put("objectID", "85725102");
 map.put("position", 1);
-InstantSearchInsights.shared("indexName").click(clickParams);
+Insights.shared("indexName").click(clickParams);
 ```
 
 *Conversion events*
@@ -72,7 +93,7 @@ val params = mapOf(
     "objectID" to "85725102"
 )
 
-InstantSearchInsights.shared(index = "indexName").conversion(params)
+Insights.shared(index = "indexName").conversion(params)
 ```
 
 **Java**
@@ -81,7 +102,7 @@ HashMap<String, Object> conversionParams = new HashMap<>();
 
 map.put("queryID", "74e382ecaf889f9f2a3df0d4a9742dfb");
 map.put("objectID", "85725102");
-InstantSearchInsights.shared("indexName").conversion(conversionParams);
+Insights.shared("indexName").conversion(conversionParams);
 ```
 
 ### Logging and debuging
@@ -89,7 +110,7 @@ InstantSearchInsights.shared("indexName").conversion(conversionParams);
 In case you want to check if the metric was sent correctly, you need to enable the logging first
 
 ```kotlin
-InstantSearchInsights.shared(index: "indexName").loggingEnabled = true
+Insights.shared(index: "indexName").loggingEnabled = true
 ```
 
 After you enabled it, you can check the output for success messages or errors
