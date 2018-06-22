@@ -28,7 +28,10 @@ Add the following dependecies to your `Gradle` file
 dependencies {
     // [...]
     implementation 'com.algolia:insights:1.0.0'
-    implementation dependency_jvm.kotlin_stdlib
+    
+    // Just a limitation for now, working on a fix
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2+'
+    implementation 'android.arch.work:work-runtime-ktx:1.0.+'
     // [...]
 }
 ```
