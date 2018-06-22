@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.algolia.instantsearch.insights.InstantSearchInsights;
+import com.algolia.instantsearch.insights.Insights;
 import com.algolia.instantsearch.insights.InstantSearchInsightsException;
 
 import org.junit.Test;
@@ -20,12 +20,12 @@ import static org.junit.Assert.assertEquals;
 public class InsightsTestsJava {
 
     private Context context = InstrumentationRegistry.getContext();
-    private InstantSearchInsights.Configuration configuration = new InstantSearchInsights.Configuration(5000, 5000);
+    private Insights.Configuration configuration = new Insights.Configuration(5000, 5000);
 
     @Test
     public void testInitShouldFail() {
         try {
-            InstantSearchInsights.shared("index");
+            Insights.shared("index");
         } catch (Exception exception) {
             assertEquals(exception.getClass(), InstantSearchInsightsException.CredentialsNotFound.class);
         }
@@ -33,8 +33,8 @@ public class InsightsTestsJava {
 
     @Test
     public void testInitShouldWork() {
-        InstantSearchInsights insights = InstantSearchInsights.register(context, "testApp", "testKey", "index", configuration);
-        InstantSearchInsights insightsShared = InstantSearchInsights.shared("index");
+        Insights insights = Insights.register(context, "testApp", "testKey", "index", configuration);
+        Insights insightsShared = Insights.shared("index");
         Map<String, ?> map = Collections.emptyMap();
 
         assertEquals(insights, insightsShared);

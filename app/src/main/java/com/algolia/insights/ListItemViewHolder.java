@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.algolia.instantsearch.insights.InstantSearchInsights;
+import com.algolia.instantsearch.insights.Insights;
 import com.bumptech.glide.Glide;
 
 import java.util.HashMap;
@@ -33,7 +33,7 @@ class ListItemViewHolder extends RecyclerView.ViewHolder {
 
                 map.put("queryID", item.getQueryId());
                 map.put("objectID", item.getObjectId());
-                InstantSearchInsights.shared(App.indexName).conversion(map);
+                Insights.shared(App.indexName).conversion(map);
             }
         });
         itemView.setOnClickListener(new View.OnClickListener() {
@@ -44,7 +44,7 @@ class ListItemViewHolder extends RecyclerView.ViewHolder {
                 map.put("queryID", item.getQueryId());
                 map.put("objectID", item.getObjectId());
                 map.put("position", item.getPosition());
-                InstantSearchInsights.shared(App.indexName).click(map);
+                Insights.shared(App.indexName).click(map);
             }
         });
 

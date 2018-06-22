@@ -8,7 +8,7 @@ internal class NetworkManager(
     private val appId: String,
     private val apiKey: String,
     private val environment: Environment,
-    private val configuration: InstantSearchInsights.Configuration
+    private val configuration: Insights.Configuration
 ) {
 
     enum class Environment(private val baseUrl: String) {

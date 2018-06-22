@@ -5,7 +5,7 @@ import androidx.work.*
 import java.util.concurrent.TimeUnit
 
 
-class InstantSearchInsights internal constructor(
+class Insights internal constructor(
     context: Context,
     private val credentials: Credentials,
     private val configuration: Configuration,
@@ -66,7 +66,7 @@ class InstantSearchInsights internal constructor(
 
     companion object {
 
-        private val insightsMap = mutableMapOf<String, InstantSearchInsights>()
+        private val insightsMap = mutableMapOf<String, Insights>()
 
         @JvmStatic
         fun register(
@@ -75,20 +75,20 @@ class InstantSearchInsights internal constructor(
             apiKey: String,
             indexName: String,
             configuration: Configuration
-        ): InstantSearchInsights {
+        ): Insights {
             val credentials = Credentials(
                 appId = appId,
                 apiKey = apiKey,
                 indexName = indexName
             )
-            val insights = InstantSearchInsights(context, credentials, configuration, NetworkManager.Environment.Prod)
+            val insights = Insights(context, credentials, configuration, NetworkManager.Environment.Prod)
 
             insightsMap[indexName] = insights
             return insights
         }
 
         @JvmStatic
-        fun shared(indexName: String): InstantSearchInsights {
+        fun shared(indexName: String): Insights {
             return insightsMap[indexName] ?: throw InstantSearchInsightsException.CredentialsNotFound()
         }
     }

@@ -1,5 +1,47 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'maven'
+apply plugin: 'maven-publish'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+ext {
+    GROUP = 'com.algolia'
+    BASENAME = 'instantsearch-android-insights'
+    CODENAME = GROUP + ":" + BASENAME
+    NAME = 'InstantSearch Insights Android'
+    DESC = "InstantSearch Insights Android library allows developers to report click and conversion metrics related to search queries"
+    GITHUB = "algolia/instantsearch-android-insights"
+    WEBSITE = "https://github.com/" + GITHUB
+    REPO = WEBSITE + ".git"
+    LICENSE = 'MIT'
+    LICENSE_URL = "http://www.opensource.org/licenses/mit-license.php"
+    VERSION = '1.0.0'
+    VERSION_DESC = 'Version ' + VERSION
+
+    VERSION_APPCOMPAT = '28.0.0'
+}
+
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = CODENAME
+    publishedGroupId = GROUP
+    libraryName = NAME
+    artifact = BASENAME
+    libraryDescription = DESC
+    siteUrl = WEBSITE
+    gitUrl = REPO
+    libraryVersion = VERSION
+    developerId = 'algolia'
+    developerName = "The Algolia Team"
+    developerEmail = "hey@algolia.com"
+    licenseName = LICENSE
+    licenseUrl = LICENSE_URL
+    allLicenses = [LICENSE]
+}
+
+group = project.ext.GROUP
+version = project.ext.VERSION
 
 android {
     compileSdkVersion sdkCompile
@@ -36,8 +78,8 @@ android {
 }
 
 dependencies {
-    implementation dependency_jvm.kotlin_stdlib
-    implementation dependency_jvm.kotlin_test
+    api dependency_jvm.kotlin_stdlib
+    api dependency_jvm.kotlin_test
 
     implementation dependency_android.appcompat
     implementation dependency_android.work_manager
@@ -47,3 +89,6 @@ dependencies {
 repositories {
     mavenCentral()
 }
+
+apply from: 'https://raw.githubusercontent.com/algolia/instantsearch-mobile-tools/master/gradle/bintrayv.gradle'
+apply from: 'https://raw.githubusercontent.com/algolia/instantsearch-mobile-tools/master/gradle/installv.gradle'

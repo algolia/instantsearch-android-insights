@@ -19,7 +19,7 @@ class InsightsTests {
     private val indexName = "latency"
     private val eventParametersA get() = eventParameters("EventA")
     private val eventParametersB get() = eventParameters("EventB")
-    private val configuration = InstantSearchInsights.Configuration(
+    private val configuration = Insights.Configuration(
         connectTimeoutInMilliseconds = 5000,
         readTimeoutInMilliseconds = 5000
     )
@@ -39,7 +39,7 @@ class InsightsTests {
     @Test
     fun testInitShouldFail() {
         try {
-            InstantSearchInsights.shared("index")
+            Insights.shared("index")
         } catch (exception: Exception) {
             assertTrue(exception is InstantSearchInsightsException.CredentialsNotFound)
         }
@@ -47,8 +47,8 @@ class InsightsTests {
 
     @Test
     fun testInitShouldWork() {
-        val insights = InstantSearchInsights.register(context, "testApp", "testKey", "index", configuration)
-        val insightsShared = InstantSearchInsights.shared("index")
+        val insights = Insights.register(context, "testApp", "testKey", "index", configuration)
+        val insightsShared = Insights.shared("index")
         assertEquals(insights, insightsShared)
     }
 
