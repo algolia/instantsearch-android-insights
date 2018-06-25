@@ -21,7 +21,7 @@ class Insights internal constructor(
     var loggingEnabled: Boolean = false
         set(value) {
             field = value
-            Logger.enabled = value
+            Logger.enabled[credentials.indexName] = value
         }
 
     init {

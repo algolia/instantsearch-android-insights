@@ -5,9 +5,11 @@ import android.util.Log
 
 internal object Logger {
 
-    var enabled: Boolean = false
+    var enabled: MutableMap<String, Boolean> = mutableMapOf()
 
     fun log(indexName: String, message: String) {
-        Log.d("Algolia Insights", "index=$indexName: $message")
+        if (enabled.getOrDefault(indexName, false)) {
+            Log.d("Algolia Insights", "index=$indexName: $message")
+        }
     }
 }

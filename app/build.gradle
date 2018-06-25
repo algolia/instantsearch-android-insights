@@ -30,9 +30,7 @@ tasks.withType(Test) {
 }
 
 dependencies {
-//    implementation project(':insights')
-    implementation 'com.algolia:insights:1.0.0'
-    implementation dependency_jvm.kotlin_stdlib
+    implementation project(':insights')
 
     implementation dependency_android.appcompat
     implementation dependency_android.recycler_view
