@@ -3,11 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'com.github.dcendents.android-maven'
-apply plugin: 'com.jfrog.bintray'
 
 ext {
-    GROUP = 'com.algolia'
-    BASENAME = 'instantsearch-android-insights'
+    GROUP = 'com.algolia.instantsearch-android'
+    BASENAME = 'insights'
     CODENAME = GROUP + ":" + BASENAME
     NAME = 'InstantSearch Insights Android'
     DESC = "InstantSearch Insights Android library allows developers to report click and conversion metrics related to search queries"
@@ -16,28 +15,10 @@ ext {
     REPO = WEBSITE + ".git"
     LICENSE = 'MIT'
     LICENSE_URL = "http://www.opensource.org/licenses/mit-license.php"
-    VERSION = '1.0.1'
+    VERSION = '1.0.4'
     VERSION_DESC = 'Version ' + VERSION
 
     VERSION_APPCOMPAT = '28.0.0'
-}
-
-ext {
-    bintrayRepo = 'maven'
-    bintrayName = CODENAME
-    publishedGroupId = GROUP
-    libraryName = NAME
-    artifact = BASENAME
-    libraryDescription = DESC
-    siteUrl = WEBSITE
-    gitUrl = REPO
-    libraryVersion = VERSION
-    developerId = 'algolia'
-    developerName = "The Algolia Team"
-    developerEmail = "hey@algolia.com"
-    licenseName = LICENSE
-    licenseUrl = LICENSE_URL
-    allLicenses = [LICENSE]
 }
 
 group = project.ext.GROUP
@@ -87,13 +68,15 @@ task sourcesJar(type: Jar) {
 // add sources jar tasks as artifacts
 artifacts {
     archives sourcesJar
+    archives file: new File("${project.buildDir}/outputs/aar/${project.name}-release.aar"),
+            name: "${project.name}-release.aar",
+            type: "aar"
 }
 
 dependencies {
-    api dependency_jvm.kotlin_stdlib
-    api dependency_jvm.kotlin_test
-    api dependency_android.work_manager
-
+    implementation dependency_jvm.kotlin_stdlib
+    implementation dependency_jvm.kotlin_test
+    implementation dependency_android.work_manager
     implementation dependency_android.appcompat
     implementation dependency_android.espresso
 }
@@ -102,65 +85,5 @@ repositories {
     mavenCentral()
 }
 
-// Create the pom configuration:
-//def pomConfig = {
-//    licenses {
-//        license {
-//            name "MIT"
-//            url "http://www.opensource.org/licenses/mit-license.php"
-//            distribution "repo"
-//        }
-//    }
-//    developers {
-//        developer {
-//            id "algolia"
-//            name "The Algolia Team"
-//            email "hey@algolia.com"
-//        }
-//    }
-//
-//    scm {
-//        url "https://github.com/algolia/instantsearch-android-insights.git"
-//    }
-//}
-//
-//publishing {
-//    publications {
-//        BintrayPublication(MavenPublication) {
-//
-//            pom.withXml {
-//                // Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
-//                configurations.implementation.allDependencies.each {
-//                    // Ensure dependencies such as fileTree are not included.
-//                    if (it.name != 'unspecified') {
-//                        def dependencyNode = dependenciesNode.appendNode('dependency')
-//                        dependencyNode.appendNode('groupId', it.group)
-//                        dependencyNode.appendNode('artifactId', it.name)
-//                        dependencyNode.appendNode('version', it.version)
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
-
-bintray {
-    user = System.getenv('BINTRAY_USER')
-    key = System.getenv('BINTRAY_KEY')
-
-    configurations = ['archives']
-    pkg {
-        repo = 'maven'
-        name = 'com.algolia.instantsearch-android-insights'
-        licenses = ['MIT']
-        vcsUrl = 'https://github.com/algolia/instantsearch-android-insights.git'
-        publish = true
-        version {
-            name = '1.0.1'
-            vcsTag = '1.0.1'
-        }
-    }
-}
-
-//apply from: 'https://raw.githubusercontent.com/algolia/instantsearch-mobile-tools/master/gradle/bintrayv.gradle'
-//apply from: 'https://raw.githubusercontent.com/algolia/instantsearch-mobile-tools/master/gradle/installv.gradle'
+// Apply the bintray upload task
+apply from: 'https://raw.githubusercontent.com/algolia/instantsearch-mobile-tools/master/gradle/bintrayv.gradle'
