@@ -12,7 +12,18 @@ Once a search has been initialized and the queryID received, the library current
 
 # Install
 
-Add the following dependecies to your `Gradle` file
+Add `jCenter` to your repositories in `build.gradle`
+
+```
+allprojects {
+    repositories {
+        // [...]
+        jcenter()
+    }
+}
+```
+
+Add the following dependency to your `Gradle` file
 
 ```gradle
 dependencies {
