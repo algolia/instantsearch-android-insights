@@ -15,11 +15,13 @@ Once a search has been initialized and the queryID received, the library current
 Add the following dependecies to your `Gradle` file
 
 ```gradle
-    // For now we need to specify our maven repo. Will be added on jCenter soon
-    repositories {
+    android {
         // [...]
-        maven {
-            url "https://dl.bintray.com/algolia/maven"
+        
+        // For now we need to exclude `META-INF/main.kotlin_module`
+        packagingOptions {
+            // [...]
+            exclude 'META-INF/main.kotlin_module'
         }
     }
 ```
@@ -27,11 +29,7 @@ Add the following dependecies to your `Gradle` file
 ```gradle
 dependencies {
     // [...]
-    implementation 'com.algolia:insights:1.0.0'
-    
-    // Just a limitation for now, working on a fix
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2+'
-    implementation 'android.arch.work:work-runtime-ktx:1.0.+'
+    implementation 'com.algolia.instantsearch-android:insights:1.+'
     // [...]
 }
 ```
