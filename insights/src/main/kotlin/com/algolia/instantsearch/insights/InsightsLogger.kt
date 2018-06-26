@@ -3,7 +3,7 @@ package com.algolia.instantsearch.insights
 import android.util.Log
 
 
-internal object Logger {
+internal object InsightsLogger {
 
     var enabled: MutableMap<String, Boolean> = mutableMapOf()
 

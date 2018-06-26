@@ -1,4 +1,4 @@
-package com.algolia.instantsearch.insights
+package com.algolia.instantsearch.insights.converter
 
 
 internal interface Converter<in I, out O> {

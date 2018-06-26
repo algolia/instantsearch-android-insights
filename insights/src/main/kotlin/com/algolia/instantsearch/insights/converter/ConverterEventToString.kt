@@ -1,5 +1,8 @@
-package com.algolia.instantsearch.insights
+package com.algolia.instantsearch.insights.converter
 
+import com.algolia.instantsearch.insights.EventTypeKey
+import com.algolia.instantsearch.insights.event.Event
+import com.algolia.instantsearch.insights.event.EventType
 import org.json.JSONObject
 
 

@@ -50,10 +50,10 @@ android {
 
     sourceSets {
         main.java.srcDirs += "src/main/kotlin"
+        test.java.srcDirs += "src/test/kotlin"
         androidTest.java.srcDirs += "src/androidTest/kotlin"
     }
 }
-
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions.freeCompilerArgs += ['-module-name', project.ext.CODENAME]
@@ -80,6 +80,8 @@ dependencies {
     implementation dependency_android.work_manager
     implementation dependency_android.appcompat
     implementation dependency_android.espresso
+
+    testImplementation 'org.json:json:20180130'
 }
 
 repositories {

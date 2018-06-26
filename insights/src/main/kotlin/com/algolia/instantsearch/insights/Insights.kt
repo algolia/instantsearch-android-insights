@@ -1,46 +1,42 @@
 package com.algolia.instantsearch.insights
 
 import android.content.Context
-import androidx.work.*
-import java.util.concurrent.TimeUnit
+import com.algolia.instantsearch.insights.database.Database
+import com.algolia.instantsearch.insights.database.DatabaseSharedPreferences
+import com.algolia.instantsearch.insights.event.Event
+import com.algolia.instantsearch.insights.event.EventUploader
+import com.algolia.instantsearch.insights.event.EventUploaderWorkManager
+import com.algolia.instantsearch.insights.webservice.WebService
+import com.algolia.instantsearch.insights.webservice.WebServiceHttp
 
 
 class Insights internal constructor(
-    context: Context,
-    private val credentials: Credentials,
-    private val configuration: Configuration,
-    private val environment: NetworkManager.Environment
+    private val indexName: String,
+    private val eventUploader: EventUploader,
+    val database: Database,
+    val webService: WebService
 ) {
+
     class Configuration(
         val connectTimeoutInMilliseconds: Int,
         val readTimeoutInMilliseconds: Int
     )
 
-    private val preferences = context.sharedPreferences(credentials.indexName)
-
     var loggingEnabled: Boolean = false
         set(value) {
             field = value
-            Logger.enabled[credentials.indexName] = value
+            InsightsLogger.enabled[indexName] = value
         }
 
     init {
-        if (preferences.workerId == null) {
-            val worker = PeriodicWorkRequestBuilder<WorkerEvent>(15, TimeUnit.MINUTES, 5, TimeUnit.MINUTES).also {
-                val inputData = WorkerEvent.buildInputData(credentials, configuration, environment)
-
-                it.setInputData(inputData)
-            }.build()
-            preferences.workerId = worker.id.toString()
-            WorkManager.getInstance().enqueue(worker)
-        }
+        eventUploader.startPeriodicUpload()
     }
 
     fun click(params: Map<String, Any>) {
         process(Event.Click(params))
     }
 
-    private fun view(params: Map<String, Any>) {
+    internal fun view(params: Map<String, Any>) {
         process(Event.View(params))
     }
 
@@ -49,19 +45,8 @@ class Insights internal constructor(
     }
 
     private fun process(event: Event) {
-        val events = preferences.events
-            .map(ConverterStringToEvent::convert)
-            .toMutableList()
-            .also { it.add(event) }
-
-        preferences.events = ConverterEventToString.convert(events).toSet()
-        val worker = OneTimeWorkRequestBuilder<WorkerEvent>().also {
-            val inputData = WorkerEvent.buildInputData(credentials, configuration, environment)
-
-            it.setInputData(inputData)
-            it.setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 10, TimeUnit.SECONDS)
-        }.build()
-        WorkManager.getInstance().enqueue(worker)
+        database.append(event)
+        eventUploader.startOneTimeUpload()
     }
 
     companion object {
@@ -76,12 +61,16 @@ class Insights internal constructor(
             indexName: String,
             configuration: Configuration
         ): Insights {
-            val credentials = Credentials(
+            val eventUploader = EventUploaderWorkManager(context, indexName)
+            val database = DatabaseSharedPreferences(context, indexName)
+            val webService = WebServiceHttp(
                 appId = appId,
                 apiKey = apiKey,
-                indexName = indexName
+                environment = WebServiceHttp.Environment.Prod,
+                connectTimeoutInMilliseconds = configuration.connectTimeoutInMilliseconds,
+                readTimeoutInMilliseconds = configuration.readTimeoutInMilliseconds
             )
-            val insights = Insights(context, credentials, configuration, NetworkManager.Environment.Prod)
+            val insights = Insights(indexName, eventUploader, database, webService)
 
             insightsMap[indexName] = insights
             return insights
@@ -89,7 +78,8 @@ class Insights internal constructor(
 
         @JvmStatic
         fun shared(indexName: String): Insights {
-            return insightsMap[indexName] ?: throw InstantSearchInsightsException.CredentialsNotFound()
+            return insightsMap[indexName]
+                ?: throw InstantSearchInsightsException.CredentialsNotFound()
         }
     }
 }
