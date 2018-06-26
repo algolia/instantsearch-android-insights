@@ -15,7 +15,7 @@ ext {
     REPO = WEBSITE + ".git"
     LICENSE = 'MIT'
     LICENSE_URL = "http://www.opensource.org/licenses/mit-license.php"
-    VERSION = '1.0.0'
+    VERSION = '1.0.1'
     VERSION_DESC = 'Version ' + VERSION
 
     VERSION_APPCOMPAT = '28.0.0'
@@ -53,10 +53,11 @@ android {
         androidTest.java.srcDirs += "src/androidTest/kotlin"
     }
 
-    packagingOptions {
-        exclude 'META-INF/main.kotlin_module'
+    compileOptions {
+        kotlinOptions.freeCompilerArgs += ['-module-name', project.ext.CODENAME]
     }
 }
+
 
 task sourcesJar(type: Jar) {
     dependsOn "assembleRelease"
