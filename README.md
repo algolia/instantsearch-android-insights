@@ -15,18 +15,6 @@ Once a search has been initialized and the queryID received, the library current
 Add the following dependecies to your `Gradle` file
 
 ```gradle
-    android {
-        // [...]
-        
-        // For now we need to exclude `META-INF/main.kotlin_module`
-        packagingOptions {
-            // [...]
-            exclude 'META-INF/main.kotlin_module'
-        }
-    }
-```
-
-```gradle
 dependencies {
     // [...]
     implementation 'com.algolia.instantsearch-android:insights:1.+'
