@@ -19,7 +19,14 @@ internal class EventUploaderWorkManager(
 
     override fun startPeriodicUpload() {
         if (preferences.workerId == null) {
-            val worker = PeriodicWorkRequestBuilder<EventWorker>(15, TimeUnit.MINUTES, 5, TimeUnit.MINUTES).also {
+            val repeatIntervalInMinutes = 15L
+            val flexTimeIntervalInMinutes = 5L
+            val worker = PeriodicWorkRequestBuilder<EventWorker>(
+                repeatInterval = repeatIntervalInMinutes,
+                repeatIntervalTimeUnit = TimeUnit.MINUTES,
+                flexTimeInterval = flexTimeIntervalInMinutes,
+                flexTimeIntervalUnit = TimeUnit.MINUTES
+            ).also {
                 val inputData = EventWorker.buildInputData(indexName)
 
                 it.setInputData(inputData)
@@ -32,9 +39,10 @@ internal class EventUploaderWorkManager(
     override fun startOneTimeUpload() {
         val worker = OneTimeWorkRequestBuilder<EventWorker>().also {
             val inputData = EventWorker.buildInputData(indexName)
+            val backOffDelayInSeconds = 10L
 
             it.setInputData(inputData)
-            it.setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 10, TimeUnit.SECONDS)
+            it.setBackoffCriteria(BackoffPolicy.EXPONENTIAL, backOffDelayInSeconds, TimeUnit.SECONDS)
         }.build()
         WorkManager.getInstance().enqueue(worker)
     }
