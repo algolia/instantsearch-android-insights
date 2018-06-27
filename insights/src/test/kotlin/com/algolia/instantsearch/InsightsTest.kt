@@ -18,7 +18,7 @@ class InsightsTest {
 
     @Test
     fun testConverterEvent() {
-        val expected = Event.Click(mapOf("key1" to "value1"))
+        val expected = Event.Click(AndroidTestUtils.eventParametersA)
         val string = ConverterEventToString.convert(expected)
         val event = ConverterStringToEvent.convert(string)
 
