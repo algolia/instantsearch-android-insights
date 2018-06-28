@@ -51,7 +51,8 @@ class Insights internal constructor(
 
     companion object {
 
-        private val insightsMap = mutableMapOf<String, Insights>()
+        internal val insightsMap = mutableMapOf<String, Insights>()
+        private const val sharedPreferencesName = "AlgoliaInsightsSharedPreferences"
 
         @JvmStatic
         fun register(
@@ -61,7 +62,7 @@ class Insights internal constructor(
             indexName: String,
             configuration: Configuration
         ): Insights {
-            val eventUploader = EventUploaderWorkManager(context, indexName)
+            val eventUploader = EventUploaderWorkManager(context, sharedPreferencesName)
             val database = DatabaseSharedPreferences(context, indexName)
             val webService = WebServiceHttp(
                 appId = appId,

@@ -12,10 +12,10 @@ import java.util.concurrent.TimeUnit
 
 internal class EventUploaderWorkManager(
     context: Context,
-    override val indexName: String
+    sharedPreferencesName: String
 ) : EventUploader {
 
-    private val preferences = context.sharedPreferences(indexName)
+    private val preferences = context.sharedPreferences(sharedPreferencesName)
 
     override fun startPeriodicUpload() {
         if (preferences.workerId == null) {
@@ -26,11 +26,7 @@ internal class EventUploaderWorkManager(
                 repeatIntervalTimeUnit = TimeUnit.MINUTES,
                 flexTimeInterval = flexTimeIntervalInMinutes,
                 flexTimeIntervalUnit = TimeUnit.MINUTES
-            ).also {
-                val inputData = EventWorker.buildInputData(indexName)
-
-                it.setInputData(inputData)
-            }.build()
+            ).build()
             preferences.workerId = worker.id.toString()
             WorkManager.getInstance().enqueue(worker)
         }
@@ -38,10 +34,8 @@ internal class EventUploaderWorkManager(
 
     override fun startOneTimeUpload() {
         val worker = OneTimeWorkRequestBuilder<EventWorker>().also {
-            val inputData = EventWorker.buildInputData(indexName)
             val backOffDelayInSeconds = 10L
 
-            it.setInputData(inputData)
             it.setBackoffCriteria(BackoffPolicy.EXPONENTIAL, backOffDelayInSeconds, TimeUnit.SECONDS)
         }.build()
         WorkManager.getInstance().enqueue(worker)

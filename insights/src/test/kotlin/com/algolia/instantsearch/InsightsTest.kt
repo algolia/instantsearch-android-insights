@@ -18,7 +18,7 @@ class InsightsTest {
 
     @Test
     fun testConverterEvent() {
-        val expected = Event.Click(AndroidTestUtils.eventParametersA)
+        val expected = Event.Click(TestUtils.eventParametersA)
         val string = ConverterEventToString.convert(expected)
         val event = ConverterStringToEvent.convert(string)
 
@@ -67,8 +67,6 @@ class InsightsTest {
         val uploader = object : EventUploader {
 
             var count: Int = 0
-
-            override val indexName: String = TestUtils.indexName
 
             override fun startPeriodicUpload() {
                 assertEquals(events, database.read())

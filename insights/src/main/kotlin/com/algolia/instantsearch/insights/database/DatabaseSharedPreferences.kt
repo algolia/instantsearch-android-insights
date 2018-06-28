@@ -4,13 +4,15 @@ import android.content.Context
 import com.algolia.instantsearch.insights.converter.ConverterEventToString
 import com.algolia.instantsearch.insights.converter.ConverterStringToEvent
 import com.algolia.instantsearch.insights.event.Event
+import com.algolia.instantsearch.insights.prefixAlgolia
 
 internal class DatabaseSharedPreferences(
-    private val context: Context,
+    context: Context,
     override val indexName: String
 ) : Database {
 
-    private val preferences = context.sharedPreferences(indexName)
+    private val preferences = context.sharedPreferences(prefixAlgolia(indexName))
+
 
     override fun append(event: Event) {
         val events = preferences.serializedEvents

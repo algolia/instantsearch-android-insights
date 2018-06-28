@@ -5,11 +5,16 @@ import android.util.Log
 
 internal object InsightsLogger {
 
+    private const val tag = "Algolia Insights"
     var enabled: MutableMap<String, Boolean> = mutableMapOf()
 
     fun log(indexName: String, message: String) {
         if (enabled.getOrDefault(indexName, false)) {
-            Log.d("Algolia Insights", "index=$indexName: $message")
+            Log.d(tag, "Index=$indexName: $message")
         }
+    }
+
+    fun log(message: String) {
+        Log.d(tag, message)
     }
 }
