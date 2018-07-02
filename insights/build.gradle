@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'org.jetbrains.dokka-android'
 
 ext {
     GROUP = 'com.algolia.instantsearch-android'
@@ -70,6 +71,12 @@ android {
             }
         }
     }
+}
+
+dokka {
+    reportUndocumented = false
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/kdoc"
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
