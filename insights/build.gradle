@@ -89,10 +89,15 @@ task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
 }
 
+task kdocJar(type: Jar, dependsOn: dokka) {
+    classifier "javadoc"
+    from  "$buildDir/kdoc"
+}
 
 // add sources jar tasks as artifacts
 artifacts {
     archives sourcesJar
+    archives kdocJar
     archives file: new File("${project.buildDir}/outputs/aar/${project.name}-release.aar"),
             name: "${project.name}-release.aar",
             type: "aar"
