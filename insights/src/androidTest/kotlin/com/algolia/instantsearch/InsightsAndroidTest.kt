@@ -20,7 +20,7 @@ class InsightsAndroidTest {
         try {
             Insights.shared("index")
         } catch (exception: Exception) {
-            assertTrue(exception is InstantSearchInsightsException.CredentialsNotFound)
+            assertTrue(exception is InstantSearchInsightsException.IndexNotRegistered)
         }
     }
 

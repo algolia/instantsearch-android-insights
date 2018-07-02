@@ -27,7 +27,7 @@ public class InsightsAndroidTestJava {
         try {
             Insights.shared("index");
         } catch (Exception exception) {
-            assertEquals(exception.getClass(), InstantSearchInsightsException.CredentialsNotFound.class);
+            assertEquals(exception.getClass(), InstantSearchInsightsException.IndexNotRegistered.class);
         }
     }
 
