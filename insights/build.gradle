@@ -98,7 +98,7 @@ dependencies {
     implementation dependency_android.espresso
 
     testImplementation dependency_jvm.kotlin_test
-    testImplementation 'org.json:json:20180130'
+    testImplementation dependency_jvm.json
 }
 
 repositories {
