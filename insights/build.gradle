@@ -93,11 +93,11 @@ artifacts {
 
 dependencies {
     implementation dependency_jvm.kotlin_stdlib
-    implementation dependency_jvm.kotlin_test
     implementation dependency_android.work_manager
     implementation dependency_android.appcompat
     implementation dependency_android.espresso
 
+    testImplementation dependency_jvm.kotlin_test
     testImplementation 'org.json:json:20180130'
 }
 
