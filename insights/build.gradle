@@ -102,4 +102,4 @@ repositories {
 }
 
 // Apply the bintray upload task
-apply from: 'https://raw.githubusercontent.com/algolia/instantsearch-mobile-tools/master/gradle/bintrayv.gradle'
+apply from: 'https://raw.githubusercontent.com/algolia/instantsearch-mobile-tools/de87f6a18337bce2808a3c6783cd71b1319c3dd4/gradle/bintrayv.gradle'
