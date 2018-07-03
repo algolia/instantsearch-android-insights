@@ -37,6 +37,10 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
     buildTypes {
         all {
             buildConfigField "String", "ALGOLIA_APPLICATION_ID", "\"$System.env.ALGOLIA_APPLICATION_ID\""
