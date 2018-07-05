@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'org.jetbrains.dokka-android'
 
 ext {
     GROUP = 'com.algolia.instantsearch-android'
@@ -15,7 +16,7 @@ ext {
     REPO = WEBSITE + ".git"
     LICENSE = 'MIT'
     LICENSE_URL = "http://www.opensource.org/licenses/mit-license.php"
-    VERSION = '1.0.2'
+    VERSION = '1.0.3'
     VERSION_DESC = 'Version ' + VERSION
 
     VERSION_APPCOMPAT = '28.0.0'
@@ -72,6 +73,12 @@ android {
     }
 }
 
+dokka {
+    reportUndocumented = false
+    outputFormat = 'html'
+    outputDirectory = "$buildDir/javadoc"
+}
+
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions.freeCompilerArgs += ['-module-name', project.ext.CODENAME]
 }
@@ -82,10 +89,15 @@ task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
 }
 
+task javadocJar(type: Jar, dependsOn: dokka) {
+    classifier "javadoc"
+    from  "$buildDir/javadoc"
+}
 
 // add sources jar tasks as artifacts
 artifacts {
     archives sourcesJar
+    archives javadocJar
     archives file: new File("${project.buildDir}/outputs/aar/${project.name}-release.aar"),
             name: "${project.name}-release.aar",
             type: "aar"
@@ -106,4 +118,4 @@ repositories {
 }
 
 // Apply the bintray upload task
-apply from: 'https://raw.githubusercontent.com/algolia/instantsearch-mobile-tools/de87f6a18337bce2808a3c6783cd71b1319c3dd4/gradle/bintrayv.gradle'
+apply from: 'https://raw.githubusercontent.com/algolia/instantsearch-mobile-tools/03b5d3e97302021cc3516456f7955a4708ba82a0/gradle/bintrayv.gradle'

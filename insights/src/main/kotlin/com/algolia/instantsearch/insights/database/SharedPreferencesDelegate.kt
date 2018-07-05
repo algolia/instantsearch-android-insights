@@ -5,7 +5,7 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 
-sealed class SharedPreferencesDelegate<T>(
+internal sealed class SharedPreferencesDelegate<T>(
     protected val default: T,
     protected val key: kotlin.String? = null
 ) : ReadWriteProperty<SharedPreferences, T> {
