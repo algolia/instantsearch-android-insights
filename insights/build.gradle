@@ -37,6 +37,10 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
     buildTypes {
         all {
             buildConfigField "String", "ALGOLIA_APPLICATION_ID", "\"$System.env.ALGOLIA_APPLICATION_ID\""
@@ -50,10 +54,23 @@ android {
 
     sourceSets {
         main.java.srcDirs += "src/main/kotlin"
+        test.java.srcDirs += "src/test/kotlin"
         androidTest.java.srcDirs += "src/androidTest/kotlin"
     }
-}
 
+    testOptions {
+        unitTests {
+            returnDefaultValues = true
+            all {
+                testLogging {
+                    events "passed", "started", "skipped", "failed", "standardOut", "standardError"
+                    exceptionFormat "full"
+                    outputs.upToDateWhen { false }
+                }
+            }
+        }
+    }
+}
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     kotlinOptions.freeCompilerArgs += ['-module-name', project.ext.CODENAME]
@@ -76,10 +93,12 @@ artifacts {
 
 dependencies {
     implementation dependency_jvm.kotlin_stdlib
-    implementation dependency_jvm.kotlin_test
     implementation dependency_android.work_manager
     implementation dependency_android.appcompat
     implementation dependency_android.espresso
+
+    testImplementation dependency_jvm.kotlin_test
+    testImplementation dependency_jvm.json
 }
 
 repositories {
@@ -87,4 +106,4 @@ repositories {
 }
 
 // Apply the bintray upload task
-apply from: 'https://raw.githubusercontent.com/algolia/instantsearch-mobile-tools/master/gradle/bintrayv.gradle'
+apply from: 'https://raw.githubusercontent.com/algolia/instantsearch-mobile-tools/de87f6a18337bce2808a3c6783cd71b1319c3dd4/gradle/bintrayv.gradle'

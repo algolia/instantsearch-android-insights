@@ -1,15 +1,20 @@
-package com.algolia.instantsearch.insights
+package com.algolia.instantsearch.insights.webservice
 
+import com.algolia.instantsearch.insights.converter.ConverterParameterToString
+import com.algolia.instantsearch.insights.event.Event
+import com.algolia.instantsearch.insights.event.EventType
 import java.net.HttpURLConnection
 import java.net.URL
 
 
-internal class NetworkManager(
+internal class WebServiceHttp(
     private val appId: String,
     private val apiKey: String,
     private val environment: Environment,
-    private val configuration: Insights.Configuration
-) {
+    private val connectTimeoutInMilliseconds: Int,
+    private val readTimeoutInMilliseconds: Int
+) : WebService {
+
 
     enum class Environment(private val baseUrl: String) {
         Prod("https://insights.algolia.io"),
@@ -20,12 +25,7 @@ internal class NetworkManager(
         }
     }
 
-    data class Response(
-        val errorMessage: String?,
-        val code: Int
-    )
-
-    fun sendEvent(event: Event): Response {
+    override fun sendEvent(event: Event): WebService.Response {
         val eventType = when (event) {
             is Event.Click -> EventType.Click
             is Event.View -> EventType.View
@@ -40,8 +40,8 @@ internal class NetworkManager(
             it.setRequestProperty("X-Algolia-API-Key", apiKey)
             it.setRequestProperty("Content-Length", string.length.toString())
             it.requestMethod = "POST"
-            it.connectTimeout = configuration.connectTimeoutInMilliseconds
-            it.readTimeout = configuration.readTimeoutInMilliseconds
+            it.connectTimeout = connectTimeoutInMilliseconds
+            it.readTimeout = readTimeoutInMilliseconds
             it.doOutput = true
             it.useCaches = false
         }
@@ -49,7 +49,7 @@ internal class NetworkManager(
         val responseCode = connection.responseCode
         val errorMessage = connection.errorStream?.bufferedReader()?.readText()
         connection.disconnect()
-        return Response(
+        return WebService.Response(
             errorMessage = errorMessage,
             code = responseCode
         )

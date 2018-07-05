@@ -1,4 +1,4 @@
-package com.algolia.instantsearch.insights
+package com.algolia.instantsearch.insights.event
 
 
 internal enum class EventType(val route: String) {

@@ -1,4 +1,4 @@
-package com.algolia.instantsearch.insights
+package com.algolia.instantsearch.insights.event
 
 
 internal sealed class Event(open val params: Map<String, Any>) {

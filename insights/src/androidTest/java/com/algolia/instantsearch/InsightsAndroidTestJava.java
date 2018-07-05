@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 
 
 @RunWith(AndroidJUnit4.class)
-public class InsightsTestsJava {
+public class InsightsAndroidTestJava {
 
     private Context context = InstrumentationRegistry.getContext();
     private Insights.Configuration configuration = new Insights.Configuration(5000, 5000);

@@ -1,4 +1,4 @@
-package com.algolia.instantsearch.insights
+package com.algolia.instantsearch.insights.database
 
 import android.content.SharedPreferences
 import kotlin.properties.ReadWriteProperty
