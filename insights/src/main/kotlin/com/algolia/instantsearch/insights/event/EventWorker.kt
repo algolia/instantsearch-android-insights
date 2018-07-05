@@ -8,12 +8,12 @@ import com.algolia.instantsearch.insights.webservice.uploadEvents
 
 internal class EventWorker : Worker() {
 
-    override fun doWork(): WorkerResult {
+    override fun doWork(): Worker.Result {
         InsightsLogger.log("Worker started with indices ${Insights.insightsMap.keys}.")
         val hasAnyEventFailed = Insights.insightsMap
             .map { it.value.webService.uploadEvents(it.value.database, it.key).isEmpty() }
             .any { !it }
-        val result = if (hasAnyEventFailed) WorkerResult.RETRY else WorkerResult.SUCCESS
+        val result = if (hasAnyEventFailed) Worker.Result.RETRY else Worker.Result.SUCCESS
         InsightsLogger.log("Worker ended with result: $result.")
         return result
     }

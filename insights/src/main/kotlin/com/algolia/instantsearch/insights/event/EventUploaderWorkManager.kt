@@ -28,7 +28,7 @@ internal class EventUploaderWorkManager(
                 flexTimeIntervalUnit = TimeUnit.MINUTES
             ).build()
             preferences.workerId = worker.id.toString()
-            WorkManager.getInstance().enqueue(worker)
+            WorkManager.getInstance()!!.enqueue(worker)
         }
     }
 
@@ -38,6 +38,6 @@ internal class EventUploaderWorkManager(
 
             it.setBackoffCriteria(BackoffPolicy.EXPONENTIAL, backOffDelayInSeconds, TimeUnit.SECONDS)
         }.build()
-        WorkManager.getInstance().enqueue(worker)
+        WorkManager.getInstance()!!.enqueue(worker)
     }
 }
