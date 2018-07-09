@@ -11,4 +11,6 @@ sealed class InstantSearchInsightsException : Exception() {
      * method without having registered the index through the [Insights.register] method first.
      */
     class IndexNotRegistered : InstantSearchInsightsException()
+
+    class ManualInitializationRequired: InstantSearchInsightsException()
 }

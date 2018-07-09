@@ -1,10 +1,8 @@
 package com.algolia.instantsearch.insights.event
 
 import android.content.Context
-import androidx.work.BackoffPolicy
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
+import androidx.work.*
+import com.algolia.instantsearch.insights.InstantSearchInsightsException
 import com.algolia.instantsearch.insights.database.sharedPreferences
 import com.algolia.instantsearch.insights.database.workerId
 import java.util.concurrent.TimeUnit
@@ -28,7 +26,7 @@ internal class EventUploaderWorkManager(
                 flexTimeIntervalUnit = TimeUnit.MINUTES
             ).build()
             preferences.workerId = worker.id.toString()
-            WorkManager.getInstance()!!.enqueue(worker)
+            safeEnqueue(worker)
         }
     }
 
@@ -38,6 +36,16 @@ internal class EventUploaderWorkManager(
 
             it.setBackoffCriteria(BackoffPolicy.EXPONENTIAL, backOffDelayInSeconds, TimeUnit.SECONDS)
         }.build()
-        WorkManager.getInstance()!!.enqueue(worker)
+        safeEnqueue(worker)
+    }
+
+    private fun safeEnqueue(worker: WorkRequest) {
+        WorkManager.getInstance().let {
+            if (it != null) {
+                it.enqueue(worker)
+            } else {
+                throw InstantSearchInsightsException.ManualInitializationRequired()
+            }
+        }
     }
 }
