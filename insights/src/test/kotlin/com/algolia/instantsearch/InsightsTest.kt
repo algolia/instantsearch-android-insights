@@ -38,11 +38,11 @@ class InsightsTest {
     @Test
     fun testViewEvent() {
         val response = WebService.Response(
-            errorMessage = "Method Not Allowed\n",
-            code = 405
+            errorMessage = "",
+            code = 404
         )
         val event = Event.View(TestUtils.eventParametersA)
-        assertEquals(response, TestUtils.webService.sendEvent(event))
+        assertEquals(response.code, TestUtils.webService.sendEvent(event).code)
     }
 
     @Test
