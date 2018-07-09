@@ -12,6 +12,9 @@ android {
         versionName versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+    lintOptions {
+        abortOnError false
+    }
     buildTypes {
         release {
             minifyEnabled false
@@ -27,7 +30,7 @@ tasks.withType(Test) {
 }
 
 dependencies {
-    implementation project(':insights')
+    implementation project(":insights")
 
     implementation dependency_android.appcompat
     implementation dependency_android.recycler_view

@@ -11,7 +11,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlins"
         classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokka"
 
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.2'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
     }
 }
@@ -23,6 +23,9 @@ allprojects {
         maven {
             url "https://dl.bintray.com/algolia/maven"
         }
+    }
+    buildscript {
+        apply plugin: 'com.github.ben-manes.versions'
     }
 }
 
