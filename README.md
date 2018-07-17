@@ -110,7 +110,7 @@ Insights.shared("indexName").conversion(conversionParams);
 In case you want to check if the metric was sent correctly, you need to enable the logging first
 
 ```kotlin
-Insights.shared(index: "indexName").loggingEnabled = true
+Insights.shared(index = "indexName").loggingEnabled = true
 ```
 
 After you enabled it, you can check the output for success messages or errors
