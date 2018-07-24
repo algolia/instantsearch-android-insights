@@ -17,12 +17,10 @@ ext.with {
     insights = '1.0.5'
     json = '20180130'
     dependency_jvm = [
-            kotlin_stdlib: "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlins",
-            kotlin_test  : [
-                    "org.jetbrains.kotlin:kotlin-test:$kotlins",
-                    "org.jetbrains.kotlin:kotlin-test-junit:$kotlins"
-            ],
-            json         : "org.json:json:$json"
+            kotlin_stdlib    : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlins",
+            kotlin_test_junit: "org.jetbrains.kotlin:kotlin-test-junit:$kotlins",
+            kotlin_test      : "org.jetbrains.kotlin:kotlin-test:$kotlins",
+            json             : "org.json:json:$json"
     ]
     dependency_android = [
             appcompat        : "com.android.support:appcompat-v7:$appcompat",

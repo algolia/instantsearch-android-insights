@@ -91,7 +91,7 @@ task sourcesJar(type: Jar) {
 
 task javadocJar(type: Jar, dependsOn: dokka) {
     classifier "javadoc"
-    from  "$buildDir/javadoc"
+    from "$buildDir/javadoc"
 }
 
 // add sources jar tasks as artifacts
@@ -107,9 +107,12 @@ dependencies {
     implementation dependency_jvm.kotlin_stdlib
     implementation dependency_android.work_manager
     implementation dependency_android.appcompat
-    implementation dependency_android.espresso
 
+    androidTestImplementation dependency_android.espresso
+    androidTestImplementation dependency_jvm.kotlin_test
+    androidTestImplementation dependency_jvm.kotlin_test_junit
     testImplementation dependency_jvm.kotlin_test
+    testImplementation dependency_jvm.kotlin_test_junit
     testImplementation dependency_jvm.json
 }
 
