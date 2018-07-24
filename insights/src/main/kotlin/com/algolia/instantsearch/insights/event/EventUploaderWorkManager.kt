@@ -1,32 +1,29 @@
 package com.algolia.instantsearch.insights.event
 
-import android.content.Context
 import androidx.work.*
 import com.algolia.instantsearch.insights.InstantSearchInsightsException
-import com.algolia.instantsearch.insights.database.sharedPreferences
-import com.algolia.instantsearch.insights.database.workerId
 import java.util.concurrent.TimeUnit
 
 
-internal class EventUploaderWorkManager(
-    context: Context,
-    sharedPreferencesName: String
-) : EventUploader {
+internal class EventUploaderWorkManager : EventUploader {
 
-    private val preferences = context.sharedPreferences(sharedPreferencesName)
+    enum class WorkerName {
+        PeriodicUpload,
+        OneTimeUpload
+    }
 
     override fun startPeriodicUpload() {
-        if (preferences.workerId == null) {
-            val repeatIntervalInMinutes = 15L
-            val flexTimeIntervalInMinutes = 5L
-            val worker = PeriodicWorkRequestBuilder<EventWorker>(
-                repeatInterval = repeatIntervalInMinutes,
-                repeatIntervalTimeUnit = TimeUnit.MINUTES,
-                flexTimeInterval = flexTimeIntervalInMinutes,
-                flexTimeIntervalUnit = TimeUnit.MINUTES
-            ).build()
-            preferences.workerId = worker.id.toString()
-            safeEnqueue(worker)
+        val repeatIntervalInMinutes = 15L
+        val flexTimeIntervalInMinutes = 5L
+        val worker = PeriodicWorkRequestBuilder<EventWorker>(
+            repeatInterval = repeatIntervalInMinutes,
+            repeatIntervalTimeUnit = TimeUnit.MINUTES,
+            flexTimeInterval = flexTimeIntervalInMinutes,
+            flexTimeIntervalUnit = TimeUnit.MINUTES
+        ).build()
+
+        workManager {
+            enqueueUniquePeriodicWork(WorkerName.PeriodicUpload.name, ExistingPeriodicWorkPolicy.KEEP, worker)
         }
     }
 
@@ -36,13 +33,16 @@ internal class EventUploaderWorkManager(
 
             it.setBackoffCriteria(BackoffPolicy.EXPONENTIAL, backOffDelayInSeconds, TimeUnit.SECONDS)
         }.build()
-        safeEnqueue(worker)
+
+        workManager {
+            beginUniqueWork(WorkerName.OneTimeUpload.name, ExistingWorkPolicy.KEEP, worker).enqueue()
+        }
     }
 
-    private fun safeEnqueue(worker: WorkRequest) {
+    private fun workManager(workManager: WorkManager.() -> Unit) {
         WorkManager.getInstance().let {
             if (it != null) {
-                it.enqueue(worker)
+                workManager(it)
             } else {
                 throw InstantSearchInsightsException.ManualInitializationRequired()
             }
