@@ -33,6 +33,7 @@ class ListItemViewHolder extends RecyclerView.ViewHolder {
 
                 map.put("queryID", item.getQueryId());
                 map.put("objectID", item.getObjectId());
+                map.put("timestamp", System.currentTimeMillis());
                 Insights.shared(App.indexName).conversion(map);
             }
         });
@@ -44,6 +45,7 @@ class ListItemViewHolder extends RecyclerView.ViewHolder {
                 map.put("queryID", item.getQueryId());
                 map.put("objectID", item.getObjectId());
                 map.put("position", item.getPosition());
+                map.put("timestamp", System.currentTimeMillis());
                 Insights.shared(App.indexName).click(map);
             }
         });
