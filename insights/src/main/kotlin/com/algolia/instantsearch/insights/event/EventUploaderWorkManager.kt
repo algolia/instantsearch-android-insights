@@ -1,7 +1,6 @@
 package com.algolia.instantsearch.insights.event
 
 import androidx.work.*
-import com.algolia.instantsearch.insights.InstantSearchInsightsException
 import java.util.concurrent.TimeUnit
 
 
@@ -22,9 +21,9 @@ internal class EventUploaderWorkManager : EventUploader {
             flexTimeIntervalUnit = TimeUnit.MINUTES
         ).build()
 
-        workManager {
-            enqueueUniquePeriodicWork(WorkerName.PeriodicUpload.name, ExistingPeriodicWorkPolicy.KEEP, worker)
-        }
+        WorkManager
+            .getInstance()
+            .enqueueUniquePeriodicWork(WorkerName.PeriodicUpload.name, ExistingPeriodicWorkPolicy.KEEP, worker)
     }
 
     override fun startOneTimeUpload() {
@@ -34,18 +33,9 @@ internal class EventUploaderWorkManager : EventUploader {
             it.setBackoffCriteria(BackoffPolicy.EXPONENTIAL, backOffDelayInSeconds, TimeUnit.SECONDS)
         }.build()
 
-        workManager {
-            beginUniqueWork(WorkerName.OneTimeUpload.name, ExistingWorkPolicy.KEEP, worker).enqueue()
-        }
-    }
-
-    private fun workManager(workManager: WorkManager.() -> Unit) {
-        WorkManager.getInstance().let {
-            if (it != null) {
-                workManager(it)
-            } else {
-                throw InstantSearchInsightsException.ManualInitializationRequired()
-            }
-        }
+        WorkManager
+            .getInstance()
+            .beginUniqueWork(EventUploaderWorkManager.WorkerName.OneTimeUpload.name, ExistingWorkPolicy.KEEP, worker)
+            .enqueue()
     }
 }
