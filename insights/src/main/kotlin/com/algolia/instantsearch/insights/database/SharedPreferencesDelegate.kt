@@ -24,7 +24,7 @@ internal sealed class SharedPreferencesDelegate<T>(
     class StringSet(default: Set<kotlin.String>, key: kotlin.String? = null) : SharedPreferencesDelegate<Set<kotlin.String>>(default, key) {
 
         override fun getValue(thisRef: SharedPreferences, property: KProperty<*>): Set<kotlin.String> {
-            return thisRef.getStringSet(key ?: property.name, default)
+            return thisRef.getStringSet(key ?: property.name, default) ?: setOf()
         }
 
         override fun setValue(thisRef: SharedPreferences, property: KProperty<*>, value: Set<kotlin.String>) {
