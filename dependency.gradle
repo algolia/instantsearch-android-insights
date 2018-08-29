@@ -13,7 +13,7 @@ ext.with {
     kotlins = '1.2.61'
     codeVersion = 1
     versionName = '1.0'
-    workManager = '1.0.0-alpha07'
+    workManager = '1.0.0-alpha08'
     insights = '1.0.7'
     json = '20180813'
     dependency_jvm = [
