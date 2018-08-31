@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion sdkCompile
-    buildToolsVersion buildTools
 
     defaultConfig {
         applicationId "com.algolia.insights"
