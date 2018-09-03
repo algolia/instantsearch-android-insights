@@ -36,4 +36,5 @@ dependencies {
     implementation dependency_android.algolia_client
     implementation dependency_android.constraint_layout
     implementation dependency_android.glide
+    implementation dependency_android.stetho
 }
