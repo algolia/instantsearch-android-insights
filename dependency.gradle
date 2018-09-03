@@ -5,7 +5,7 @@ ext.with {
     constraintLayout = '1.1.2'
     dokka = '0.9.17'
     espresso = '3.0.2'
-    glide = '4.7.1'
+    glide = '4.8.0'
     sdkCompile = 28
     sdkMin = 14
     sdkTarget = 28
