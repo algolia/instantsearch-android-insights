@@ -9,18 +9,26 @@ import java.util.concurrent.TimeUnit
 internal class EventUploaderEvernote(context: Context) : EventUploader {
 
     private val preferences = context.getSharedPreferences("Insights", Context.MODE_PRIVATE)
-    private val keyUniquePeriodicJob = "PeriodicJob"
+
+    private enum class Preference {
+        JobId
+    }
+
+    companion object {
+
+        private const val repeatIntervalInMinutes = 15L
+        private const val flexTimeIntervalInMinutes = 5L
+        private const val defaultJobId = -1
+    }
 
     init {
         JobManager.create(context).addJobCreator(EventJobCreator())
     }
 
     override fun startPeriodicUpload() {
-        val storedId = preferences.getInt(keyUniquePeriodicJob, -1)
-        if (storedId == -1) {
-            val repeatIntervalInMinutes = 15L
-            val flexTimeIntervalInMinutes = 5L
-            val id = JobRequest
+        val storedJobId = preferences.getInt(Preference.JobId.name, defaultJobId)
+        if (storedJobId == defaultJobId) {
+            val jobId = JobRequest
                 .Builder(EventJobCreator.Tag.Periodic.name)
                 .setRequiredNetworkType(JobRequest.NetworkType.CONNECTED)
                 .setPeriodic(
@@ -28,7 +36,7 @@ internal class EventUploaderEvernote(context: Context) : EventUploader {
                     TimeUnit.MINUTES.toMillis(flexTimeIntervalInMinutes))
                 .build()
                 .schedule()
-            preferences.edit().putInt(keyUniquePeriodicJob, id).apply()
+            preferences.edit().putInt(Preference.JobId.name, jobId).apply()
         }
     }
 
