@@ -5,7 +5,7 @@ import com.algolia.instantsearch.insights.database.Database
 import com.algolia.instantsearch.insights.database.DatabaseSharedPreferences
 import com.algolia.instantsearch.insights.event.Event
 import com.algolia.instantsearch.insights.event.EventUploader
-import com.algolia.instantsearch.insights.event.EventUploaderWorkManager
+import com.algolia.instantsearch.insights.event.EventUploaderEvernote
 import com.algolia.instantsearch.insights.webservice.WebService
 import com.algolia.instantsearch.insights.webservice.WebServiceHttp
 
@@ -99,7 +99,6 @@ class Insights internal constructor(
     companion object {
 
         internal val insightsMap = mutableMapOf<String, Insights>()
-        private const val sharedPreferencesName = "AlgoliaInsightsSharedPreferences"
 
         /**
          * Register your index with a given appId and apiKey.
@@ -118,7 +117,7 @@ class Insights internal constructor(
             indexName: String,
             configuration: Configuration = Configuration(5000, 5000)
         ): Insights {
-            val eventUploader = EventUploaderWorkManager()
+            val eventUploader = EventUploaderEvernote(context)
             val database = DatabaseSharedPreferences(context, indexName)
             val webService = WebServiceHttp(
                 appId = appId,

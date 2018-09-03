@@ -104,8 +104,8 @@ artifacts {
 
 dependencies {
     implementation dependency_jvm.kotlin_stdlib
-    implementation dependency_android.work_manager
     implementation dependency_android.appcompat
+    implementation dependency_android.evernote
 
     androidTestImplementation dependency_android.espresso
     androidTestImplementation dependency_jvm.kotlin_test
