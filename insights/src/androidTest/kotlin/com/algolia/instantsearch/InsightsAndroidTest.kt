@@ -4,7 +4,7 @@ import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import com.algolia.instantsearch.insights.Insights
 import com.algolia.instantsearch.insights.InstantSearchInsightsException
-import com.algolia.instantsearch.insights.event.EventUploaderEvernote
+import com.algolia.instantsearch.insights.event.EventUploaderAndroidJob
 import com.evernote.android.job.JobManager
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -34,9 +34,9 @@ class InsightsAndroidTest {
     }
 
     @Test
-    fun testEvernotePeriodic() {
+    fun testPeriodicAndroidJob() {
         (0 until 10).forEach {
-            EventUploaderEvernote(context).startPeriodicUpload()
+            EventUploaderAndroidJob(context).startPeriodicUpload()
         }
         assertEquals(1, JobManager.instance().allJobRequests.size)
     }

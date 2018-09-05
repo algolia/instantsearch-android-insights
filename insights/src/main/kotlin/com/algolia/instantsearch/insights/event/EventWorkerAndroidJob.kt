@@ -6,7 +6,7 @@ import com.algolia.instantsearch.insights.webservice.uploadEvents
 import com.evernote.android.job.Job
 
 
-internal class EventWorkerEvernote : Job() {
+internal class EventWorkerAndroidJob : Job() {
 
     override fun onRunJob(params: Params): Result {
         InsightsLogger.log("Worker started with indices ${Insights.insightsMap.keys}.")

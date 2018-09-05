@@ -5,7 +5,7 @@ import com.algolia.instantsearch.insights.database.Database
 import com.algolia.instantsearch.insights.database.DatabaseSharedPreferences
 import com.algolia.instantsearch.insights.event.Event
 import com.algolia.instantsearch.insights.event.EventUploader
-import com.algolia.instantsearch.insights.event.EventUploaderEvernote
+import com.algolia.instantsearch.insights.event.EventUploaderAndroidJob
 import com.algolia.instantsearch.insights.webservice.WebService
 import com.algolia.instantsearch.insights.webservice.WebServiceHttp
 
@@ -117,7 +117,7 @@ class Insights internal constructor(
             indexName: String,
             configuration: Configuration = Configuration(5000, 5000)
         ): Insights {
-            val eventUploader = EventUploaderEvernote(context)
+            val eventUploader = EventUploaderAndroidJob(context)
             val database = DatabaseSharedPreferences(context, indexName)
             val webService = WebServiceHttp(
                 appId = appId,

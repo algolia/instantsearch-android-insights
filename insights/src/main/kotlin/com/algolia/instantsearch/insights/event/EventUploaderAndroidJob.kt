@@ -6,7 +6,7 @@ import com.evernote.android.job.JobRequest
 import java.util.concurrent.TimeUnit
 
 
-internal class EventUploaderEvernote(context: Context) : EventUploader {
+internal class EventUploaderAndroidJob(context: Context) : EventUploader {
 
     private val preferences = context.getSharedPreferences("Insights", Context.MODE_PRIVATE)
 

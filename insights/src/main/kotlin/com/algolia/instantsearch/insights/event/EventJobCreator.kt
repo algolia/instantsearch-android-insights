@@ -13,7 +13,7 @@ internal class EventJobCreator : JobCreator {
 
     override fun create(tag: String): Job? {
         return when (Tag.valueOf(tag)) {
-            Tag.OneTime, Tag.Periodic -> EventWorkerEvernote()
+            Tag.OneTime, Tag.Periodic -> EventWorkerAndroidJob()
         }
     }
 }
