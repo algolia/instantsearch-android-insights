@@ -10,9 +10,8 @@ buildscript {
         classpath "com.github.ben-manes:gradle-versions-plugin:$benManes"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlins"
         classpath "org.jetbrains.dokka:dokka-android-gradle-plugin:$dokka"
-
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
-        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$bintray"
+        classpath "com.github.dcendents:android-maven-gradle-plugin:$maven"
     }
 }
 

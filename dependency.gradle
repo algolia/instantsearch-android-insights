@@ -17,6 +17,9 @@ ext.with {
     json = '20180813'
     androidJob = '1.2.6'
     stetho = '1.5.0'
+    bintray = '1.8.4'
+    maven = '2.1'
+
 
     dependency_jvm = [
             kotlin_stdlib    : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlins",
@@ -33,7 +36,7 @@ ext.with {
             constraint_layout: "com.android.support.constraint:constraint-layout:$constraintLayout",
             glide            : "com.github.bumptech.glide:glide:$glide",
             insights         : "com.algolia:instantsearch-android:insights:$insights",
-            androidJob         : "com.evernote:android-job:$androidJob",
+            androidJob       : "com.evernote:android-job:$androidJob",
             stetho           : "com.facebook.stetho:stetho:$stetho"
     ]
 }
