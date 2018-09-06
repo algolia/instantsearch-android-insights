@@ -5,7 +5,7 @@ ext.with {
     constraintLayout = '1.1.2'
     dokka = '0.9.17'
     espresso = '3.0.2'
-    glide = '4.7.1'
+    glide = '4.8.0'
     sdkCompile = 28
     sdkMin = 14
     sdkTarget = 28
@@ -13,8 +13,14 @@ ext.with {
     codeVersion = 1
     versionName = '1.0'
     workManager = '1.0.0-alpha08'
-    insights = '1.0.8'
+    insights = '1.1.0'
     json = '20180813'
+    androidJob = '1.2.6'
+    stetho = '1.5.0'
+    bintray = '1.8.4'
+    maven = '2.1'
+
+
     dependency_jvm = [
             kotlin_stdlib    : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlins",
             kotlin_test_junit: "org.jetbrains.kotlin:kotlin-test-junit:$kotlins",
@@ -29,7 +35,8 @@ ext.with {
             algolia_client   : "com.algolia:algoliasearch-android:$algolia_client",
             constraint_layout: "com.android.support.constraint:constraint-layout:$constraintLayout",
             glide            : "com.github.bumptech.glide:glide:$glide",
-            insights         : "com.algolia:instantsearch-android:insights:$insights"
-
+            insights         : "com.algolia:instantsearch-android:insights:$insights",
+            androidJob       : "com.evernote:android-job:$androidJob",
+            stetho           : "com.facebook.stetho:stetho:$stetho"
     ]
 }

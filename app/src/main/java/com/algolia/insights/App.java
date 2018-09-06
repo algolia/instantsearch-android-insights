@@ -5,6 +5,7 @@ import android.app.Application;
 import com.algolia.instantsearch.insights.Insights;
 import com.algolia.search.saas.Client;
 import com.algolia.search.saas.Index;
+import com.facebook.stetho.Stetho;
 
 public class App extends Application {
 
@@ -26,5 +27,6 @@ public class App extends Application {
 
         client = new Client(appId, apiKey);
         index = client.getIndex(indexName);
+        Stetho.initializeWithDefaults(this);
     }
 }
