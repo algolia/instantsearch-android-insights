@@ -35,7 +35,7 @@ ext.with {
             algolia_client   : "com.algolia:algoliasearch-android:$algolia_client",
             constraint_layout: "com.android.support.constraint:constraint-layout:$constraintLayout",
             glide            : "com.github.bumptech.glide:glide:$glide",
-            insights         : "com.algolia:instantsearch-android:insights:$insights",
+            insights         : "com.algolia.instantsearch-android:insights:$insights",
             androidJob       : "com.evernote:android-job:$androidJob",
             stetho           : "com.facebook.stetho:stetho:$stetho"
     ]
