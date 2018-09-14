@@ -12,7 +12,6 @@ ext.with {
     kotlins = '1.2.61'
     codeVersion = 1
     versionName = '1.0'
-    workManager = '1.0.0-alpha08'
     insights = '1.1.0-beta01'
     json = '20180813'
     androidJob = '1.2.6'
@@ -31,7 +30,6 @@ ext.with {
             appcompat        : "com.android.support:appcompat-v7:$appcompat",
             recycler_view    : "com.android.support:recyclerview-v7:$appcompat",
             espresso         : "com.android.support.test.espresso:espresso-core:$espresso",
-            work_manager     : "android.arch.work:work-runtime-ktx:$workManager",
             algolia_client   : "com.algolia:algoliasearch-android:$algolia_client",
             constraint_layout: "com.android.support.constraint:constraint-layout:$constraintLayout",
             glide            : "com.github.bumptech.glide:glide:$glide",
