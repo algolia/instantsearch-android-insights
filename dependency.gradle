@@ -12,7 +12,7 @@ ext.with {
     kotlins = '1.2.71'
     codeVersion = 1
     versionName = '1.0'
-    insights = '1.1.0-beta01'
+    insights = '1.1.0-beta02'
     json = '20180813'
     androidJob = '1.2.6'
     stetho = '1.5.0'
