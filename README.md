@@ -28,12 +28,15 @@ Add the following dependency to your `Gradle` file
 ```gradle
 dependencies {
     // [...]
-    implementation 'com.algolia.instantsearch-android:insights:1.+'
+    implementation 'com.algolia.instantsearch-android:insights:1.2-0-beta02'
     // [...]
 }
 ```
 
+- The `beta` branch rely on the [evernote](https://github.com/evernote/android-job) library, which is stable.
+- The `alpha` branch rely on the [WorkManager](https://developer.android.com/topic/libraries/architecture/workmanager/) library, which is itself still in alpha and is known to have issues.
 
+**Please do not use the alpha branch in production**
 
 ## Quick Start
 
