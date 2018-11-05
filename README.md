@@ -74,7 +74,7 @@ val params = mapOf(
     "position" to 1
 )
 
-Insights.shared(index = "indexName").click(params)
+Insights.shared(indexName = "indexName").click(params)
 ```
 
 **Java**
@@ -96,7 +96,7 @@ val params = mapOf(
     "objectID" to "85725102"
 )
 
-Insights.shared(index = "indexName").conversion(params)
+Insights.shared(indexName = "indexName").conversion(params)
 ```
 
 **Java**
@@ -113,7 +113,7 @@ Insights.shared("indexName").conversion(conversionParams);
 In case you want to check if the metric was sent correctly, you need to enable the logging first
 
 ```kotlin
-Insights.shared(index = "indexName").loggingEnabled = true
+Insights.shared(indexName = "indexName").loggingEnabled = true
 ```
 
 After you enabled it, you can check the output for success messages or errors
