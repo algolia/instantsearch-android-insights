@@ -51,7 +51,7 @@ val configuration = Insights.Configuration(
     connectTimeoutInMilliseconds= 5000,
     readTimeoutInMilliseconds = 5000
 )
-Insights.register("testApp", "testKey", "indexName", configuration)
+Insights.register(context, "testApp", "testKey", "indexName", configuration)
 ```
 
 **Java**
