@@ -30,7 +30,7 @@ import com.algolia.instantsearch.insights.webservice.WebServiceHttp
  *      "indexName": indexName,
  *      "timestamp": Date.timeIntervalBetween1970AndReferenceDate
  *   )
- *   Insights.shared(index = indexName).click(params = data)
+ *   Insights.shared(indexName = indexName).click(params = data)
  * ```
  */
 class Insights internal constructor(
