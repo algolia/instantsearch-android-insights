@@ -21,7 +21,7 @@ internal class WebServiceHttp(
         Debug("http://localhost:8080");
 
         fun buildUrl(eventType: EventType): String {
-            return "$baseUrl/1/searches/${eventType.route}"
+            return "$baseUrl/1/events/${eventType.route}"
         }
     }
 
