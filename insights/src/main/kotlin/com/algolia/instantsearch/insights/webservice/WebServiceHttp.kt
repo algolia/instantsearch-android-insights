@@ -20,9 +20,7 @@ internal class WebServiceHttp(
         Prod("https://insights.algolia.io"),
         Debug("http://localhost:8080");
 
-        fun buildUrl(eventType: EventType): String {
-            return "$baseUrl/1/events/${eventType.route}"
-        }
+        val url: String = "$baseUrl/1/events/"
     }
 
     override fun send(event: Event): WebService.Response {
