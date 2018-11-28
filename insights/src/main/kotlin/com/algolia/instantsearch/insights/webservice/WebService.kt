@@ -10,5 +10,5 @@ internal interface WebService {
         val code: Int
     )
 
-    fun sendEvent(event: Event): Response
+    fun send(event: Event): Response
 }

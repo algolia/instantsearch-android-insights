@@ -25,7 +25,7 @@ internal class WebServiceHttp(
         }
     }
 
-    override fun sendEvent(event: Event): WebService.Response {
+    override fun send(event: Event): WebService.Response {
         val eventType = when (event) {
             is Event.Click -> EventType.Click
             is Event.View -> EventType.View

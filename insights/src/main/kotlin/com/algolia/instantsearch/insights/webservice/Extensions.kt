@@ -14,7 +14,7 @@ internal fun Int.isValidHttpCode() = this == 200 || this == 201
 
 internal fun WebService.sendEvent(indexName: String, event: Event): EventResponse {
     val (errorMessage, code) = try {
-        sendEvent(event)
+        send(event)
     } catch (exception: Exception) {
         WebService.Response(exception.localizedMessage, -1)
     }
