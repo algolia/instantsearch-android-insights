@@ -15,6 +15,8 @@ import kotlin.test.assertEquals
 
 @RunWith(JUnit4::class)
 class InsightsTest {
+    private val responseOK = WebService.Response(null, 200)
+    private val responseNotFound = WebService.Response("", 404)
 
     @Test
     fun testConverterEvent() {
@@ -27,32 +29,20 @@ class InsightsTest {
 
     @Test
     fun testClickEvent() {
-        val response = WebService.Response(
-            errorMessage = null,
-            code = 200
-        )
         val event = Event.Click(TestUtils.eventParametersA)
-        assertEquals(response, TestUtils.webService.sendEvent(event))
+        assertEquals(responseOK, TestUtils.webService.send(event))
     }
 
     @Test
     fun testViewEvent() {
-        val response = WebService.Response(
-            errorMessage = "",
-            code = 404
-        )
         val event = Event.View(TestUtils.eventParametersA)
-        assertEquals(response.code, TestUtils.webService.sendEvent(event).code)
+        assertEquals(responseNotFound.code, TestUtils.webService.send(event).code)
     }
 
     @Test
     fun testConversionEvent() {
-        val response = WebService.Response(
-            errorMessage = null,
-            code = 200
-        )
         val event = Event.Conversion(TestUtils.eventParametersA)
-        assertEquals(response, TestUtils.webService.sendEvent(event))
+        assertEquals(responseOK, TestUtils.webService.send(event))
     }
 
     @Test
