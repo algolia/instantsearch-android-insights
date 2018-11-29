@@ -54,44 +54,70 @@ class InsightsTest {
         assertEquals(responseOK, TestUtils.webService.send(secondEvent))
     }
 
+    /**
+     * Tests the integration of events, WebService and Database.
+     */
     @Test
     fun testIntegration() {
         val events = mutableListOf(firstEvent, secondEvent, thirdEvent)
         val database = MockDatabase(TestUtils.indexName, events)
         val webService = MockWebService()
-
-        val uploader = object : EventUploader {
-
-            var count: Int = 0
-
-            override fun startPeriodicUpload() {
-                assertEquals(events, database.read())
-                webService.uploadEvents(database, TestUtils.indexName)
-                assert(database.read().isEmpty())
-            }
-
-            override fun startOneTimeUpload() {
-                when (count) {
-                    0 -> assertEquals(listOf(firstEvent), database.read())
-                    1 -> assertEquals(listOf(secondEvent), database.read())
-                    2 -> assertEquals(listOf(secondEvent, thirdEvent), database.read())
-                }
-                webService.uploadEvents(database, TestUtils.indexName)
-                when (count) {
-                    0 -> assert(database.read().isEmpty())
-                    1 -> assertEquals(listOf(secondEvent), database.read())
-                    2 -> assert(database.read().isEmpty())
-                }
-                count++
-            }
-        }
+        val uploader = AssertingEventUploader(events, webService, database)
         val insights = Insights(TestUtils.indexName, uploader, database, webService)
 
-        webService.code = 200
+        webService.code = 200 // Given a working web service
         insights.click(firstEvent.params)
-        webService.code = -1
+        webService.code = -1 // Given a web service that errors
         insights.conversion(secondEvent.params)
-        webService.code = 400
+        webService.code = 400 // Given a working web service returning an HTTP error
         insights.view(thirdEvent.params)
+
+        webService.code = -1 // Given a web service that errors
+        insights.search.click(firstEvent.params)
+        insights.personalization.click(firstEvent.params)
+        insights.personalization.conversion(secondEvent.params)
+        webService.code = 200 // Given a working web service
+        insights.personalization.view(thirdEvent.params)
+    }
+
+    inner class AssertingEventUploader internal constructor(
+        private val events: MutableList<Event>,
+        private val webService: MockWebService,
+        private val database: MockDatabase
+    ) : EventUploader {
+
+        private var count: Int = 0
+
+        override fun startPeriodicUpload() {
+            assertEquals(events, database.read())
+            webService.uploadEvents(database, TestUtils.indexName)
+            assert(database.read().isEmpty())
+        }
+
+        override fun startOneTimeUpload() {
+            when (count) {
+                0 -> assertEquals(listOf(firstEvent), database.read()) // expect added first
+                1 -> assertEquals(listOf(secondEvent), database.read()) // expect flush then added second
+                2 -> assertEquals(listOf(secondEvent, thirdEvent), database.read()) // expect added third
+
+                3 -> assertEquals(listOf(firstEvent), database.read()) // expect flush then added first
+                4 -> assertEquals(listOf(firstEvent, firstEvent), database.read()) // expect added first
+                5 -> assertEquals(listOf(firstEvent, firstEvent, secondEvent), database.read()) // expect added second
+                6 -> assertEquals(listOf(firstEvent, firstEvent, secondEvent, thirdEvent), database.read()) // expect added third
+
+            }
+            webService.uploadEvents(database, TestUtils.indexName)
+            when (count) {
+                0 -> assert(database.read().isEmpty()) // expect flushed first
+                1 -> assertEquals(listOf(secondEvent), database.read()) // expect kept second
+                2 -> assert(database.read().isEmpty()) // expect flushed events
+
+                3 -> assertEquals(listOf(firstEvent), database.read()) // expect kept first
+                4 -> assertEquals(listOf(firstEvent, firstEvent), database.read()) // expect kept first2
+                5 -> assertEquals(listOf(firstEvent, firstEvent, secondEvent), database.read()) // expect kept second
+                6 -> assert(database.read().isEmpty()) // expect flushed events
+            }
+            count++
+        }
     }
 }
