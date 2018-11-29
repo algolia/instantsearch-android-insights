@@ -8,3 +8,4 @@ internal interface Converter<in I, out O> {
 }
 
 internal const val EventTypeKey = "eventType"
+internal const val IndexNameKey = "index"

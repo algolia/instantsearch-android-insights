@@ -2,6 +2,7 @@ package com.algolia.instantsearch
 
 import com.algolia.instantsearch.insights.BuildConfig
 import com.algolia.instantsearch.insights.Insights
+import com.algolia.instantsearch.insights.converter.IndexNameKey
 import com.algolia.instantsearch.insights.webservice.WebServiceHttp
 
 
@@ -24,7 +25,7 @@ internal object TestUtils {
             "queryID" to "6de2f7eaa537fa93d8f8f05b927953b1",
             "position" to 1,
             "objectID" to "54675051",
-            "indexName" to indexName,
+            IndexNameKey to indexName,
             "timestamp" to System.currentTimeMillis()
         )
     }

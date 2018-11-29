@@ -108,7 +108,7 @@ class Insights internal constructor(
      * @param [params] A map of [Any] containing data points that you want to track.
      */
     fun click(params: Map<String, Any>) {
-        process(Event.Click(params))
+        process(Event.Click(params, indexName))
     }
 
     /**
@@ -117,7 +117,7 @@ class Insights internal constructor(
      * @param [params] A map of [Any] containing data points that you want to track.
      */
     internal fun view(params: Map<String, Any>) {
-        process(Event.View(params))
+        process(Event.View(params, indexName))
     }
 
     /**
