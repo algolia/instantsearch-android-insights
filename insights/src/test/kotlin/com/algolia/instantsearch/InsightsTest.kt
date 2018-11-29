@@ -19,15 +19,17 @@ import kotlin.test.assertTrue
 class InsightsTest {
     private val responseOK = WebService.Response(null, 200)
     private val responseNotFound = WebService.Response("", 404)
+    private var firstEvent = Event.Click(TestUtils.eventParametersClick, TestUtils.indexName)
+    private var secondEvent = Event.Conversion(TestUtils.eventParametersConversion, TestUtils.indexName)
+    private var thirdEvent = Event.View(TestUtils.eventParametersView, TestUtils.indexName)
 
     @Test
-    fun testConverterEvent() {
-        val expected = Event.Click(TestUtils.eventParametersA)
-        val string = ConverterEventToString.convert(expected)
+    fun testEventConverters() {
+        val string = ConverterEventToString.convert(firstEvent)
         val event = ConverterStringToEvent.convert(string)
-
-        assertEquals(expected, event)
+        assertEquals(firstEvent, event)
     }
+
     @Test
     fun testParameterConverter() {
         val string = ConverterParameterToString.convert(firstEvent.params)
@@ -39,27 +41,21 @@ class InsightsTest {
 
     @Test
     fun testClickEvent() {
-        val event = Event.Click(TestUtils.eventParametersA)
-        assertEquals(responseOK, TestUtils.webService.send(event))
+        assertEquals(responseOK, TestUtils.webService.send(firstEvent))
     }
 
     @Test
     fun testViewEvent() {
-        val event = Event.View(TestUtils.eventParametersA)
-        assertEquals(responseNotFound.code, TestUtils.webService.send(event).code)
+        assertEquals(responseNotFound, TestUtils.webService.send(thirdEvent))
     }
 
     @Test
     fun testConversionEvent() {
-        val event = Event.Conversion(TestUtils.eventParametersA)
-        assertEquals(responseOK, TestUtils.webService.send(event))
+        assertEquals(responseOK, TestUtils.webService.send(secondEvent))
     }
 
     @Test
     fun testIntegration() {
-        val firstEvent = Event.Click(TestUtils.eventParametersA)
-        val secondEvent = Event.Conversion(TestUtils.eventParametersB)
-        val thirdEvent = Event.View(TestUtils.eventParametersC)
         val events = mutableListOf(firstEvent, secondEvent, thirdEvent)
         val database = MockDatabase(TestUtils.indexName, events)
         val webService = MockWebService()
