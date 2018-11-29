@@ -2,6 +2,7 @@ package com.algolia.instantsearch
 
 import com.algolia.instantsearch.insights.Insights
 import com.algolia.instantsearch.insights.converter.ConverterEventToString
+import com.algolia.instantsearch.insights.converter.ConverterParameterToString
 import com.algolia.instantsearch.insights.converter.ConverterStringToEvent
 import com.algolia.instantsearch.insights.event.Event
 import com.algolia.instantsearch.insights.event.EventUploader
@@ -11,6 +12,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 
 @RunWith(JUnit4::class)
@@ -25,6 +27,14 @@ class InsightsTest {
         val event = ConverterStringToEvent.convert(string)
 
         assertEquals(expected, event)
+    }
+    @Test
+    fun testParameterConverter() {
+        val string = ConverterParameterToString.convert(firstEvent.params)
+        firstEvent.params.entries.forEach {
+            assertTrue(string.contains(Regex("\"${it.key}\":\"?${it.value}\"?")),
+                "The string should contain the firstEvent's ${it.key}: $string.")
+        }
     }
 
     @Test
