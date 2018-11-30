@@ -103,33 +103,11 @@ class Insights internal constructor(
     }
 
     /**
-     * Method for tracking a click event.
-     * For a complete list of mandatory fields see our [documentation][https://www.algolia.com/doc/rest-api/analytics/#post-click-event].
-     * @param [params] A map of [Any] containing data points that you want to track.
+     * Method for tracking an event.
+     * For a complete description of events see our [documentation][https://www.algolia.com/doc/rest-api/insights/?language=android#push-events].
+     * @param [event] An [Event] that you want to track.
      */
-    fun click(params: Map<String, Any>) {
-        process(Event.Click(params, indexName))
-    }
-
-    /**
-     * Method for tracking a view event.
-     * For a complete list of mandatory fields see our [documentation][https://www.algolia.com/doc/rest-api/analytics/#post-view-event].
-     * @param [params] A map of [Any] containing data points that you want to track.
-     */
-    internal fun view(params: Map<String, Any>) {
-        process(Event.View(params, indexName))
-    }
-
-    /**
-     * Method for tracking a conversion event.
-     * For a complete list of mandatory fields see our [documentation][https://www.algolia.com/doc/rest-api/analytics/#post-conversion-event].
-     * @param [params] A map of [Any] containing data points that you want to track.
-     */
-    fun conversion(params: Map<String, Any>) {
-        process(Event.Conversion(params))
-    }
-
-    private fun process(event: Event) {
+    fun track(event: Event) {
         database.append(event)
         eventUploader.startOneTimeUpload()
     }

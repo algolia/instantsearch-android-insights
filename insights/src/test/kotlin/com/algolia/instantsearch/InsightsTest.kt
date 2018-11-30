@@ -1,9 +1,13 @@
 package com.algolia.instantsearch
 
+import com.algolia.instantsearch.TestUtils.eventClick
+import com.algolia.instantsearch.TestUtils.eventConversion
+import com.algolia.instantsearch.TestUtils.eventView
 import com.algolia.instantsearch.insights.Insights
 import com.algolia.instantsearch.insights.converter.ConverterEventToString
 import com.algolia.instantsearch.insights.converter.ConverterParameterToString
 import com.algolia.instantsearch.insights.converter.ConverterStringToEvent
+import com.algolia.instantsearch.insights.converter.IndexNameKey
 import com.algolia.instantsearch.insights.event.Event
 import com.algolia.instantsearch.insights.event.EventUploader
 import com.algolia.instantsearch.insights.webservice.WebService
@@ -40,17 +44,26 @@ class InsightsTest {
 
     @Test
     fun testClickEvent() {
-        assertEquals(responseOK, TestUtils.webService.send(firstEvent))
+        // given an event built raw
+        assertEquals(responseOK, TestUtils.webService.send(listOf(firstEvent)))
+        // given an event built with typed constructor
+        assertEquals(responseOK, TestUtils.webService.send(listOf(eventClick)))
     }
 
     @Test
     fun testViewEvent() {
-        assertEquals(responseNotFound, TestUtils.webService.send(thirdEvent))
+        // given an event built raw
+        assertEquals(responseOK, TestUtils.webService.send(listOf(thirdEvent)))
+        // given an event built with typed constructor
+        assertEquals(responseOK, TestUtils.webService.send(listOf(eventView)))
     }
 
     @Test
     fun testConversionEvent() {
-        assertEquals(responseOK, TestUtils.webService.send(secondEvent))
+        // given an event built raw
+        assertEquals(responseOK, TestUtils.webService.send(listOf(secondEvent)))
+        // given an event built with typed constructor
+        assertEquals(responseOK, TestUtils.webService.send(listOf(eventConversion)))
     }
 
     /**
@@ -65,11 +78,11 @@ class InsightsTest {
         val insights = Insights(TestUtils.indexName, uploader, database, webService)
 
         webService.code = 200 // Given a working web service
-        insights.click(firstEvent.params)
+        insights.track(Event.Click(firstEvent.params))
         webService.code = -1 // Given a web service that errors
-        insights.conversion(secondEvent.params)
+        insights.track(Event.Conversion(secondEvent.params))
         webService.code = 400 // Given a working web service returning an HTTP error
-        insights.view(thirdEvent.params)
+        insights.track(eventView)
 
         webService.code = -1 // Given a web service that errors
         insights.search.click(firstEvent.params)
@@ -97,12 +110,12 @@ class InsightsTest {
             when (count) {
                 0 -> assertEquals(listOf(firstEvent), database.read()) // expect added first
                 1 -> assertEquals(listOf(secondEvent), database.read()) // expect flush then added second
-                2 -> assertEquals(listOf(secondEvent, thirdEvent), database.read()) // expect added third
+                2 -> assertEquals(listOf(secondEvent, eventView), database.read()) // expect added third
 
                 3 -> assertEquals(listOf(firstEvent), database.read()) // expect flush then added first
                 4 -> assertEquals(listOf(firstEvent, firstEvent), database.read()) // expect added first
                 5 -> assertEquals(listOf(firstEvent, firstEvent, secondEvent), database.read()) // expect added second
-                6 -> assertEquals(listOf(firstEvent, firstEvent, secondEvent, thirdEvent), database.read()) // expect added third
+                6 -> assertEquals(listOf(firstEvent, firstEvent, secondEvent, eventView), database.read()) // expect added third
 
             }
             webService.uploadEvents(database, TestUtils.indexName)

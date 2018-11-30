@@ -26,6 +26,25 @@ internal object TestUtils {
             if (eventParametersView["positions"] is List<*>) eventParametersView["positions"] as List<Int>? else null
         )
 
+    val eventClick
+        get() = Event.Click(
+            eventParametersClick["eventName"] as String,
+            eventParametersClick[IndexNameKey] as String,
+            eventParametersClick["userToken"] as String,
+            eventParametersClick["timestamp"] as Long,
+            eventParametersClick["queryId"] as String?,
+            if (eventParametersClick["objectIDs"] is List<*>) eventParametersClick["objectIDs"] as List<String>? else null
+        )
+
+    val eventConversion
+        get() = Event.Conversion(
+            eventParametersConversion["eventName"] as String,
+            eventParametersConversion[IndexNameKey] as String,
+            eventParametersConversion["userToken"] as String,
+            eventParametersConversion["timestamp"] as Long,
+            eventParametersConversion["queryId"] as String?,
+            if (eventParametersConversion["objectIDs"] is List<*>) eventParametersConversion["objectIDs"] as List<String>? else null
+        )
 
     private val appId = BuildConfig.ALGOLIA_APPLICATION_ID
     private val apiKey = BuildConfig.ALGOLIA_API_KEY
