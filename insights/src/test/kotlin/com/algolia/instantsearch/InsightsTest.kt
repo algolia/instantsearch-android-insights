@@ -18,10 +18,9 @@ import kotlin.test.assertTrue
 @RunWith(JUnit4::class)
 class InsightsTest {
     private val responseOK = WebService.Response(null, 200)
-    private val responseNotFound = WebService.Response("", 404)
-    private var firstEvent = Event.Click(TestUtils.eventParametersClick, TestUtils.indexName)
-    private var secondEvent = Event.Conversion(TestUtils.eventParametersConversion, TestUtils.indexName)
-    private var thirdEvent = Event.View(TestUtils.eventParametersView, TestUtils.indexName)
+    private var firstEvent = Event.Click(TestUtils.eventParametersClick)
+    private var secondEvent = Event.Conversion(TestUtils.eventParametersConversion)
+    private var thirdEvent = Event.View(TestUtils.eventParametersView)
 
     @Test
     fun testEventConverters() {
