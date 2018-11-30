@@ -85,11 +85,11 @@ class InsightsTest {
         insights.track(eventView)
 
         webService.code = -1 // Given a web service that errors
-        insights.search.click(firstEvent.params)
-        insights.personalization.click(firstEvent.params)
-        insights.personalization.conversion(secondEvent.params)
+        insights.search.click(firstEvent)
+        insights.personalization.click(firstEvent)
+        insights.personalization.conversion(secondEvent)
         webService.code = 200 // Given a working web service
-        insights.personalization.view(thirdEvent.params)
+        insights.personalization.view(thirdEvent)
     }
 
     inner class AssertingEventUploader internal constructor(
@@ -115,7 +115,7 @@ class InsightsTest {
                 3 -> assertEquals(listOf(firstEvent), database.read()) // expect flush then added first
                 4 -> assertEquals(listOf(firstEvent, firstEvent), database.read()) // expect added first
                 5 -> assertEquals(listOf(firstEvent, firstEvent, secondEvent), database.read()) // expect added second
-                6 -> assertEquals(listOf(firstEvent, firstEvent, secondEvent, eventView), database.read()) // expect added third
+                6 -> assertEquals(listOf(firstEvent, firstEvent, secondEvent, thirdEvent), database.read()) // expect added third
 
             }
             webService.uploadEvents(database, TestUtils.indexName)

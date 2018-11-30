@@ -51,13 +51,48 @@ class Insights internal constructor(
     )
 
     inner class Search internal constructor() {
-        fun click(params: Map<String, Any>) = this@Insights.click(params)
+        fun click(event: Event.Click) = this@Insights.track(event)
+        fun click(
+            eventName: String,
+            indexName: String,
+            userToken: String,
+            timestamp: Long,
+            queryId: String? = null,
+            objectIDs: List<String>? = null
+        ) = click(Event.Click(eventName, indexName, userToken, timestamp, queryId, objectIDs))
     }
 
     inner class Personalization internal constructor() {
-        fun view(params: Map<String, Any>) = this@Insights.view(params)
-        fun conversion(params: Map<String, Any>) = this@Insights.conversion(params)
-        fun click(params: Map<String, Any>) = this@Insights.click(params)
+        fun view(event: Event.View) = this@Insights.track(event)
+        fun view(
+            eventName: String,
+            indexName: String,
+            userToken: String,
+            timestamp: Long,
+            queryId: String? = null,
+            objectIDs: List<String>? = null,
+            positions: List<Int>? = null
+        ) = view(Event.View(eventName, indexName, userToken, timestamp, queryId, objectIDs, positions))
+
+        fun conversion(event: Event.Conversion) = this@Insights.track(event)
+        fun conversion(
+            eventName: String,
+            indexName: String,
+            userToken: String,
+            timestamp: Long,
+            queryId: String? = null,
+            objectIDs: List<String>? = null
+        ) = conversion(Event.Conversion(eventName, indexName, userToken, timestamp, queryId, objectIDs))
+
+        fun click(event: Event.Click) = this@Insights.track(event)
+        fun click(
+            eventName: String,
+            indexName: String,
+            userToken: String,
+            timestamp: Long,
+            queryId: String? = null,
+            objectIDs: List<String>? = null
+        ) = click(Event.Click(eventName, indexName, userToken, timestamp, queryId, objectIDs))
     }
 
     /**
@@ -75,7 +110,6 @@ class Insights internal constructor(
      * Does he or she take a particularly significant action, called a “conversion point”?
      */
     var search: Insights.Search = Search()
-
 
     /**
      * You can use **personalization** events to leverage personalized search.
