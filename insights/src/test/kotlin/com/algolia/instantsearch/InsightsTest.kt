@@ -33,7 +33,7 @@ class InsightsTest {
     fun testParameterConverter() {
         val string = ConverterParameterToString.convert(firstEvent.params)
         firstEvent.params.entries.forEach {
-            assertTrue(string.contains(Regex("\"${it.key}\":\"?${it.value}\"?")),
+            assertTrue(string.contains(Regex("\"${it.key}\":[[\"]?${it.value}[\"]]?")),
                 "The string should contain the firstEvent's ${it.key}: $string.")
         }
     }

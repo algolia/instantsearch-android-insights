@@ -4,6 +4,8 @@ import com.algolia.instantsearch.insights.InsightsLogger
 import com.algolia.instantsearch.insights.database.Database
 import com.algolia.instantsearch.insights.event.Event
 import com.algolia.instantsearch.insights.event.EventResponse
+import org.json.JSONArray
+import org.json.JSONObject
 
 
 internal fun List<EventResponse>.filterEventsNetworkFailure(): List<EventResponse> {
@@ -44,4 +46,13 @@ internal fun WebService.uploadEvents(database: Database, indexName: String): Lis
 
     database.overwrite(failedEvents.map { it.event })
     return failedEvents
+}
+
+
+internal fun JSONArray.toList(): List<Any> {
+    return mutableListOf<Any>().also {
+        for (i in 0..it.size) {
+            it.add(this[i])
+        }
+    }
 }

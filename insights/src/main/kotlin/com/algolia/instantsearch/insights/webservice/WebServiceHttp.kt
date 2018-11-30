@@ -1,8 +1,9 @@
 package com.algolia.instantsearch.insights.webservice
 
-import com.algolia.instantsearch.insights.converter.ConverterParameterToString
+import com.algolia.instantsearch.insights.converter.ConverterEventToString
 import com.algolia.instantsearch.insights.event.Event
-import com.algolia.instantsearch.insights.event.EventType
+import org.json.JSONArray
+import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 
