@@ -109,7 +109,7 @@ class Insights internal constructor(
      * Does a user, after performing a search, click-through to one or more of your products?
      * Does he or she take a particularly significant action, called a “conversion point”?
      */
-    var search: Insights.Search = Search()
+    val search: Insights.Search = Search()
 
     /**
      * You can use **personalization** events to leverage personalized search.
@@ -120,7 +120,7 @@ class Insights internal constructor(
      * Personalization relies on the event capturing mechanism, which allows you
      * to track events that will eventually form the basis of every profile.
      */
-    var personalization: Insights.Personalization = Personalization()
+    val personalization: Insights.Personalization = Personalization()
 
     /**
      * Change this variable to `true` or `false` to enable or disable logging.
