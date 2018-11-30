@@ -3,18 +3,20 @@ package com.algolia.instantsearch
 import com.algolia.instantsearch.insights.BuildConfig
 import com.algolia.instantsearch.insights.Insights
 import com.algolia.instantsearch.insights.converter.IndexNameKey
+import com.algolia.instantsearch.insights.event.Event
+import com.algolia.instantsearch.insights.event.EventType
 import com.algolia.instantsearch.insights.webservice.WebServiceHttp
 
 
 internal object TestUtils {
 
-    val appId = BuildConfig.ALGOLIA_APPLICATION_ID
-    val apiKey = BuildConfig.ALGOLIA_API_KEY
-    val indexName = "latency"
+    private val appId = BuildConfig.ALGOLIA_APPLICATION_ID
+    private val apiKey = BuildConfig.ALGOLIA_API_KEY
+    const val indexName = "latency"
     val eventParametersA get() = eventParameters("EventA")
     val eventParametersB get() = eventParameters("EventB")
     val eventParametersC get() = eventParameters("EventC")
-    val configuration = Insights.Configuration(
+    private val configuration = Insights.Configuration(
         connectTimeoutInMilliseconds = 5000,
         readTimeoutInMilliseconds = 5000
     )
