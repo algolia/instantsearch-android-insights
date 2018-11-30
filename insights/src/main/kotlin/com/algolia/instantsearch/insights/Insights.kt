@@ -132,6 +132,14 @@ class Insights internal constructor(
             InsightsLogger.enabled[indexName] = value
         }
 
+    /**
+     * Change this variable to change the default debouncing interval. Values lower than 15 minutes will be ignored.
+     */
+    var debouncingIntervalInMinutes: Long? = null
+        set(value) {
+            value?.let { eventUploader.setInterval(value) }
+        }
+
     init {
         eventUploader.startPeriodicUpload()
     }
