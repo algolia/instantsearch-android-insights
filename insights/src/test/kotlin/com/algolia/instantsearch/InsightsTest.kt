@@ -45,25 +45,25 @@ class InsightsTest {
     @Test
     fun testClickEvent() {
         // given an event built raw
-        assertEquals(responseOK, TestUtils.webService.send(listOf(firstEvent)))
+        assertEquals(responseOK, TestUtils.webService.send(firstEvent))
         // given an event built with typed constructor
-        assertEquals(responseOK, TestUtils.webService.send(listOf(eventClick)))
+        assertEquals(responseOK, TestUtils.webService.send(eventClick))
     }
 
     @Test
     fun testViewEvent() {
         // given an event built raw
-        assertEquals(responseOK, TestUtils.webService.send(listOf(thirdEvent)))
+        assertEquals(responseOK, TestUtils.webService.send(thirdEvent))
         // given an event built with typed constructor
-        assertEquals(responseOK, TestUtils.webService.send(listOf(eventView)))
+        assertEquals(responseOK, TestUtils.webService.send(eventView))
     }
 
     @Test
     fun testConversionEvent() {
         // given an event built raw
-        assertEquals(responseOK, TestUtils.webService.send(listOf(secondEvent)))
+        assertEquals(responseOK, TestUtils.webService.send(secondEvent))
         // given an event built with typed constructor
-        assertEquals(responseOK, TestUtils.webService.send(listOf(eventConversion)))
+        assertEquals(responseOK, TestUtils.webService.send(eventConversion))
     }
 
     /**

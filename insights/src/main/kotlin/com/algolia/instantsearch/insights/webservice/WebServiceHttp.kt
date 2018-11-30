@@ -17,21 +17,17 @@ internal class WebServiceHttp(
 ) : WebService {
 
 
-    enum class Environment(private val baseUrl: String) {
+    enum class Environment(baseUrl: String) {
         Prod("https://insights.algolia.io"),
         Debug("http://localhost:8080");
 
         val url: String = "$baseUrl/1/events"
     }
 
-    override fun send(event: Event): WebService.Response {
-        val eventType = when (event) {
-            is Event.Click -> EventType.Click
-            is Event.View -> EventType.View
-            is Event.Conversion -> EventType.Conversion
-        }
-        val string = ConverterParameterToString.convert(event.params)
-        val url = URL(environment.buildUrl(eventType))
+    override fun send(events: List<Event>): WebService.Response {
+        val array = JSONArray().apply { ConverterEventToString.convert(events).forEach { that: String -> put(JSONObject(that)) } }
+        val string = JSONObject().put("events", array).toString()
+        val url = URL(environment.url)
         val connection = (url.openConnection() as HttpURLConnection).also {
             it.setRequestProperty("Content-Type", "application/json; charset=UTF-8")
             it.setRequestProperty("Accept", "application/json")

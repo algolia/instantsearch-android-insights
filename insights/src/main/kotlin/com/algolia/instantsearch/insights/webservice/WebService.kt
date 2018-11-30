@@ -10,5 +10,6 @@ internal interface WebService {
         val code: Int
     )
 
-    fun send(event: Event): Response
+    fun send(events: List<Event>): Response
+    fun send(event: Event) = send(listOf(event))
 }
