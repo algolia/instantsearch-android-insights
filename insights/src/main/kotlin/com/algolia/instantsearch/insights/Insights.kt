@@ -45,9 +45,10 @@ class Insights internal constructor(
      * @param connectTimeoutInMilliseconds Maximum amount of time in milliseconds before a connect timeout.
      * @param readTimeoutInMilliseconds Maximum amount of time in milliseconds before a read timeout.
      */
-    class Configuration(
+    class Configuration @JvmOverloads constructor(
         val connectTimeoutInMilliseconds: Int,
-        val readTimeoutInMilliseconds: Int
+        val readTimeoutInMilliseconds: Int,
+        val defaultUserToken: String? = null
     )
 
     inner class Search internal constructor() {
@@ -210,6 +211,7 @@ class Insights internal constructor(
                 readTimeoutInMilliseconds = configuration.readTimeoutInMilliseconds
             )
             val insights = Insights(indexName, eventUploader, database, webService)
+            insights.userToken = configuration.defaultUserToken
 
             val previousInsights = insightsMap.put(indexName, insights)
             previousInsights?.let {

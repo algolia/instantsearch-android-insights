@@ -34,6 +34,13 @@ class InsightsAndroidTest {
     }
 
     @Test
+    fun testRegisterGlobalUserToken() {
+        val insights = Insights.register(context, "testApp", "testKey", "index", AndroidTestUtils.configuration)
+        val insightsShared = Insights.shared("index")
+        assertEquals(AndroidTestUtils.configuration.defaultUserToken, insightsShared.userToken)
+    }
+
+    @Test
     fun testPeriodicAndroidJob() {
         (0 until 10).forEach {
             EventUploaderAndroidJob(context).startPeriodicUpload()

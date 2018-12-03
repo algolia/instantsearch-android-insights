@@ -13,7 +13,8 @@ internal object AndroidTestUtils {
     val eventParametersView get() = eventParameters("EventC", EventType.View)
     val configuration = Insights.Configuration(
         connectTimeoutInMilliseconds = 5000,
-        readTimeoutInMilliseconds = 5000
+        readTimeoutInMilliseconds = 5000,
+        defaultUserToken = "foo"
     )
 
     private fun eventParameters(name: String, type: EventType): Map<String, Any> {
