@@ -17,17 +17,16 @@ class AndroidTestDatabaseSharedPreferences {
     @Test
     fun test() {
         val events = listOf(
-            AndroidTestUtils.eventParametersClick,
-            AndroidTestUtils.eventParametersConversion
+            AndroidTestUtils.eventClick,
+            AndroidTestUtils.eventConversion
         )
-            .map { Event.Click(it) }
         val database = DatabaseSharedPreferences(context, AndroidTestUtils.indexName)
 
         database.overwrite(events)
 
         assertEquals(events, database.read())
 
-        val eventC = Event.Conversion(AndroidTestUtils.eventParametersView)
+        val eventC = Event.Conversion(AndroidTestUtils.eventView.params)
 
         database.append(eventC)
 
