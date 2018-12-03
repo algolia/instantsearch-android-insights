@@ -4,7 +4,6 @@ import com.algolia.instantsearch.insights.InsightsLogger
 import com.algolia.instantsearch.insights.database.Database
 import com.algolia.instantsearch.insights.event.Event
 import com.algolia.instantsearch.insights.event.EventResponse
-import org.json.JSONArray
 
 
 internal fun List<EventResponse>.filterEventsNetworkFailure(): List<EventResponse> {

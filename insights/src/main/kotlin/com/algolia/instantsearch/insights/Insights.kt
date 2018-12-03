@@ -199,9 +199,11 @@ class Insights internal constructor(
 
         /**
          * Access an already registered `Insights` without having to pass the `apiKey` and `appId`.
+         *
          * If the index was not register before, it will throw an [InstantSearchInsightsException.IndexNotRegistered] exception.
          * @param indexName The index that is being tracked.
          * @return An [Insights] instance.
+         * @throws InstantSearchInsightsException.IndexNotRegistered if no index was registered as [indexName] before.
          */
         @JvmStatic
         fun shared(indexName: String): Insights {
