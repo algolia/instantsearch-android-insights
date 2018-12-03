@@ -15,6 +15,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 
@@ -63,6 +64,27 @@ class InsightsTest {
         assertEquals(responseOK, TestUtils.webService.send(secondEvent))
         // given an event built with typed constructor
         assertEquals(responseOK, TestUtils.webService.send(eventConversion))
+    }
+
+    @Test
+    fun testEnabled() {
+        val events = mutableListOf(firstEvent, secondEvent, thirdEvent)
+        val database = MockDatabase(TestUtils.indexName, events)
+        val webService = MockWebService()
+        val uploader = object : AssertingEventUploader(events, webService, database) {
+            override fun startOneTimeUpload() {
+                val trackedEvents = database.read()
+                assertFalse(trackedEvents.contains(firstEvent), "The first event should have been ignored")
+                assertTrue(trackedEvents.contains(secondEvent), "The second event should be uploaded")
+            }
+        }
+        val insights = Insights(TestUtils.indexName, uploader, database, webService)
+        insights.minBatchSize = 1 // Given an Insights that uploads every event
+
+        insights.enabled = false // When a firstEvent is sent with insight disabled
+        insights.personalization.click(firstEvent)
+        insights.enabled = true // And a secondEvent sent with insight enabled
+        insights.personalization.conversion(secondEvent)
     }
 
     @Test
