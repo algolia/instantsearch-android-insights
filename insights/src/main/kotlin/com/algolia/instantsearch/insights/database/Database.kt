@@ -13,5 +13,7 @@ internal interface Database {
 
     fun read(): List<Event>
 
+    fun count() : Int
+
     fun clear()
 }
