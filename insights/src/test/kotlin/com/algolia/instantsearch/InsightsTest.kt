@@ -157,7 +157,7 @@ class InsightsTest {
         insights.userToken = TestUtils.eventClick.userToken // Given an userToken
 
         // When adding events without explicitly-provided userToken
-        insights.search.click(firstEvent.eventName, firstEvent.indexName, firstEvent.timestamp, firstEvent.queryId, firstEvent.objectIDs)
+        insights.search.click(firstEvent.eventName, firstEvent.indexName, firstEvent.timestamp, firstEvent.queryId!!, firstEvent.objectIDs)
         insights.personalization.click(firstEvent.eventName, firstEvent.indexName, firstEvent.timestamp, firstEvent.queryId, firstEvent.objectIDs)
         insights.personalization.conversion(secondEvent.eventName, secondEvent.indexName, secondEvent.timestamp, secondEvent.queryId, secondEvent.objectIDs)
         webService.code = 200 // Given a working web service
