@@ -3,7 +3,7 @@ package com.algolia.instantsearch
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import com.algolia.instantsearch.insights.Insights
-import com.algolia.instantsearch.insights.InstantSearchInsightsException
+import com.algolia.instantsearch.insights.InsightsException
 import com.algolia.instantsearch.insights.event.EventUploaderAndroidJob
 import com.evernote.android.job.JobManager
 import org.junit.Test
@@ -22,7 +22,7 @@ class InsightsAndroidTest {
         try {
             Insights.shared("index")
         } catch (exception: Exception) {
-            assertTrue(exception is InstantSearchInsightsException.IndexNotRegistered)
+            assertTrue(exception is InsightsException.IndexNotRegistered)
         }
     }
 

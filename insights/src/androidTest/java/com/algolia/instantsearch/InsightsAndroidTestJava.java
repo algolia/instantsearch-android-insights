@@ -5,7 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.algolia.instantsearch.insights.Insights;
-import com.algolia.instantsearch.insights.InstantSearchInsightsException;
+import com.algolia.instantsearch.insights.InsightsException;
 import com.algolia.instantsearch.insights.event.Event;
 
 import org.junit.Test;
@@ -28,7 +28,7 @@ public class InsightsAndroidTestJava {
         try {
             Insights.shared("index");
         } catch (Exception exception) {
-            assertEquals(exception.getClass(), InstantSearchInsightsException.IndexNotRegistered.class);
+            assertEquals(exception.getClass(), InsightsException.IndexNotRegistered.class);
         }
     }
 
