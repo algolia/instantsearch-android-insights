@@ -39,7 +39,7 @@ sealed class Event constructor(val params: Map<String, Any>) {
             params[UserTokenKey] as String,
             params[TimestampKey] as Long,
             params[QueryIdKey] as String?,
-            params[ObjectIDsKey] as List<String>?, //TODO: Can I avoid unckeched cast?
+            params[ObjectIDsKey] as List<String>?, //TODO: Can I avoid uncheched cast?
             params[PositionsKey] as List<Int>?)
     }
 
