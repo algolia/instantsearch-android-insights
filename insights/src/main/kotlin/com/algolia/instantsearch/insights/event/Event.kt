@@ -10,7 +10,7 @@ sealed class Event constructor(val params: Map<String, Any>) {
         internal const val IndexNameKey = "index"
         internal const val UserTokenKey = "userToken"
         internal const val TimestampKey = "timestamp"
-        internal const val QueryIdKey = "queryId"
+        internal const val QueryIdKey = "queryID"
         internal const val ObjectIDsKey = "objectIDs"
         internal const val PositionsKey = "positions"
     }
