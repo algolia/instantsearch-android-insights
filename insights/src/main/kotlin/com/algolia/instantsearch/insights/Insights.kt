@@ -58,9 +58,7 @@ class Insights internal constructor(
             timestamp: Long,
             queryId: String? = null,
             objectIDs: List<String>? = null
-        ) = click(Event.Click(eventName, indexName,
-            userToken ?: throw InstantSearchInsightsException.NoUserToken(),
-            timestamp, queryId, objectIDs))
+        ) = click(Event.Click(eventName, indexName, userTokenOrThrow(), timestamp, queryId, objectIDs))
     }
 
     inner class Personalization internal constructor() {
@@ -72,9 +70,7 @@ class Insights internal constructor(
             queryId: String? = null,
             objectIDs: List<String>? = null,
             positions: List<Int>? = null
-        ) = view(Event.View(eventName, indexName,
-            userToken ?: throw InstantSearchInsightsException.NoUserToken(),
-            timestamp, queryId, objectIDs, positions))
+        ) = view(Event.View(eventName, indexName, userTokenOrThrow(), timestamp, queryId, objectIDs, positions))
 
         fun conversion(event: Event.Conversion) = this@Insights.track(event)
         fun conversion(
@@ -83,9 +79,7 @@ class Insights internal constructor(
             timestamp: Long,
             queryId: String? = null,
             objectIDs: List<String>? = null
-        ) = conversion(Event.Conversion(eventName, indexName,
-            userToken ?: throw InstantSearchInsightsException.NoUserToken(),
-            timestamp, queryId, objectIDs))
+        ) = conversion(Event.Conversion(eventName, indexName, userTokenOrThrow(), timestamp, queryId, objectIDs))
 
         fun click(event: Event.Click) = this@Insights.track(event)
         fun click(
@@ -94,9 +88,7 @@ class Insights internal constructor(
             timestamp: Long,
             queryId: String? = null,
             objectIDs: List<String>? = null
-        ) = click(Event.Click(eventName, indexName,
-            userToken ?: throw InstantSearchInsightsException.NoUserToken(),
-            timestamp, queryId, objectIDs))
+        ) = click(Event.Click(eventName, indexName, userTokenOrThrow(), timestamp, queryId, objectIDs))
     }
 
     /**
@@ -151,6 +143,8 @@ class Insights internal constructor(
      * You should always send pseudonymous or anonymous userTokens.
      */
     var userToken: String? = null
+
+    private fun userTokenOrThrow(): String = userToken ?: throw InstantSearchInsightsException.NoUserToken()
 
     /**
      * Change this variable to change the default amount of event sent at once.
