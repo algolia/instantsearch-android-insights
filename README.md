@@ -61,56 +61,108 @@ Insights.register(context,  "testApp", "testKey",  "indexName", configuration);
 
 Once that you registered your **index** with the **Application ID** and the **API Key** you can easily start sending metrics
 
-*Click events*
+#### Search events
 
 **Kotlin**
 ```kotlin
-val params = mapOf(
-    "queryID" to "74e382ecaf889f9f2a3df0d4a9742dfb",
-    "objectID" to "85725102",
-    "position" to 1
-)
-
-Insights.shared(index = "indexName").click(params)
+Insights.shared("indexName").search.click("eventName", "indexName", System.currentTimeMillis(), "queryId", listOf("objectID1", "objectID2"))
 ```
 
 **Java**
 ```java
-HashMap<String, Object> clickParams = new HashMap<>();
-
-map.put("queryID", "74e382ecaf889f9f2a3df0d4a9742dfb");
-map.put("objectID", "85725102");
-map.put("position", 1);
-Insights.shared("indexName").click(clickParams);
+Insights.shared("indexName").search().click("eventName", "indexName", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2"));
 ```
 
-*Conversion events*
+#### Personalization events
 
 **Kotlin**
-```
-val params = mapOf(
-    "queryID" to "74e382ecaf889f9f2a3df0d4a9742dfb",
-    "objectID" to "85725102"
-)
+```kotlin
+Insights.shared("indexName").personalization.view("eventName", "indexName", System.currentTimeMillis(), "queryId", listOf("objectID1", "objectID2"), listOf(1, 2))
 
-Insights.shared(index = "indexName").conversion(params)
+Insights.shared("indexName").personalization.click("eventName", "indexName", System.currentTimeMillis(), "queryId", listOf("objectID1", "objectID2"))
+
+Insights.shared("indexName").personalization.conversion("eventName", "indexName", System.currentTimeMillis(), "queryId", listOf("objectID1", "objectID2"))
 ```
 
 **Java**
 ```java
-HashMap<String, Object> conversionParams = new HashMap<>();
+Insights.shared("indexName").personalization().view("eventName", "indexName", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2"), Arrays.asList(1, 2));
 
-map.put("queryID", "74e382ecaf889f9f2a3df0d4a9742dfb");
-map.put("objectID", "85725102");
-Insights.shared("indexName").conversion(conversionParams);
+Insights.shared("indexName").personalization().click("eventName", "indexName", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2"));
+
+Insights.shared("indexName").personalization().conversion("eventName", "indexName", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2"));
 ```
+
+### Event Batching 
+By default, events are only sent by batches of 10. You can customize this setting with `minBatchSize`:
+
+**Kotlin**
+```kotlin
+Insights.shared(indexName ="indexName").minBatchSize = 1 // Sends each event as soon as it is tracked
+```
+
+**Java**
+```java
+Insights.shared(indexName ="indexName").setMinBatchSize(1); // Sends each event as soon as it is tracked
+```
+
+### User tracking
+Any event should have an `userToken` field to specify the user it relates to. You can set it in three ways:
+- Globally for all events
+- Per application, for every event tracked by this app
+- Individually on an event
+
+
+**Kotlin**
+```kotlin
+// Global userToken default value
+val configuration = Insights.Configuration(
+    connectTimeoutInMilliseconds= 5000,
+    readTimeoutInMilliseconds = 5000,
+    defaultUserToken = "foo"
+)
+Insights.register("testApp", "testKey", "indexName", configuration)
+
+// Application userToken, overrides global default
+Insights.shared("testApp").userToken = "bar"
+
+// Event usertoken, overrides previous defaults
+Insights.shared("asd").search.click(Event.Click("eventName", "indexName", "userToken", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2")))
+```
+
+**Java**
+```java
+// Global userToken default value
+Insights.Configuration configuration = new Insights.Configuration(5000, 5000, "foo");
+Insights.register(context,  "testApp", "testKey",  "indexName", configuration);
+
+// Application userToken, overrides global default
+Insights.shared("testApp").setUserToken("bar");
+
+// Event userToken, overrides previous defaults
+Insights.shared("asd").search().click(new Event.Click("eventName", "indexName", "userToken", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2")));
+```
+
+### User opt-out
+You should allow users to opt-out of tracking anytime they want to. When they request opt-out, you can honor it using `enabled`:
+
+**Kotlin**
+```kotlin
+Insights.shared("testApp").enabled = false
+```
+
+**Java**
+```java
+Insights.shared("testApp").setEnabled(false);
+```
+
 
 ### Logging and debuging
 
 In case you want to check if the metric was sent correctly, you need to enable the logging first
 
 ```kotlin
-Insights.shared(index = "indexName").loggingEnabled = true
+Insights.shared(indexName ="indexName").loggingEnabled = true
 ```
 
 After you enabled it, you can check the output for success messages or errors
@@ -123,7 +175,7 @@ D/Algolia Insights - indexName Sync succeded for Click(params: {"position": 2, "
 D/Algolia Insights - indexName The objectID field is missing (Code: 422)
 ```
 
-To get a more meaningful search experience, please follow our [Getting Started Guide](https://community.algolia.com/instantsearch-ios/getting-started.html).
+To get a more meaningful search experience, please follow our [Getting Started Guide](https://community.algolia.com/instantsearch-android/getting-started.html).
 
 ## Getting Help
 
@@ -141,7 +193,3 @@ To get a more meaningful search experience, please follow our [Getting Started G
 # License
 
 InstantSearch Android Insights is [MIT licensed](LICENSE.md).
-
-[react-instantsearch-github]: https://github.com/algolia/react-instantsearch/
-[instantsearch-ios-github]: https://github.com/algolia/instantsearch-ios
-[instantsearch-js-github]: https://github.com/algolia/instantsearch.js
