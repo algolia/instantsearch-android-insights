@@ -55,11 +55,12 @@ class Insights internal constructor(
         fun click(
             eventName: String,
             indexName: String,
-            userToken: String,
             timestamp: Long,
             queryId: String? = null,
             objectIDs: List<String>? = null
-        ) = click(Event.Click(eventName, indexName, userToken, timestamp, queryId, objectIDs))
+        ) = click(Event.Click(eventName, indexName,
+            userToken ?: throw InstantSearchInsightsException.NoUserToken(),
+            timestamp, queryId, objectIDs))
     }
 
     inner class Personalization internal constructor() {
@@ -67,32 +68,35 @@ class Insights internal constructor(
         fun view(
             eventName: String,
             indexName: String,
-            userToken: String,
             timestamp: Long,
             queryId: String? = null,
             objectIDs: List<String>? = null,
             positions: List<Int>? = null
-        ) = view(Event.View(eventName, indexName, userToken, timestamp, queryId, objectIDs, positions))
+        ) = view(Event.View(eventName, indexName,
+            userToken ?: throw InstantSearchInsightsException.NoUserToken(),
+            timestamp, queryId, objectIDs, positions))
 
         fun conversion(event: Event.Conversion) = this@Insights.track(event)
         fun conversion(
             eventName: String,
             indexName: String,
-            userToken: String,
             timestamp: Long,
             queryId: String? = null,
             objectIDs: List<String>? = null
-        ) = conversion(Event.Conversion(eventName, indexName, userToken, timestamp, queryId, objectIDs))
+        ) = conversion(Event.Conversion(eventName, indexName,
+            userToken ?: throw InstantSearchInsightsException.NoUserToken(),
+            timestamp, queryId, objectIDs))
 
         fun click(event: Event.Click) = this@Insights.track(event)
         fun click(
             eventName: String,
             indexName: String,
-            userToken: String,
             timestamp: Long,
             queryId: String? = null,
             objectIDs: List<String>? = null
-        ) = click(Event.Click(eventName, indexName, userToken, timestamp, queryId, objectIDs))
+        ) = click(Event.Click(eventName, indexName,
+            userToken ?: throw InstantSearchInsightsException.NoUserToken(),
+            timestamp, queryId, objectIDs))
     }
 
     /**
@@ -139,6 +143,14 @@ class Insights internal constructor(
         set(value) {
             value?.let { eventUploader.setInterval(value) }
         }
+
+    /**
+     * Set a user identifier that will override any event's.
+     *
+     * Depending if the user is logged-in or not, several strategies can be used from a sessionId to a technical identifier.
+     * You should always send pseudonymous or anonymous userTokens.
+     */
+    var userToken: String? = null
 
     /**
      * Change this variable to change the default amount of event sent at once.

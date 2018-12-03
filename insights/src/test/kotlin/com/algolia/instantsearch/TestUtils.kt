@@ -14,7 +14,6 @@ internal object TestUtils {
     val eventParametersConversion get() = eventParameters("EventB", EventType.Conversion)
     val eventParametersView get() = eventParameters("EventC", EventType.View)
 
-    //    val eventClick get() = Event.Click()
     val eventView
         get() = Event.View(
             eventParametersView["eventName"] as String,

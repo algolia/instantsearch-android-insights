@@ -128,12 +128,15 @@ class InsightsTest {
         webService.code = -1 // Given a web service that errors
         insights.track(Event.Conversion(secondEvent.params))
         webService.code = 400 // Given a working web service returning an HTTP error
-        insights.track(eventView)
+        insights.track(eventView) // When tracking an event
 
         webService.code = -1 // Given a web service that errors
-        insights.search.click(firstEvent)
-        insights.personalization.click(firstEvent)
-        insights.personalization.conversion(secondEvent)
+        insights.userToken = TestUtils.eventClick.userToken // Given an userToken
+
+        // When adding events without explicitly-provided userToken
+        insights.search.click(firstEvent.eventName, firstEvent.indexName, firstEvent.timestamp, firstEvent.queryId, firstEvent.objectIDs)
+        insights.personalization.click(firstEvent.eventName, firstEvent.indexName, firstEvent.timestamp, firstEvent.queryId, firstEvent.objectIDs)
+        insights.personalization.conversion(secondEvent.eventName, secondEvent.indexName, secondEvent.timestamp, secondEvent.queryId, secondEvent.objectIDs)
         webService.code = 200 // Given a working web service
         insights.personalization.view(thirdEvent)
     }
