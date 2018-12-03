@@ -161,6 +161,10 @@ class Insights internal constructor(
         }
     }
 
+    override fun toString(): String {
+        return "Insights(indexName='$indexName', webService=$webService)"
+    }
+
     companion object {
 
         internal val insightsMap = mutableMapOf<String, Insights>()
@@ -193,7 +197,10 @@ class Insights internal constructor(
             )
             val insights = Insights(indexName, eventUploader, database, webService)
 
-            insightsMap[indexName] = insights
+            val previousInsights = insightsMap.put(indexName, insights)
+            previousInsights?.let {
+                System.out.println("Registering new Insights for indexName $indexName. Previous instance: $insights")
+            }
             return insights
         }
 

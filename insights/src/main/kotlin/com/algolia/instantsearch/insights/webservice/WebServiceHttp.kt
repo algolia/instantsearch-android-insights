@@ -49,4 +49,10 @@ internal class WebServiceHttp(
             code = responseCode
         )
     }
+
+    override fun toString(): String {
+        return "WebServiceHttp(appId='$appId', apiKey='$apiKey', connectTimeoutInMilliseconds=$connectTimeoutInMilliseconds, readTimeoutInMilliseconds=$readTimeoutInMilliseconds)"
+    }
+
+
 }
