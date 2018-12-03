@@ -6,6 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.algolia.instantsearch.insights.Insights;
 import com.algolia.instantsearch.insights.InstantSearchInsightsException;
+import com.algolia.instantsearch.insights.event.Event;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +39,6 @@ public class InsightsAndroidTestJava {
         Map<String, ?> map = Collections.emptyMap();
 
         assertEquals(insights, insightsShared);
-        insightsShared.click(map);
+        insightsShared.track(new Event.Click(map));
     }
 }

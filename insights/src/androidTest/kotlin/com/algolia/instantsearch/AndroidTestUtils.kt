@@ -1,7 +1,7 @@
 package com.algolia.instantsearch
 
 import com.algolia.instantsearch.insights.Insights
-import com.algolia.instantsearch.insights.converter.IndexNameKey
+import com.algolia.instantsearch.insights.event.Event.Companion.IndexNameKey
 import com.algolia.instantsearch.insights.event.EventType
 
 
