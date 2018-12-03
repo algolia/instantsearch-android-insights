@@ -14,7 +14,6 @@ import com.algolia.instantsearch.insights.webservice.uploadEvents
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import java.util.*
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
@@ -157,7 +156,7 @@ class InsightsTest {
         insights.userToken = TestUtils.eventClick.userToken // Given an userToken
 
         // When adding events without explicitly-provided userToken
-        insights.search.click(firstEvent.eventName, firstEvent.indexName, firstEvent.timestamp, firstEvent.queryId!!, firstEvent.objectIDs)
+        insights.search.click(firstEvent.eventName, firstEvent.indexName, firstEvent.timestamp, firstEvent.queryId!!, firstEvent.objectIDs, firstEvent.positions)
         insights.personalization.click(firstEvent.eventName, firstEvent.indexName, firstEvent.timestamp, firstEvent.queryId, firstEvent.objectIDs)
         insights.personalization.conversion(secondEvent.eventName, secondEvent.indexName, secondEvent.timestamp, secondEvent.queryId, secondEvent.objectIDs)
         webService.code = 200 // Given a working web service
@@ -170,15 +169,17 @@ class InsightsTest {
         private val database: MockDatabase
     ) : AssertingEventUploader(events, webService, database) {
         override fun startOneTimeUpload() {
-            when (count) {
-                0 -> assertEquals(listOf(firstEvent), database.read()) // expect added first
-                1 -> assertEquals(listOf(secondEvent), database.read()) // expect flush then added second
-                2 -> assertEquals(listOf(secondEvent, eventView), database.read()) // expect added third
+            val clickEventNotForSearch = Event.Click(firstEvent.eventName, firstEvent.indexName, firstEvent.userToken, firstEvent.timestamp, firstEvent.queryId, firstEvent.objectIDs, null) // A Click event not for Search has no positions
 
-                3 -> assertEquals(listOf(firstEvent), database.read()) // expect flush then added first
-                4 -> assertEquals(listOf(firstEvent, firstEvent), database.read()) // expect added first
-                5 -> assertEquals(listOf(firstEvent, firstEvent, secondEvent), database.read()) // expect added second
-                6 -> assertEquals(listOf(firstEvent, firstEvent, secondEvent, thirdEvent), database.read()) // expect added third
+            when (count) {
+                0 -> assertEquals(listOf(firstEvent), database.read(), "failed 0") // expect added first
+                1 -> assertEquals(listOf(secondEvent), database.read(), "failed 1") // expect flush then added second
+                2 -> assertEquals(listOf(secondEvent, eventView), database.read(), "failed 2")
+
+                3 -> assertEquals(listOf(firstEvent), database.read(), "failed 3") // expect flush then added first
+                4 -> assertEquals(listOf(firstEvent, clickEventNotForSearch), database.read(), "failed 4") // expect added first
+                5 -> assertEquals(listOf(firstEvent, clickEventNotForSearch, secondEvent), database.read(), "failed 5") // expect added second
+                6 -> assertEquals(listOf(firstEvent, clickEventNotForSearch, secondEvent, thirdEvent), database.read(), "failed 6") // expect added third
 
             }
             webService.uploadEvents(database, TestUtils.indexName)
@@ -188,8 +189,8 @@ class InsightsTest {
                 2 -> assert(database.read().isEmpty()) // expect flushed events
 
                 3 -> assertEquals(listOf(firstEvent), database.read()) // expect kept first
-                4 -> assertEquals(listOf(firstEvent, firstEvent), database.read()) // expect kept first2
-                5 -> assertEquals(listOf(firstEvent, firstEvent, secondEvent), database.read()) // expect kept second
+                4 -> assertEquals(listOf(firstEvent, clickEventNotForSearch), database.read()) // expect kept first2
+                5 -> assertEquals(listOf(firstEvent, clickEventNotForSearch, secondEvent), database.read()) // expect kept second
                 6 -> assert(database.read().isEmpty()) // expect flushed events
             }
             count++

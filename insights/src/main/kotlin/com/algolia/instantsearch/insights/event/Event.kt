@@ -64,7 +64,8 @@ sealed class Event constructor(val params: Map<String, Any>) {
             params[UserTokenKey] as String,
             params[TimestampKey] as Long,
             params[QueryIdKey] as String?,
-            params[ObjectIDsKey] as List<String>?)
+            params[ObjectIDsKey] as List<String>?,
+            params[PositionsKey] as List<Int>?)
     }
 
     data class Conversion constructor(
