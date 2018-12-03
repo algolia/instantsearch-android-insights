@@ -1,7 +1,7 @@
 package com.algolia.instantsearch.insights.event
 
 
-sealed class Event constructor(val params: Map<String, Any>) {
+sealed class Event(val params: Map<String, Any?>) {
 
     companion object {
         //TODO: as Enum
@@ -15,31 +15,6 @@ sealed class Event constructor(val params: Map<String, Any>) {
         internal const val PositionsKey = "positions"
     }
 
-    data class View constructor(
-        val eventName: String,
-        val indexName: String,
-        val userToken: String,
-        val timestamp: Long,
-        val queryId: String? = null,
-        val objectIDs: List<String>? = null
-    ) : Event(mutableMapOf<String, Any>().also { map ->
-        map[EventTypeKey] = "view" //TODO: Cleaner eventType passing
-        map[EventNameKey] = eventName
-        map[IndexNameKey] = indexName
-        map[UserTokenKey] = userToken
-        map[TimestampKey] = timestamp
-        queryId?.let { map[QueryIdKey] = it }
-        objectIDs?.let { map[ObjectIDsKey] = it }
-    }) {
-        internal constructor(params: Map<String, Any>) : this(
-            params[EventNameKey] as String,
-            params[IndexNameKey] as String,
-            params[UserTokenKey] as String,
-            params[TimestampKey] as Long,
-            params[QueryIdKey] as String?,
-            params[ObjectIDsKey] as List<String>?) //TODO: Can I avoid uncheched cast?
-    }
-
     data class Click constructor(
         val eventName: String,
         val indexName: String,
@@ -48,24 +23,56 @@ sealed class Event constructor(val params: Map<String, Any>) {
         val queryId: String? = null,
         val objectIDs: List<String>? = null,
         val positions: List<Int>? = null
-    ) : Event(mutableMapOf<String, Any>().also { map ->
-        map[EventTypeKey] = "click"
-        map[EventNameKey] = eventName
-        map[IndexNameKey] = indexName
-        map[UserTokenKey] = userToken
-        map[TimestampKey] = timestamp
-        queryId?.let { map[QueryIdKey] = it }
-        objectIDs?.let { map[ObjectIDsKey] = it }
-        positions?.let { map[PositionsKey] = it }
-    }) {
-        internal constructor(params: Map<String, Any>) : this(
+    ) : Event(
+        mapOf(
+            EventTypeKey to "click",
+            EventNameKey to eventName,
+            IndexNameKey to indexName,
+            UserTokenKey to userToken,
+            TimestampKey to timestamp,
+            QueryIdKey to queryId,
+            ObjectIDsKey to objectIDs,
+            PositionsKey to positions
+        )
+    ) {
+        internal constructor(params: Map<String, Any?>) : this(
             params[EventNameKey] as String,
             params[IndexNameKey] as String,
             params[UserTokenKey] as String,
             params[TimestampKey] as Long,
             params[QueryIdKey] as String?,
             params[ObjectIDsKey] as List<String>?,
-            params[PositionsKey] as List<Int>?)
+            params[PositionsKey] as List<Int>?
+        )
+    }
+
+    data class View constructor(
+        val eventName: String,
+        val indexName: String,
+        val userToken: String,
+        val timestamp: Long,
+        val queryId: String? = null,
+        val objectIDs: List<String>? = null
+    ) : Event(
+        mapOf(
+            EventTypeKey to "view", //TODO: Cleaner eventType passing
+            EventNameKey to eventName,
+            IndexNameKey to indexName,
+            UserTokenKey to userToken,
+            TimestampKey to timestamp,
+            QueryIdKey to queryId,
+            ObjectIDsKey to objectIDs
+        )
+    ) {
+
+        internal constructor(params: Map<String, Any?>) : this(
+            params[EventNameKey] as String,
+            params[IndexNameKey] as String,
+            params[UserTokenKey] as String,
+            params[TimestampKey] as Long,
+            params[QueryIdKey] as String?,
+            params[ObjectIDsKey] as List<String>?
+        )
     }
 
     data class Conversion constructor(
@@ -75,21 +82,24 @@ sealed class Event constructor(val params: Map<String, Any>) {
         val timestamp: Long,
         val queryId: String? = null,
         val objectIDs: List<String>? = null
-    ) : Event(mutableMapOf<String, Any>().also { map ->
-        map[EventTypeKey] = "conversion"
-        map[EventNameKey] = eventName
-        map[IndexNameKey] = indexName
-        map[UserTokenKey] = userToken
-        map[TimestampKey] = timestamp
-        queryId?.let { map[QueryIdKey] = it }
-        objectIDs?.let { map[ObjectIDsKey] = it }
-    }) {
-        internal constructor(params: Map<String, Any>) : this(
+    ) : Event(
+        mapOf(
+            EventTypeKey to "conversion",
+            EventNameKey to eventName,
+            IndexNameKey to indexName,
+            UserTokenKey to userToken,
+            TimestampKey to timestamp,
+            QueryIdKey to queryId,
+            ObjectIDsKey to objectIDs
+        )
+    ) {
+        internal constructor(params: Map<String, Any?>) : this(
             params[EventNameKey] as String,
             params[IndexNameKey] as String,
             params[UserTokenKey] as String,
             params[TimestampKey] as Long,
             params[QueryIdKey] as String?,
-            params[ObjectIDsKey] as List<String>?)
+            params[ObjectIDsKey] as List<String>?
+        )
     }
 }
