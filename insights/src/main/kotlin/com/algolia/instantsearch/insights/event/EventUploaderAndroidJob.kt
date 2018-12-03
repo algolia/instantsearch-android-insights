@@ -2,7 +2,12 @@ package com.algolia.instantsearch.insights.event
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.algolia.instantsearch.insights.Insights
+import com.algolia.instantsearch.insights.InsightsLogger
 import com.algolia.instantsearch.insights.database.SharedPreferencesDelegate
+import com.algolia.instantsearch.insights.webservice.uploadEvents
+import com.evernote.android.job.Job
+import com.evernote.android.job.JobCreator
 import com.evernote.android.job.JobManager
 import com.evernote.android.job.JobRequest
 import java.util.concurrent.TimeUnit
@@ -49,5 +54,30 @@ internal class EventUploaderAndroidJob(context: Context) : EventUploader {
             .setUpdateCurrent(true)
             .build()
             .schedule()
+    }
+}
+
+internal class EventJobCreator : JobCreator {
+
+    enum class Tag {
+        OneTime,
+        Periodic,
+    }
+
+    override fun create(tag: String): Job? {
+        return when (Tag.valueOf(tag)) {
+            Tag.OneTime, Tag.Periodic -> object : Job() {
+                override fun onRunJob(params: Params): Result {
+                    InsightsLogger.log("Worker started with indices ${Insights.insightsMap.keys}.")
+                    val hasAnyEventFailed = Insights.insightsMap
+                        .map { it.value.webService.uploadEvents(it.value.database, it.key).isEmpty() }
+                        .any { !it }
+                    val result = if (hasAnyEventFailed) Job.Result.FAILURE else Job.Result.SUCCESS
+                    InsightsLogger.log("Worker ended with result: $result.")
+                    return result
+                }
+
+            }
+        }
     }
 }
