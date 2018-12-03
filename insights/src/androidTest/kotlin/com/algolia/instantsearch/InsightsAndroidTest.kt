@@ -34,12 +34,6 @@ class InsightsAndroidTest {
     }
 
     @Test
-    fun testRegisterTwice() {
-        val insights = Insights.register(context, "testApp", "testKey", "index", AndroidTestUtils.configuration)
-        val insights2 = Insights.register(context, "testApp2", "testKey2", "index", AndroidTestUtils.configuration)
-    }
-
-    @Test
     fun testPeriodicAndroidJob() {
         (0 until 10).forEach {
             EventUploaderAndroidJob(context).startPeriodicUpload()
