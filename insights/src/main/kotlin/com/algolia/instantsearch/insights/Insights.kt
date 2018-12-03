@@ -57,7 +57,7 @@ class Insights internal constructor(
             eventName: String,
             indexName: String,
             timestamp: Long,
-            queryId: String? = null,
+            queryId: String,
             objectIDs: List<String>? = null
         ) = click(Event.Click(eventName, indexName, userTokenOrThrow(), timestamp, queryId, objectIDs))
     }
