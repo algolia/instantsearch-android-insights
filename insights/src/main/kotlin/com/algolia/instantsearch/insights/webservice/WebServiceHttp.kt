@@ -25,7 +25,7 @@ internal class WebServiceHttp(
     }
 
     override fun send(events: List<Event>): WebService.Response {
-        val array = JSONArray().apply { ConverterEventToString.convert(events).forEach { that: String -> put(JSONObject(that)) } }
+        val array = JSONArray().apply { ConverterEventToString.convert(events).forEach { put(JSONObject(it)) } }
         val string = JSONObject().put("events", array).toString()
         val url = URL(environment.url)
         val connection = (url.openConnection() as HttpURLConnection).also {
