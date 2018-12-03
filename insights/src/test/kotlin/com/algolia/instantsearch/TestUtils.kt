@@ -3,7 +3,13 @@ package com.algolia.instantsearch
 import com.algolia.instantsearch.insights.BuildConfig
 import com.algolia.instantsearch.insights.Insights
 import com.algolia.instantsearch.insights.event.Event
+import com.algolia.instantsearch.insights.event.Event.Companion.EventNameKey
 import com.algolia.instantsearch.insights.event.Event.Companion.IndexNameKey
+import com.algolia.instantsearch.insights.event.Event.Companion.ObjectIDsKey
+import com.algolia.instantsearch.insights.event.Event.Companion.PositionsKey
+import com.algolia.instantsearch.insights.event.Event.Companion.QueryIdKey
+import com.algolia.instantsearch.insights.event.Event.Companion.TimestampKey
+import com.algolia.instantsearch.insights.event.Event.Companion.UserTokenKey
 import com.algolia.instantsearch.insights.event.EventType
 import com.algolia.instantsearch.insights.webservice.WebServiceHttp
 
@@ -16,33 +22,33 @@ internal object TestUtils {
 
     val eventView
         get() = Event.View(
-            eventParametersView["eventName"] as String,
+            eventParametersView[EventNameKey] as String,
             eventParametersView[IndexNameKey] as String,
-            eventParametersView["userToken"] as String,
-            eventParametersView["timestamp"] as Long,
-            eventParametersView["queryId"] as String?,
-            if (eventParametersView["objectIDs"] is List<*>) eventParametersView["objectIDs"] as List<String>? else null,
-            if (eventParametersView["positions"] is List<*>) eventParametersView["positions"] as List<Int>? else null
+            eventParametersView[UserTokenKey] as String,
+            eventParametersView[TimestampKey] as Long,
+            eventParametersView[QueryIdKey] as String?,
+            if (eventParametersView[ObjectIDsKey] is List<*>) eventParametersView[ObjectIDsKey] as List<String>? else null
         )
 
     val eventClick
         get() = Event.Click(
-            eventParametersClick["eventName"] as String,
+            eventParametersClick[EventNameKey] as String,
             eventParametersClick[IndexNameKey] as String,
-            eventParametersClick["userToken"] as String,
-            eventParametersClick["timestamp"] as Long,
-            eventParametersClick["queryId"] as String?,
-            if (eventParametersClick["objectIDs"] is List<*>) eventParametersClick["objectIDs"] as List<String>? else null
+            eventParametersClick[UserTokenKey] as String,
+            eventParametersClick[TimestampKey] as Long,
+            eventParametersClick[QueryIdKey] as String,
+            if (eventParametersClick[ObjectIDsKey] is List<*>) eventParametersClick[ObjectIDsKey] as List<String>? else null,
+            if (eventParametersClick[PositionsKey] is List<*>) eventParametersClick[PositionsKey] as List<Int>? else null
         )
 
     val eventConversion
         get() = Event.Conversion(
-            eventParametersConversion["eventName"] as String,
+            eventParametersConversion[EventNameKey] as String,
             eventParametersConversion[IndexNameKey] as String,
-            eventParametersConversion["userToken"] as String,
-            eventParametersConversion["timestamp"] as Long,
-            eventParametersConversion["queryId"] as String?,
-            if (eventParametersConversion["objectIDs"] is List<*>) eventParametersConversion["objectIDs"] as List<String>? else null
+            eventParametersConversion[UserTokenKey] as String,
+            eventParametersConversion[TimestampKey] as Long,
+            eventParametersConversion[QueryIdKey] as String?,
+            if (eventParametersConversion[ObjectIDsKey] is List<*>) eventParametersConversion[ObjectIDsKey] as List<String>? else null
         )
 
     private val appId = BuildConfig.ALGOLIA_APPLICATION_ID
