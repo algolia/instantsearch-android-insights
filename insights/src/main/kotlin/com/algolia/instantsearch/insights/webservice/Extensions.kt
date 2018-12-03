@@ -6,7 +6,7 @@ import com.algolia.instantsearch.insights.event.Event
 import com.algolia.instantsearch.insights.event.EventResponse
 
 
-internal fun List<EventResponse>.filterEventsNetworkFailure(): List<EventResponse> {
+internal fun List<EventResponse>.filterEventsWhenException(): List<EventResponse> {
     return this.filter { it.code == -1 }
 }
 
@@ -40,7 +40,7 @@ internal fun WebService.uploadEvents(database: Database, indexName: String): Lis
 
     InsightsLogger.log(indexName, "Flushing remaining ${events.size} events.")
 
-    val failedEvents = sendEvents(indexName, events).filterEventsNetworkFailure()
+    val failedEvents = sendEvents(indexName, events).filterEventsWhenException()
 
     database.overwrite(failedEvents.map { it.event })
     return failedEvents
