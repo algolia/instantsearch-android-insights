@@ -7,7 +7,6 @@ import com.algolia.instantsearch.insights.Insights
 import com.algolia.instantsearch.insights.converter.ConverterEventToString
 import com.algolia.instantsearch.insights.converter.ConverterParameterToString
 import com.algolia.instantsearch.insights.converter.ConverterStringToEvent
-import com.algolia.instantsearch.insights.converter.IndexNameKey
 import com.algolia.instantsearch.insights.event.Event
 import com.algolia.instantsearch.insights.event.EventUploader
 import com.algolia.instantsearch.insights.webservice.WebService
