@@ -46,12 +46,3 @@ internal fun WebService.uploadEvents(database: Database, indexName: String): Lis
     database.overwrite(failedEvents.map { it.event })
     return failedEvents
 }
-
-
-internal fun JSONArray.toList(): List<Any> {
-    return mutableListOf<Any>().also {
-        for (i in 0 until this.length()) {
-            it.add(this[i])
-        }
-    }
-}

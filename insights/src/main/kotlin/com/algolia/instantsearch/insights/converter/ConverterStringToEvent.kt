@@ -3,7 +3,7 @@ package com.algolia.instantsearch.insights.converter
 import com.algolia.instantsearch.insights.event.Event
 import com.algolia.instantsearch.insights.event.Event.Companion.EventTypeKey
 import com.algolia.instantsearch.insights.event.EventType
-import com.algolia.instantsearch.insights.webservice.toList
+import com.algolia.instantsearch.insights.toList
 import org.json.JSONArray
 import org.json.JSONObject
 
