@@ -107,6 +107,7 @@ class Insights internal constructor(
      * Does he or she take a particularly significant action, called a “conversion point”?
      */
     val search: Insights.Search = Search()
+    @JvmName("search") get
 
     /**
      * You can use **personalization** events to leverage personalized search.
@@ -118,6 +119,7 @@ class Insights internal constructor(
      * to track events that will eventually form the basis of every profile.
      */
     val personalization: Insights.Personalization = Personalization()
+    @JvmName("personalization") get
 
     /**
      * Change this variable to `true` or `false` to enable or disable logging.
