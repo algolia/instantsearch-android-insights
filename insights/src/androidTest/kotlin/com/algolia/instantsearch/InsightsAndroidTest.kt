@@ -18,7 +18,7 @@ class InsightsAndroidTest {
     private val context get() = InstrumentationRegistry.getContext()
 
     @Test
-    fun testInitShouldFail() {
+    fun testSharedWithoutRegister() {
         try {
             Insights.shared("index")
         } catch (exception: Exception) {
@@ -27,7 +27,7 @@ class InsightsAndroidTest {
     }
 
     @Test
-    fun testInitShouldWork() {
+    fun testSharedAfterRegister() {
         val insights = Insights.register(context, "testApp", "testKey", "index", AndroidTestUtils.configuration)
         val insightsShared = Insights.shared("index")
         assertEquals(insights, insightsShared)
