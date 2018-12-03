@@ -140,6 +140,11 @@ class Insights internal constructor(
             value?.let { eventUploader.setInterval(value) }
         }
 
+    /**
+     * Change this variable to change the default amount of event sent at once.
+     */
+    var minBatchSize: Int = 10
+
     init {
         eventUploader.startPeriodicUpload()
     }
@@ -151,7 +156,9 @@ class Insights internal constructor(
      */
     fun track(event: Event) {
         database.append(event)
-        eventUploader.startOneTimeUpload()
+        if (database.count() >= minBatchSize) {
+            eventUploader.startOneTimeUpload()
+        }
     }
 
     companion object {

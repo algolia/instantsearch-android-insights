@@ -7,7 +7,6 @@ import com.algolia.instantsearch.insights.Insights
 import com.algolia.instantsearch.insights.converter.ConverterEventToString
 import com.algolia.instantsearch.insights.converter.ConverterParameterToString
 import com.algolia.instantsearch.insights.converter.ConverterStringToEvent
-import com.algolia.instantsearch.insights.converter.IndexNameKey
 import com.algolia.instantsearch.insights.event.Event
 import com.algolia.instantsearch.insights.event.EventUploader
 import com.algolia.instantsearch.insights.webservice.WebService
@@ -66,6 +65,52 @@ class InsightsTest {
         assertEquals(responseOK, TestUtils.webService.send(eventConversion))
     }
 
+    @Test
+    fun testMinBatchSize() {
+        val events = mutableListOf(firstEvent, secondEvent, thirdEvent)
+        val database = MockDatabase(TestUtils.indexName, events)
+        val webService = MockWebService()
+        val uploader = MinBatchSizeEventUploader(events, webService, database)
+        val insights = Insights(TestUtils.indexName, uploader, database, webService)
+
+        // Given a minBatchSize of one and one event
+        insights.minBatchSize = 1
+        insights.track(eventClick)
+        // Given a minBatchSize of two and two events
+        insights.minBatchSize = 2
+        insights.track(eventClick)
+        insights.track(eventClick)
+        // Given a minBatchSize of four and four events
+        insights.minBatchSize = 4
+        insights.track(eventClick)
+        insights.track(eventClick)
+        insights.track(eventClick)
+        insights.track(eventClick)
+    }
+
+    inner class MinBatchSizeEventUploader internal constructor(
+        private val events: MutableList<Event>,
+        private val webService: MockWebService,
+        private val database: MockDatabase
+    ) : AssertingEventUploader(events, webService, database) {
+
+        override fun startOneTimeUpload() {
+            when (count) {
+                // Expect a single event on first call
+                0 -> assertEquals(1, database.count(), "startOneTimeUpload should be called first with one event")
+                // Expect two events on second call
+                1 -> assertEquals(2, database.count(), "startOneTimeUpload should be called second with two events")
+                // Expect two events on third call
+                2 -> assertEquals(4, database.count(), "startOneTimeUpload should be called third with four events")
+            }
+
+            count++
+            database.clear()
+        }
+
+    }
+
+
     /**
      * Tests the integration of events, WebService and Database.
      */
@@ -74,8 +119,9 @@ class InsightsTest {
         val events = mutableListOf(firstEvent, secondEvent, thirdEvent)
         val database = MockDatabase(TestUtils.indexName, events)
         val webService = MockWebService()
-        val uploader = AssertingEventUploader(events, webService, database)
+        val uploader = IntegrationEventUploader(events, webService, database)
         val insights = Insights(TestUtils.indexName, uploader, database, webService)
+        insights.minBatchSize = 1
 
         webService.code = 200 // Given a working web service
         insights.track(Event.Click(firstEvent.params))
@@ -92,20 +138,11 @@ class InsightsTest {
         insights.personalization.view(thirdEvent)
     }
 
-    inner class AssertingEventUploader internal constructor(
+    inner class IntegrationEventUploader internal constructor(
         private val events: MutableList<Event>,
         private val webService: MockWebService,
         private val database: MockDatabase
-    ) : EventUploader {
-
-        private var count: Int = 0
-
-        override fun startPeriodicUpload() {
-            assertEquals(events, database.read())
-            webService.uploadEvents(database, TestUtils.indexName)
-            assert(database.read().isEmpty())
-        }
-
+    ) : AssertingEventUploader(events, webService, database) {
         override fun startOneTimeUpload() {
             when (count) {
                 0 -> assertEquals(listOf(firstEvent), database.read()) // expect added first
@@ -131,5 +168,21 @@ class InsightsTest {
             }
             count++
         }
+    }
+
+    abstract inner class AssertingEventUploader internal constructor(
+        private val events: MutableList<Event>,
+        private val webService: MockWebService,
+        private val database: MockDatabase
+    ) : EventUploader {
+
+        protected var count: Int = 0
+
+        override fun startPeriodicUpload() {
+            assertEquals(events, database.read())
+            webService.uploadEvents(database, TestUtils.indexName)
+            assert(database.read().isEmpty())
+        }
+
     }
 }

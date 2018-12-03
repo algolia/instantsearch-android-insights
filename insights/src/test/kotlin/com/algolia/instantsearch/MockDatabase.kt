@@ -22,6 +22,10 @@ internal class MockDatabase(
         return events
     }
 
+    override fun count(): Int {
+        return events.size
+    }
+
     override fun clear() {
         events.clear()
     }

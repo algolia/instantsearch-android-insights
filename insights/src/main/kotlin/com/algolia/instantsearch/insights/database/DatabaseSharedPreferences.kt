@@ -31,6 +31,10 @@ internal class DatabaseSharedPreferences(
         return ConverterStringToEvent.convert(preferences.serializedEvents.toList())
     }
 
+    override fun count(): Int {
+        return preferences.serializedEvents.toList().size
+    }
+
     override fun clear() {
         preferences.serializedEvents = setOf()
     }
