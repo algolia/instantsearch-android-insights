@@ -6,7 +6,7 @@ import com.algolia.instantsearch.insights.database.DatabaseSharedPreferences
 import com.algolia.instantsearch.insights.event.Event
 import org.junit.Test
 import org.junit.runner.RunWith
-import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 
 @RunWith(AndroidJUnit4::class)
@@ -24,12 +24,12 @@ class AndroidTestDatabaseSharedPreferences {
 
         database.overwrite(events)
 
-        assertEquals(events, database.read())
+        assertTrue(database.read().containsAll(events))
 
         val eventC = Event.Conversion(AndroidTestUtils.eventView.params)
 
         database.append(eventC)
 
-        assertEquals(listOf(*events.toTypedArray(), eventC), database.read())
+        assertTrue(database.read().containsAll(events.plus(eventC)))
     }
 }
