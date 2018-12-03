@@ -58,8 +58,9 @@ class Insights internal constructor(
             indexName: String,
             timestamp: Long,
             queryId: String,
-            objectIDs: List<String>? = null
-        ) = click(Event.Click(eventName, indexName, userTokenOrThrow(), timestamp, queryId, objectIDs))
+            objectIDs: List<String>? = null,
+            positions: List<Int>? = null
+        ) = click(Event.Click(eventName, indexName, userTokenOrThrow(), timestamp, queryId, objectIDs, positions))
     }
 
     inner class Personalization internal constructor() {
@@ -69,9 +70,8 @@ class Insights internal constructor(
             indexName: String,
             timestamp: Long,
             queryId: String? = null,
-            objectIDs: List<String>? = null,
-            positions: List<Int>? = null
-        ) = view(Event.View(eventName, indexName, userTokenOrThrow(), timestamp, queryId, objectIDs, positions))
+            objectIDs: List<String>? = null
+        ) = view(Event.View(eventName, indexName, userTokenOrThrow(), timestamp, queryId, objectIDs))
 
         fun conversion(event: Event.Conversion) = this@Insights.track(event)
         fun conversion(
@@ -88,8 +88,9 @@ class Insights internal constructor(
             indexName: String,
             timestamp: Long,
             queryId: String? = null,
-            objectIDs: List<String>? = null
-        ) = click(Event.Click(eventName, indexName, userTokenOrThrow(), timestamp, queryId, objectIDs))
+            objectIDs: List<String>? = null,
+            positions: List<Int>? = null
+        ) = click(Event.Click(eventName, indexName, userTokenOrThrow(), timestamp, queryId, objectIDs, positions))
     }
 
     /**
