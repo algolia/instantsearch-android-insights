@@ -1,9 +1,9 @@
 package com.algolia.instantsearch.insights.database
 
 import android.content.Context
-import com.algolia.instantsearch.insights.converter.ConverterEventToString
-import com.algolia.instantsearch.insights.converter.ConverterStringToEvent
-import com.algolia.instantsearch.insights.event.Event
+import com.algolia.instantsearch.insights.converter.ConverterEventInternalToString
+import com.algolia.instantsearch.insights.converter.ConverterStringToEventInternal
+import com.algolia.instantsearch.insights.event.EventInternal
 import com.algolia.instantsearch.insights.prefixAlgolia
 
 internal class DatabaseSharedPreferences(
@@ -14,28 +14,27 @@ internal class DatabaseSharedPreferences(
     private val preferences = context.sharedPreferences(prefixAlgolia(indexName))
 
 
-    override fun append(event: Event) {
-        val events = preferences.serializedEvents
-            .map(ConverterStringToEvent::convert)
-            .toMutableList()
-            .also { it.add(event) }
+    override fun append(event: EventInternal) {
+        val events = preferences.events
+            .toMutableSet()
+            .also { it.add(ConverterEventInternalToString.convert(event)) }
 
-        preferences.serializedEvents = ConverterEventToString.convert(events).toSet()
+        preferences.events = events
     }
 
-    override fun overwrite(events: List<Event>) {
-        preferences.serializedEvents = ConverterEventToString.convert(events).toSet()
+    override fun overwrite(events: List<EventInternal>) {
+        preferences.events = ConverterEventInternalToString.convert(events).toSet()
     }
 
-    override fun read(): List<Event> {
-        return ConverterStringToEvent.convert(preferences.serializedEvents.toList())
+    override fun read(): List<EventInternal> {
+        return ConverterStringToEventInternal.convert(preferences.events.toList())
     }
 
     override fun count(): Int {
-        return preferences.serializedEvents.toList().size
+        return preferences.events.size
     }
 
     override fun clear() {
-        preferences.serializedEvents = setOf()
+        preferences.events = setOf()
     }
 }

@@ -2,10 +2,13 @@ package com.algolia.instantsearch
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
+import com.algolia.instantsearch.AndroidTestUtils.click
+import com.algolia.instantsearch.AndroidTestUtils.conversion
+import com.algolia.instantsearch.AndroidTestUtils.view
 import com.algolia.instantsearch.insights.database.DatabaseSharedPreferences
-import com.algolia.instantsearch.insights.event.Event
 import org.junit.Test
 import org.junit.runner.RunWith
+import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 
@@ -17,19 +20,18 @@ class AndroidTestDatabaseSharedPreferences {
     @Test
     fun test() {
         val events = listOf(
-            AndroidTestUtils.eventClick,
-            AndroidTestUtils.eventConversion
+            click,
+            conversion
         )
         val database = DatabaseSharedPreferences(context, AndroidTestUtils.indexName)
 
         database.overwrite(events)
 
+        assertEquals(events, database.read())
         assertTrue(database.read().containsAll(events))
 
-        val eventC = Event.Conversion(AndroidTestUtils.eventView.params)
+        database.append(view)
 
-        database.append(eventC)
-
-        assertTrue(database.read().containsAll(events.plus(eventC)))
+        assertTrue(database.read().containsAll(events.plus(view)))
     }
 }

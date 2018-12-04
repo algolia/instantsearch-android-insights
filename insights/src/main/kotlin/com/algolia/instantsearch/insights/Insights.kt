@@ -1,6 +1,7 @@
 package com.algolia.instantsearch.insights
 
 import android.content.Context
+import com.algolia.instantsearch.insights.converter.ConverterEventToEventInternal
 import com.algolia.instantsearch.insights.database.Database
 import com.algolia.instantsearch.insights.database.DatabaseSharedPreferences
 import com.algolia.instantsearch.insights.event.Event
@@ -172,7 +173,7 @@ class Insights internal constructor(
      */
     fun track(event: Event) {
         if (enabled) {
-            database.append(event)
+            database.append(ConverterEventToEventInternal.convert(event))
             if (database.count() >= minBatchSize) {
                 eventUploader.startOneTimeUpload()
             }

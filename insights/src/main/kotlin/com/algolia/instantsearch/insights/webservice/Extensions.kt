@@ -2,7 +2,7 @@ package com.algolia.instantsearch.insights.webservice
 
 import com.algolia.instantsearch.insights.InsightsLogger
 import com.algolia.instantsearch.insights.database.Database
-import com.algolia.instantsearch.insights.event.Event
+import com.algolia.instantsearch.insights.event.EventInternal
 import com.algolia.instantsearch.insights.event.EventResponse
 
 
@@ -12,7 +12,7 @@ internal fun List<EventResponse>.filterEventsWhenException(): List<EventResponse
 
 internal fun Int.isValidHttpCode() = this == 200 || this == 201
 
-internal fun WebService.sendEvent(indexName: String, event: Event): EventResponse {
+internal fun WebService.sendEvent(indexName: String, event: EventInternal): EventResponse {
     val (errorMessage, code) = try {
         send(event)
     } catch (exception: Exception) {
@@ -30,7 +30,7 @@ internal fun WebService.sendEvent(indexName: String, event: Event): EventRespons
     )
 }
 
-internal fun WebService.sendEvents(indexName: String, events: List<Event>): List<EventResponse> {
+internal fun WebService.sendEvents(indexName: String, events: List<EventInternal>): List<EventResponse> {
     return events.map { event -> sendEvent(indexName, event) }
 }
 

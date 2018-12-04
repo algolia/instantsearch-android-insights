@@ -2,6 +2,7 @@ package com.algolia.instantsearch
 
 import com.algolia.instantsearch.insights.BuildConfig
 import com.algolia.instantsearch.insights.Insights
+import com.algolia.instantsearch.insights.converter.ConverterEventToEventInternal
 import com.algolia.instantsearch.insights.event.Event
 import com.algolia.instantsearch.insights.webservice.WebServiceHttp
 
@@ -38,6 +39,8 @@ internal object AndroidTestUtils {
         positions
     )
 
+    val click = ConverterEventToEventInternal.convert(eventClick)
+
     val eventConversion = Event.Conversion(
         eventB,
         indexName,
@@ -47,6 +50,8 @@ internal object AndroidTestUtils {
         objectIDs
     )
 
+    val conversion = ConverterEventToEventInternal.convert(eventConversion)
+
     val eventView = Event.View(
         eventC,
         indexName,
@@ -55,6 +60,8 @@ internal object AndroidTestUtils {
         queryId,
         objectIDs
     )
+
+    val view = ConverterEventToEventInternal.convert(eventView)
 
     val webService = WebServiceHttp(
         appId = appId,

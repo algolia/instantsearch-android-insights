@@ -1,7 +1,7 @@
 package com.algolia.instantsearch.insights.webservice
 
-import com.algolia.instantsearch.insights.converter.ConverterEventToString
-import com.algolia.instantsearch.insights.event.Event
+import com.algolia.instantsearch.insights.converter.ConverterEventInternalToString
+import com.algolia.instantsearch.insights.event.EventInternal
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.HttpURLConnection
@@ -24,9 +24,10 @@ internal class WebServiceHttp(
         val url: String = "$baseUrl/1/events"
     }
 
-    override fun send(vararg event: Event): WebService.Response {
-        val array = JSONArray(ConverterEventToString.convert(event.toList()).map(::JSONObject))
+    override fun send(vararg event: EventInternal): WebService.Response {
+        val array = JSONArray(ConverterEventInternalToString.convert(event.toList()).map(::JSONObject))
         val string = JSONObject().put("events", array).toString()
+
         val url = URL(environment.url)
         val connection = (url.openConnection() as HttpURLConnection).also {
             it.setRequestProperty("Content-Type", "application/json; charset=UTF-8")

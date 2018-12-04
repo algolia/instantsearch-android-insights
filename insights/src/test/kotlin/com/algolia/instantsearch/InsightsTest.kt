@@ -1,13 +1,19 @@
 package com.algolia.instantsearch
 
+import com.algolia.instantsearch.TestUtils.click
+import com.algolia.instantsearch.TestUtils.conversion
 import com.algolia.instantsearch.TestUtils.eventClick
 import com.algolia.instantsearch.TestUtils.eventConversion
 import com.algolia.instantsearch.TestUtils.eventView
+import com.algolia.instantsearch.TestUtils.indexName
+import com.algolia.instantsearch.TestUtils.view
+import com.algolia.instantsearch.TestUtils.webService
 import com.algolia.instantsearch.insights.Insights
-import com.algolia.instantsearch.insights.converter.ConverterEventToString
-import com.algolia.instantsearch.insights.converter.ConverterParameterToString
-import com.algolia.instantsearch.insights.converter.ConverterStringToEvent
+import com.algolia.instantsearch.insights.converter.ConverterEventInternalToString
+import com.algolia.instantsearch.insights.converter.ConverterEventToEventInternal
+import com.algolia.instantsearch.insights.converter.ConverterStringToEventInternal
 import com.algolia.instantsearch.insights.event.Event
+import com.algolia.instantsearch.insights.event.EventInternal
 import com.algolia.instantsearch.insights.event.EventUploader
 import com.algolia.instantsearch.insights.webservice.WebService
 import com.algolia.instantsearch.insights.webservice.uploadEvents
@@ -22,78 +28,67 @@ import kotlin.test.assertTrue
 @RunWith(JUnit4::class)
 class InsightsTest {
     private val responseOK = WebService.Response(null, 200)
-    private val firstEvent = Event.Click(TestUtils.eventClick.params)
-    private val secondEvent = Event.Conversion(TestUtils.eventConversion.params)
-    private val thirdEvent = Event.View(TestUtils.eventView.params)
 
     @Test
     fun testEventConverters() {
-        val string = ConverterEventToString.convert(firstEvent)
-        val event = ConverterStringToEvent.convert(string)
-        assertEquals(firstEvent, event)
-    }
-
-    @Test
-    fun testParameterConverter() {
-        val string = ConverterParameterToString.convert(firstEvent.params)
-        firstEvent.params.entries.forEach {
-            assertTrue(string.contains(Regex("\"${it.key}\":[[\"]?${it.value}[\"]]?")),
-                "The string should contain the firstEvent's ${it.key}: $string.")
-        }
+        val internal = ConverterEventToEventInternal.convert(eventClick)
+        val string = ConverterEventInternalToString.convert(internal)
+        val event = ConverterStringToEventInternal.convert(string.toString())
+        assertEquals(internal, event)
     }
 
     @Test
     fun testClickEvent() {
         // given an event built raw
-        assertEquals(responseOK, TestUtils.webService.send(firstEvent))
+//        assertEquals(responseOK, webService.send(firstEvent))
         // given an event built with typed constructor
-        assertEquals(responseOK, TestUtils.webService.send(eventClick))
+        assertEquals(responseOK, webService.send(click))
     }
 
     @Test
     fun testViewEvent() {
         // given an event built raw
-        assertEquals(responseOK, TestUtils.webService.send(thirdEvent))
+//        assertEquals(responseOK, webService.send(thirdEvent))
         // given an event built with typed constructor
-        assertEquals(responseOK, TestUtils.webService.send(eventView))
+        assertEquals(responseOK, webService.send(view))
     }
 
     @Test
     fun testConversionEvent() {
         // given an event built raw
-        assertEquals(responseOK, TestUtils.webService.send(secondEvent))
+//        assertEquals(responseOK, webService.send(secondEvent))
         // given an event built with typed constructor
-        assertEquals(responseOK, TestUtils.webService.send(eventConversion))
+        assertEquals(responseOK, webService.send(conversion))
     }
 
     @Test
     fun testEnabled() {
-        val events = mutableListOf(firstEvent, secondEvent, thirdEvent)
-        val database = MockDatabase(TestUtils.indexName, events)
+        val events = mutableListOf(click, conversion, view)
+        val database = MockDatabase(indexName, events)
         val webService = MockWebService()
         val uploader = object : AssertingEventUploader(events, webService, database) {
             override fun startOneTimeUpload() {
                 val trackedEvents = database.read()
-                assertFalse(trackedEvents.contains(firstEvent), "The first event should have been ignored")
-                assertTrue(trackedEvents.contains(secondEvent), "The second event should be uploaded")
+                assertFalse(trackedEvents.contains(click), "The first event should have been ignored")
+                assertTrue(trackedEvents.contains(conversion), "The second event should be uploaded")
             }
         }
-        val insights = Insights(TestUtils.indexName, uploader, database, webService)
+        val insights = Insights(indexName, uploader, database, webService)
         insights.minBatchSize = 1 // Given an Insights that uploads every event
 
         insights.enabled = false // When a firstEvent is sent with insight disabled
-        insights.personalization.click(firstEvent)
+        insights.personalization.click(eventClick)
         insights.enabled = true // And a secondEvent sent with insight enabled
-        insights.personalization.conversion(secondEvent)
+        insights.personalization.conversion(eventConversion)
     }
 
     @Test
     fun testMinBatchSize() {
-        val events = mutableListOf(firstEvent, secondEvent, thirdEvent)
-        val database = MockDatabase(TestUtils.indexName, events)
+        val events = mutableListOf(click, conversion, view)
+        val database = MockDatabase(indexName, events)
         val webService = MockWebService()
         val uploader = MinBatchSizeEventUploader(events, webService, database)
-        val insights = Insights(TestUtils.indexName, uploader, database, webService)
+        val insights = Insights(indexName, uploader, database, webService)
 
         // Given a minBatchSize of one and one event
         insights.minBatchSize = 1
@@ -111,7 +106,7 @@ class InsightsTest {
     }
 
     inner class MinBatchSizeEventUploader internal constructor(
-        private val events: MutableList<Event>,
+        private val events: MutableList<EventInternal>,
         private val webService: MockWebService,
         private val database: MockDatabase
     ) : AssertingEventUploader(events, webService, database) {
@@ -138,17 +133,17 @@ class InsightsTest {
      */
     @Test
     fun testIntegration() {
-        val events = mutableListOf(firstEvent, secondEvent, thirdEvent)
-        val database = MockDatabase(TestUtils.indexName, events)
+        val events = mutableListOf(click, conversion, view)
+        val database = MockDatabase(indexName, events)
         val webService = MockWebService()
         val uploader = IntegrationEventUploader(events, webService, database)
-        val insights = Insights(TestUtils.indexName, uploader, database, webService)
+        val insights = Insights(indexName, uploader, database, webService)
         insights.minBatchSize = 1
 
         webService.code = 200 // Given a working web service
-        insights.track(Event.Click(firstEvent.params))
+        insights.track(eventClick)
         webService.code = -1 // Given a web service that errors
-        insights.track(Event.Conversion(secondEvent.params))
+        insights.track(eventConversion)
         webService.code = 400 // Given a working web service returning an HTTP error
         insights.track(eventView) // When tracking an event
 
@@ -156,41 +151,50 @@ class InsightsTest {
         insights.userToken = TestUtils.eventClick.userToken // Given an userToken
 
         // When adding events without explicitly-provided userToken
-        insights.search.click(firstEvent.eventName, firstEvent.indexName, firstEvent.timestamp, firstEvent.queryId!!, firstEvent.objectIDs, firstEvent.positions)
-        insights.personalization.click(firstEvent.eventName, firstEvent.indexName, firstEvent.timestamp, firstEvent.queryId, firstEvent.objectIDs)
-        insights.personalization.conversion(secondEvent.eventName, secondEvent.indexName, secondEvent.timestamp, secondEvent.queryId, secondEvent.objectIDs)
+        insights.search.click(eventClick.eventName, eventClick.indexName, eventClick.timestamp, eventClick.queryId!!, eventClick.objectIDs, eventClick.positions)
+        insights.personalization.click(eventClick.eventName, eventClick.indexName, eventClick.timestamp, eventClick.queryId, eventClick.objectIDs)
+        insights.personalization.conversion(eventConversion.eventName, eventConversion.indexName, eventConversion.timestamp, eventConversion.queryId, eventConversion.objectIDs)
         webService.code = 200 // Given a working web service
-        insights.personalization.view(thirdEvent)
+        insights.personalization.view(eventView)
     }
 
     inner class IntegrationEventUploader internal constructor(
-        private val events: MutableList<Event>,
+        private val events: MutableList<EventInternal>,
         private val webService: MockWebService,
         private val database: MockDatabase
     ) : AssertingEventUploader(events, webService, database) {
         override fun startOneTimeUpload() {
-            val clickEventNotForSearch = Event.Click(firstEvent.eventName, firstEvent.indexName, firstEvent.userToken, firstEvent.timestamp, firstEvent.queryId, firstEvent.objectIDs, null) // A Click event not for Search has no positions
+            val clickEventNotForSearch = Event.Click(
+                eventName = eventClick.eventName,
+                indexName = eventClick.indexName,
+                userToken = eventClick.userToken,
+                timestamp = eventClick.timestamp,
+                queryId = eventClick.queryId,
+                objectIDs = eventClick.objectIDs,
+                positions = null
+            )
+            val clickEventInternal = ConverterEventToEventInternal.convert(clickEventNotForSearch)// A Click event not for Search has no positions
 
             when (count) {
-                0 -> assertEquals(listOf(firstEvent), database.read(), "failed 0") // expect added first
-                1 -> assertEquals(listOf(secondEvent), database.read(), "failed 1") // expect flush then added second
-                2 -> assertEquals(listOf(secondEvent, eventView), database.read(), "failed 2")
+                0 -> assertEquals(listOf(click), database.read(), "failed 0") // expect added first
+                1 -> assertEquals(listOf(conversion), database.read(), "failed 1") // expect flush then added second
+                2 -> assertEquals(listOf(conversion, view), database.read(), "failed 2")
 
-                3 -> assertEquals(listOf(firstEvent), database.read(), "failed 3") // expect flush then added first
-                4 -> assertEquals(listOf(firstEvent, clickEventNotForSearch), database.read(), "failed 4") // expect added first
-                5 -> assertEquals(listOf(firstEvent, clickEventNotForSearch, secondEvent), database.read(), "failed 5") // expect added second
-                6 -> assertEquals(listOf(firstEvent, clickEventNotForSearch, secondEvent, thirdEvent), database.read(), "failed 6") // expect added third
+                3 -> assertEquals(listOf(click), database.read(), "failed 3") // expect flush then added first
+                4 -> assertEquals(listOf(click, clickEventInternal), database.read(), "failed 4") // expect added first
+                5 -> assertEquals(listOf(click, clickEventInternal, conversion), database.read(), "failed 5") // expect added second
+                6 -> assertEquals(listOf(click, clickEventInternal, conversion, view), database.read(), "failed 6") // expect added third
 
             }
             webService.uploadEvents(database, TestUtils.indexName)
             when (count) {
                 0 -> assert(database.read().isEmpty()) // expect flushed first
-                1 -> assertEquals(listOf(secondEvent), database.read()) // expect kept second
+                1 -> assertEquals(listOf(conversion), database.read()) // expect kept second
                 2 -> assert(database.read().isEmpty()) // expect flushed events
 
-                3 -> assertEquals(listOf(firstEvent), database.read()) // expect kept first
-                4 -> assertEquals(listOf(firstEvent, clickEventNotForSearch), database.read()) // expect kept first2
-                5 -> assertEquals(listOf(firstEvent, clickEventNotForSearch, secondEvent), database.read()) // expect kept second
+                3 -> assertEquals(listOf(click), database.read()) // expect kept first
+                4 -> assertEquals(listOf(click, clickEventInternal), database.read()) // expect kept first2
+                5 -> assertEquals(listOf(click, clickEventInternal, conversion), database.read()) // expect kept second
                 6 -> assert(database.read().isEmpty()) // expect flushed events
             }
             count++
@@ -198,7 +202,7 @@ class InsightsTest {
     }
 
     abstract inner class AssertingEventUploader internal constructor(
-        private val events: MutableList<Event>,
+        private val events: MutableList<EventInternal>,
         private val webService: MockWebService,
         private val database: MockDatabase
     ) : EventUploader {
