@@ -18,8 +18,8 @@ internal object ConverterEventToEventInternal : Converter<Event, EventInternal> 
 
     private fun Event.Click.toEventInternal(): EventInternal {
         return mapOf(
-            EventKey.EventName.key to eventName,
             EventKey.EventType.key to EventType.Click.key,
+            EventKey.EventName.key to eventName,
             EventKey.IndexName.key to indexName,
             EventKey.Timestamp.key to timestamp,
             EventKey.QueryId.key to queryId,
@@ -31,8 +31,8 @@ internal object ConverterEventToEventInternal : Converter<Event, EventInternal> 
 
     private fun Event.Conversion.toEventInternal(): EventInternal {
         return mapOf(
-            EventKey.EventName.key to eventName,
             EventKey.EventType.key to EventType.Conversion.key,
+            EventKey.EventName.key to eventName,
             EventKey.IndexName.key to indexName,
             EventKey.Timestamp.key to timestamp,
             EventKey.QueryId.key to queryId,
@@ -43,8 +43,8 @@ internal object ConverterEventToEventInternal : Converter<Event, EventInternal> 
 
     private fun Event.View.toEventInternal(): EventInternal {
         return mapOf(
-            EventKey.EventName.key to eventName,
             EventKey.EventType.key to EventType.View.key,
+            EventKey.EventName.key to eventName,
             EventKey.IndexName.key to indexName,
             EventKey.Timestamp.key to timestamp,
             EventKey.QueryId.key to queryId,
