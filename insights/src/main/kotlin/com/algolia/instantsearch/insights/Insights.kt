@@ -5,6 +5,7 @@ import com.algolia.instantsearch.insights.converter.ConverterEventToEventInterna
 import com.algolia.instantsearch.insights.database.Database
 import com.algolia.instantsearch.insights.database.DatabaseSharedPreferences
 import com.algolia.instantsearch.insights.event.Event
+import com.algolia.instantsearch.insights.event.EventInternal
 import com.algolia.instantsearch.insights.event.EventUploader
 import com.algolia.instantsearch.insights.event.EventUploaderAndroidJob
 import com.algolia.instantsearch.insights.webservice.WebService
@@ -53,7 +54,9 @@ class Insights internal constructor(
     )
 
     inner class Search internal constructor() {
-        fun click(event: Event.Click) = this@Insights.track(event)
+
+        fun click(event: Event.Click) = track(event)
+
         fun click(
             eventName: String,
             indexName: String,
@@ -61,29 +64,62 @@ class Insights internal constructor(
             queryId: String,
             objectIDs: List<String>? = null,
             positions: List<Int>? = null
-        ) = click(Event.Click(eventName, indexName, userTokenOrThrow(), timestamp, queryId, objectIDs, positions))
+        ) = click(
+            Event.Click(
+                eventName = eventName,
+                indexName = indexName,
+                userToken = userTokenOrThrow(),
+                timestamp = timestamp,
+                queryId = queryId,
+                objectIDs = objectIDs,
+                positions = positions
+            )
+        )
+
     }
 
     inner class Personalization internal constructor() {
-        fun view(event: Event.View) = this@Insights.track(event)
+
+        fun view(event: Event.View) = track(event)
+
         fun view(
             eventName: String,
             indexName: String,
             timestamp: Long,
             queryId: String? = null,
             objectIDs: List<String>? = null
-        ) = view(Event.View(eventName, indexName, userTokenOrThrow(), timestamp, queryId, objectIDs))
+        ) = view(
+            Event.View(
+                eventName = eventName,
+                indexName = indexName,
+                userToken = userTokenOrThrow(),
+                timestamp = timestamp,
+                queryId = queryId,
+                objectIDs = objectIDs
+            )
+        )
 
-        fun conversion(event: Event.Conversion) = this@Insights.track(event)
+        fun conversion(event: Event.Conversion) = track(event)
+
         fun conversion(
             eventName: String,
             indexName: String,
             timestamp: Long,
             queryId: String? = null,
             objectIDs: List<String>? = null
-        ) = conversion(Event.Conversion(eventName, indexName, userTokenOrThrow(), timestamp, queryId, objectIDs))
+        ) = conversion(
+            Event.Conversion(
+                eventName = eventName,
+                indexName = indexName,
+                userToken = userTokenOrThrow(),
+                timestamp = timestamp,
+                queryId = queryId,
+                objectIDs = objectIDs
+            )
+        )
 
-        fun click(event: Event.Click) = this@Insights.track(event)
+        fun click(event: Event.Click) = track(event)
+
         fun click(
             eventName: String,
             indexName: String,
@@ -91,7 +127,17 @@ class Insights internal constructor(
             queryId: String? = null,
             objectIDs: List<String>? = null,
             positions: List<Int>? = null
-        ) = click(Event.Click(eventName, indexName, userTokenOrThrow(), timestamp, queryId, objectIDs, positions))
+        ) = click(
+            Event.Click(
+                eventName = eventName,
+                indexName = indexName,
+                userToken = userTokenOrThrow(),
+                timestamp = timestamp,
+                queryId = queryId,
+                objectIDs = objectIDs,
+                positions = positions
+            )
+        )
     }
 
     /**
@@ -166,18 +212,22 @@ class Insights internal constructor(
         eventUploader.startPeriodicUpload()
     }
 
+    fun track(event: EventInternal) {
+        if (enabled) {
+            database.append(event)
+            if (database.count() >= minBatchSize) {
+                eventUploader.startOneTimeUpload()
+            }
+        }
+    }
+
     /**
      * Method for tracking an event.
      * For a complete description of events see our [documentation][https://www.algolia.com/doc/rest-api/insights/?language=android#push-events].
      * @param [event] An [Event] that you want to track.
      */
     fun track(event: Event) {
-        if (enabled) {
-            database.append(ConverterEventToEventInternal.convert(event))
-            if (database.count() >= minBatchSize) {
-                eventUploader.startOneTimeUpload()
-            }
-        }
+        track(ConverterEventToEventInternal.convert(event))
     }
 
     override fun toString(): String {
