@@ -4,7 +4,6 @@ import com.algolia.instantsearch.insights.BuildConfig
 import com.algolia.instantsearch.insights.Insights
 import com.algolia.instantsearch.insights.converter.ConverterEventToEventInternal
 import com.algolia.instantsearch.insights.event.Event
-import com.algolia.instantsearch.insights.webservice.WebServiceHttp
 
 
 internal object AndroidTestUtils {
@@ -62,12 +61,4 @@ internal object AndroidTestUtils {
     )
 
     val view = ConverterEventToEventInternal.convert(eventView)
-
-    val webService = WebServiceHttp(
-        appId = appId,
-        apiKey = apiKey,
-        environment = WebServiceHttp.Environment.Prod,
-        connectTimeoutInMilliseconds = configuration.connectTimeoutInMilliseconds,
-        readTimeoutInMilliseconds = configuration.readTimeoutInMilliseconds
-    )
 }

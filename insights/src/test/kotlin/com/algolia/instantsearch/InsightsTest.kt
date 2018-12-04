@@ -33,7 +33,7 @@ class InsightsTest {
     fun testEventConverters() {
         val internal = ConverterEventToEventInternal.convert(eventClick)
         val string = ConverterEventInternalToString.convert(internal)
-        val event = ConverterStringToEventInternal.convert(string.toString())
+        val event = ConverterStringToEventInternal.convert(string)
         assertEquals(internal, event)
     }
 

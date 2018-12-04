@@ -8,7 +8,6 @@ import com.algolia.instantsearch.AndroidTestUtils.view
 import com.algolia.instantsearch.insights.database.DatabaseSharedPreferences
 import org.junit.Test
 import org.junit.runner.RunWith
-import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 
@@ -27,7 +26,6 @@ class AndroidTestDatabaseSharedPreferences {
 
         database.overwrite(events)
 
-        assertEquals(events, database.read())
         assertTrue(database.read().containsAll(events))
 
         database.append(view)
