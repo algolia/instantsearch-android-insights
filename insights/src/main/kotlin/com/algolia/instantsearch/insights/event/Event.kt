@@ -3,7 +3,7 @@ package com.algolia.instantsearch.insights.event
 
 sealed class Event {
 
-    data class Click constructor(
+    data class Click(
         val eventName: String,
         val indexName: String,
         val userToken: String,
@@ -13,7 +13,7 @@ sealed class Event {
         val positions: List<Int>? = null
     ) : Event()
 
-    data class View constructor(
+    data class View(
         val eventName: String,
         val indexName: String,
         val userToken: String,
@@ -22,7 +22,7 @@ sealed class Event {
         val objectIDs: List<String>? = null
     ) : Event()
 
-    data class Conversion constructor(
+    data class Conversion(
         val eventName: String,
         val indexName: String,
         val userToken: String,
