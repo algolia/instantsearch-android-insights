@@ -16,6 +16,10 @@ import kotlin.test.assertTrue
 class InsightsAndroidTest {
 
     private val context get() = InstrumentationRegistry.getContext()
+    private val configuration = Insights.Configuration(
+        connectTimeoutInMilliseconds = 5000,
+        readTimeoutInMilliseconds = 5000
+    )
 
     @Test
     fun testSharedWithoutRegister() {
@@ -28,16 +32,16 @@ class InsightsAndroidTest {
 
     @Test
     fun testSharedAfterRegister() {
-        val insights = Insights.register(context, "testApp", "testKey", "index", AndroidTestUtils.configuration)
+        val insights = Insights.register(context, "testApp", "testKey", "index", configuration)
         val insightsShared = Insights.shared("index")
         assertEquals(insights, insightsShared)
     }
 
     @Test
     fun testRegisterGlobalUserToken() {
-        val insights = Insights.register(context, "testApp", "testKey", "index", AndroidTestUtils.configuration)
+        val insights = Insights.register(context, "testApp", "testKey", "index", configuration)
         val insightsShared = Insights.shared("index")
-        assertEquals(AndroidTestUtils.configuration.defaultUserToken, insightsShared.userToken)
+        assertEquals(configuration.defaultUserToken, insightsShared.userToken)
     }
 
     @Test

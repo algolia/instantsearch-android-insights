@@ -1,20 +1,6 @@
 package com.algolia.instantsearch
 
-import com.algolia.instantsearch.TestUtils.click
-import com.algolia.instantsearch.TestUtils.conversion
-import com.algolia.instantsearch.TestUtils.eventA
-import com.algolia.instantsearch.TestUtils.eventB
-import com.algolia.instantsearch.TestUtils.eventClick
-import com.algolia.instantsearch.TestUtils.eventConversion
-import com.algolia.instantsearch.TestUtils.eventView
-import com.algolia.instantsearch.TestUtils.indexName
-import com.algolia.instantsearch.TestUtils.objectIDs
-import com.algolia.instantsearch.TestUtils.positions
-import com.algolia.instantsearch.TestUtils.queryId
-import com.algolia.instantsearch.TestUtils.timestamp
-import com.algolia.instantsearch.TestUtils.userToken
-import com.algolia.instantsearch.TestUtils.view
-import com.algolia.instantsearch.TestUtils.webService
+import com.algolia.instantsearch.insights.BuildConfig
 import com.algolia.instantsearch.insights.Insights
 import com.algolia.instantsearch.insights.converter.ConverterEventInternalToString
 import com.algolia.instantsearch.insights.converter.ConverterEventToEventInternal
@@ -23,6 +9,7 @@ import com.algolia.instantsearch.insights.event.Event
 import com.algolia.instantsearch.insights.event.EventInternal
 import com.algolia.instantsearch.insights.event.EventUploader
 import com.algolia.instantsearch.insights.webservice.WebService
+import com.algolia.instantsearch.insights.webservice.WebServiceHttp
 import com.algolia.instantsearch.insights.webservice.uploadEvents
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,6 +23,57 @@ import kotlin.test.assertTrue
 internal class InsightsTest {
 
     private val responseOK = WebService.Response(null, 200)
+    private val eventA = "EventA"
+    private val eventB = "EventB"
+    private val eventC = "EventC"
+    private val indexName = "latency"
+    private val appId = BuildConfig.ALGOLIA_APPLICATION_ID
+    private val apiKey = BuildConfig.ALGOLIA_API_KEY
+    private val queryId = "6de2f7eaa537fa93d8f8f05b927953b1"
+    private val userToken = "foobarbaz"
+    private val positions = listOf(1)
+    private val objectIDs = listOf("54675051")
+    private val timestamp = System.currentTimeMillis()
+    private val configuration = Insights.Configuration(
+        connectTimeoutInMilliseconds = 5000,
+        readTimeoutInMilliseconds = 5000
+    )
+    private val eventClick = Event.Click(
+        eventA,
+        indexName,
+        userToken,
+        timestamp,
+        queryId,
+        objectIDs,
+        positions
+    )
+    private val eventConversion = Event.Conversion(
+        eventB,
+        indexName,
+        userToken,
+        timestamp,
+        queryId,
+        objectIDs
+    )
+    private val eventView = Event.View(
+        eventC,
+        indexName,
+        userToken,
+        timestamp,
+        queryId,
+        objectIDs
+    )
+    private val click = ConverterEventToEventInternal.convert(eventClick)
+    private val conversion = ConverterEventToEventInternal.convert(eventConversion)
+    private val view = ConverterEventToEventInternal.convert(eventView)
+    private val webService
+        get() = WebServiceHttp(
+            appId = appId,
+            apiKey = apiKey,
+            environment = WebServiceHttp.Environment.Prod,
+            connectTimeoutInMilliseconds = configuration.connectTimeoutInMilliseconds,
+            readTimeoutInMilliseconds = configuration.readTimeoutInMilliseconds
+        )
 
     @Test
     fun testEventConverters() {
@@ -202,7 +240,7 @@ internal class InsightsTest {
                 6 -> assertEquals(listOf(click, clickEventInternal, conversion, view), database.read(), "failed 6") // expect added third
 
             }
-            webService.uploadEvents(database, TestUtils.indexName)
+            webService.uploadEvents(database, indexName)
             when (count) {
                 0 -> assert(database.read().isEmpty()) // expect flushed first
                 1 -> assertEquals(listOf(conversion), database.read()) // expect kept second
@@ -227,7 +265,7 @@ internal class InsightsTest {
 
         override fun startPeriodicUpload() {
             assertEquals(events, database.read())
-            webService.uploadEvents(database, TestUtils.indexName)
+            webService.uploadEvents(database, indexName)
             assert(database.read().isEmpty())
         }
     }
