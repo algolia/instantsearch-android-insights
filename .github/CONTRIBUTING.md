@@ -48,7 +48,7 @@ The easiest way to start contributing is searching open issues by `help wanted` 
 
 ###### Code style and conventions
 
-We try to follow our [swift style guide](https://github.com/algolia/Swift-Style-Guide). Following it is not strictly necessary to contribute and to have a pull request accepted but project maintainers try to follow it. We would love to hear your ideas to improve our code style and conventions. Feel free to contribute.
+We try to follow the [Kotlin coding convention](https://kotlinlang.org/docs/reference/coding-conventions.html). Following it is not strictly necessary to contribute and to have a pull request accepted but project maintainers try to follow it.
 
 
 ### Feature proposal
