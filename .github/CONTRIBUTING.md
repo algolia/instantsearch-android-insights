@@ -16,9 +16,9 @@ We do not use github issues for general library support. We think this questions
   * If you found a match add a brief comment "I have the same problem" or "+1". This helps prioritize the issues addressing the most common and critical first. If possible add additional information to help us reproduce and fix the issue. Please use your best judgement.    
 * Reporting issues:
   * Please include the following information to help maintainers to fix the problem faster:
-    * Xcode version you are using.
-    * iOS version you are targeting.
-    * Full Xcode console output of stack trace or code compilation error.
+    * Android Studio version you are using.
+    * Android version you are targeting.
+    * Full log console output of stack trace or code compilation error.
     * Any other additional detail you think it would be useful to understand and solve the problem.
 
 
