@@ -60,8 +60,8 @@ class Insights internal constructor(
         fun click(
             eventName: String,
             indexName: String,
-            timestamp: Long,
             queryId: String,
+            timestamp: Long = System.currentTimeMillis(),
             objectIDs: List<String>? = null,
             positions: List<Int>? = null
         ) = click(
@@ -85,7 +85,7 @@ class Insights internal constructor(
         fun view(
             eventName: String,
             indexName: String,
-            timestamp: Long,
+            timestamp: Long = System.currentTimeMillis(),
             queryId: String? = null,
             objectIDs: List<String>? = null
         ) = view(
@@ -104,7 +104,7 @@ class Insights internal constructor(
         fun conversion(
             eventName: String,
             indexName: String,
-            timestamp: Long,
+            timestamp: Long = System.currentTimeMillis(),
             queryId: String? = null,
             objectIDs: List<String>? = null
         ) = conversion(
@@ -123,7 +123,7 @@ class Insights internal constructor(
         fun click(
             eventName: String,
             indexName: String,
-            timestamp: Long,
+            timestamp: Long = System.currentTimeMillis(),
             queryId: String? = null,
             objectIDs: List<String>? = null,
             positions: List<Int>? = null
