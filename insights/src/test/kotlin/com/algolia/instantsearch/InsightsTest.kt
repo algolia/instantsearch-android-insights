@@ -114,9 +114,9 @@ internal class InsightsTest {
         insights.minBatchSize = 1 // Given an Insights that uploads every event
 
         insights.enabled = false // When a firstEvent is sent with insight disabled
-        insights.personalization.click(eventClick)
+        insights.click(eventClick)
         insights.enabled = true // And a secondEvent sent with insight enabled
-        insights.personalization.conversion(eventConversion)
+        insights.conversion(eventConversion)
     }
 
     @Test
@@ -185,7 +185,7 @@ internal class InsightsTest {
         insights.userToken = userToken // Given an userToken
 
         // When adding events without explicitly-provided userToken
-        insights.search.click(
+        insights.clickAfterSearch(
             eventName = eventA,
             indexName = indexName,
             timestamp = timestamp,
@@ -193,14 +193,13 @@ internal class InsightsTest {
             objectIDs = objectIDs,
             positions = positions
         )
-        insights.personalization.click(
+        insights.click(
             eventName = eventA,
             indexName = indexName,
             timestamp = timestamp,
-            queryId = queryId,
             objectIDs = objectIDs
         )
-        insights.personalization.conversion(
+        insights.conversionAfterSearch(
             eventName = eventB,
             indexName = indexName,
             timestamp = timestamp,
@@ -208,7 +207,7 @@ internal class InsightsTest {
             objectIDs = objectIDs
         )
         webService.code = 200 // Given a working web service
-        insights.personalization.view(eventView)
+        insights.view(eventView)
     }
 
     inner class IntegrationEventUploader(
@@ -223,7 +222,6 @@ internal class InsightsTest {
                 indexName = indexName,
                 userToken = userToken,
                 timestamp = timestamp,
-                queryId = queryId,
                 objectIDs = objectIDs,
                 positions = null // A Click event not for Search has no positions
             )

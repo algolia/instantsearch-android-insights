@@ -53,121 +53,6 @@ class Insights internal constructor(
         val defaultUserToken: String? = null
     )
 
-    inner class Search internal constructor() {
-
-        fun click(event: Event.Click) = track(event)
-
-        fun click(
-            eventName: String,
-            indexName: String,
-            queryId: String,
-            timestamp: Long = System.currentTimeMillis(),
-            objectIDs: List<String>? = null,
-            positions: List<Int>? = null
-        ) = click(
-            Event.Click(
-                eventName = eventName,
-                indexName = indexName,
-                userToken = userTokenOrThrow(),
-                timestamp = timestamp,
-                queryId = queryId,
-                objectIDs = objectIDs,
-                positions = positions
-            )
-        )
-
-    }
-
-    inner class Personalization internal constructor() {
-
-        fun view(event: Event.View) = track(event)
-
-        fun view(
-            eventName: String,
-            indexName: String,
-            timestamp: Long = System.currentTimeMillis(),
-            queryId: String? = null,
-            objectIDs: List<String>? = null
-        ) = view(
-            Event.View(
-                eventName = eventName,
-                indexName = indexName,
-                userToken = userTokenOrThrow(),
-                timestamp = timestamp,
-                queryId = queryId,
-                objectIDs = objectIDs
-            )
-        )
-
-        fun conversion(event: Event.Conversion) = track(event)
-
-        fun conversion(
-            eventName: String,
-            indexName: String,
-            timestamp: Long = System.currentTimeMillis(),
-            queryId: String? = null,
-            objectIDs: List<String>? = null
-        ) = conversion(
-            Event.Conversion(
-                eventName = eventName,
-                indexName = indexName,
-                userToken = userTokenOrThrow(),
-                timestamp = timestamp,
-                queryId = queryId,
-                objectIDs = objectIDs
-            )
-        )
-
-        fun click(event: Event.Click) = track(event)
-
-        fun click(
-            eventName: String,
-            indexName: String,
-            timestamp: Long = System.currentTimeMillis(),
-            queryId: String? = null,
-            objectIDs: List<String>? = null,
-            positions: List<Int>? = null
-        ) = click(
-            Event.Click(
-                eventName = eventName,
-                indexName = indexName,
-                userToken = userTokenOrThrow(),
-                timestamp = timestamp,
-                queryId = queryId,
-                objectIDs = objectIDs,
-                positions = positions
-            )
-        )
-    }
-
-    /**
-     * You can use **search** events for _A/B Testing_ or general _Click Analytics_.
-     *
-     * - A/B Testing allows you to create 2 alternative indices, A and B, each with their own settings,
-     * and to put them both live, to see which one performs best.
-     * Capture the same user events for both A and B.
-     * Measure these captured events against each other, creating scores.
-     * Use these scores to determine whether A or B is a better user experience.
-     * Adjust your main index accordingly.
-
-     * - Click Analytics helps you answer the following questions:
-     * Does a user, after performing a search, click-through to one or more of your products?
-     * Does he or she take a particularly significant action, called a “conversion point”?
-     */
-    @JvmField
-    val search: Insights.Search = Search()
-
-    /**
-     * You can use **personalization** events to leverage personalized search.
-     *
-     * Personalization feature introduces user-based relevance,
-     * an additional layer on top of Algolia’s relevance strategy
-     * by injecting user preferences into the relevance formula.
-     * Personalization relies on the event capturing mechanism, which allows you
-     * to track events that will eventually form the basis of every profile.
-     */
-    @JvmField
-    val personalization: Insights.Personalization = Personalization()
 
     /**
      * Change this variable to `true` or `false` to enable or disable logging.
@@ -212,14 +97,144 @@ class Insights internal constructor(
         eventUploader.startPeriodicUpload()
     }
 
-    fun track(event: EventInternal) {
-        if (enabled) {
-            database.append(event)
-            if (database.count() >= minBatchSize) {
-                eventUploader.startOneTimeUpload()
-            }
-        }
-    }
+
+    /**
+     * Tracks a View event, unrelated to a specific search query.
+     *
+     * @param eventName the event's name, **must not be empty**.
+     * @param indexName the index to target.
+     * @param timestamp the time at which the click happened. Defaults to current time.
+     * @param objectIDs the object(s)' `objectID`.
+     */
+    fun view(
+        eventName: String,
+        indexName: String,
+        timestamp: Long = System.currentTimeMillis(),
+        objectIDs: List<String>? = null
+    ) = view(
+        Event.View(
+            eventName = eventName,
+            indexName = indexName,
+            userToken = userTokenOrThrow(),
+            timestamp = timestamp,
+            objectIDs = objectIDs
+        )
+    )
+
+    /**
+     * Track a click event, unrelated to a specific search query.
+     *
+     * @param eventName the event's name, **must not be empty**.
+     * @param indexName the index to target.
+     * @param timestamp the time at which the click happened. Defaults to current time.
+     * @param objectIDs the object(s)' `objectID`.
+     */
+    fun click(
+        eventName: String,
+        indexName: String,
+        timestamp: Long = System.currentTimeMillis(),
+        objectIDs: List<String>? = null
+    ) = click(
+        Event.Click(
+            eventName = eventName,
+            indexName = indexName,
+            userToken = userTokenOrThrow(),
+            timestamp = timestamp,
+            objectIDs = objectIDs
+        )
+    )
+
+    /**
+     * Tracks a Click event after a search has been done.
+     *
+     * @param eventName the event's name, **must not be empty**.
+     * @param indexName the index to target.
+     * @param queryId the related [query's identifier][https://www.algolia.com/doc/guides/insights-and-analytics/click-analytics/?language=php#identifying-the-query-result-position].
+     * @param timestamp the time at which the click happened. Defaults to current time.
+     * @param objectIDs the object(s)' `objectID`.
+     * @param positions the clicked object(s)' position(s).
+     */
+    fun clickAfterSearch(
+        eventName: String,
+        indexName: String,
+        queryId: String,
+        timestamp: Long = System.currentTimeMillis(),
+        objectIDs: List<String>,
+        positions: List<Int>
+    ) = click(Event.Click(
+        eventName = eventName,
+        indexName = indexName,
+        userToken = userTokenOrThrow(),
+        timestamp = timestamp,
+        queryId = queryId,
+        objectIDs = objectIDs,
+        positions = positions
+    ))
+
+    /**
+     * Tracks a Conversion event, unrelated to a specific search query.
+     *
+     * @param eventName the event's name, **must not be empty**.
+     * @param indexName the index to target.
+     * @param timestamp the time at which the click happened. Defaults to current time.
+     * @param objectIDs the object(s)' `objectID`.
+     */
+    fun conversion(
+        eventName: String,
+        indexName: String,
+        timestamp: Long = System.currentTimeMillis(),
+        objectIDs: List<String>? = null
+    ) = conversion(
+        Event.Conversion(
+            eventName = eventName,
+            indexName = indexName,
+            userToken = userTokenOrThrow(),
+            timestamp = timestamp,
+            objectIDs = objectIDs
+        )
+    )
+
+    /**
+     * Tracks a Conversion event after a search has been done.
+     *
+     * @param eventName the event's name, **must not be empty**.
+     * @param indexName the index to target.
+     * @param queryId the related [query's identifier][https://www.algolia.com/doc/guides/insights-and-analytics/click-analytics/?language=php#identifying-the-query-result-position].
+     * @param timestamp the time at which the click happened. Defaults to current time.
+     * @param objectIDs the object(s)' `objectID`.
+     */
+    fun conversionAfterSearch(
+        eventName: String,
+        indexName: String,
+        queryId: String,
+        objectIDs: List<String>,
+        timestamp: Long = System.currentTimeMillis()
+    ) = conversion(
+        Event.Conversion(
+            eventName = eventName,
+            indexName = indexName,
+            userToken = userTokenOrThrow(),
+            timestamp = timestamp,
+            queryId = queryId,
+            objectIDs = objectIDs
+        )
+    )
+
+    /**
+     * Tracks a View event constructed manually.
+     */
+    fun view(event: Event.View) = track(event)
+
+    /**
+     * Tracks a Click event constructed manually.
+     */
+    fun click(event: Event.Click) = track(event)
+
+    /**
+     * Tracks a Conversion event, constructed manually.
+     */
+    fun conversion(event: Event.Conversion) = track(event)
+
 
     /**
      * Method for tracking an event.
@@ -228,6 +243,15 @@ class Insights internal constructor(
      */
     fun track(event: Event) {
         track(ConverterEventToEventInternal.convert(event))
+    }
+
+    private fun track(event: EventInternal) {
+        if (enabled) {
+            database.append(event)
+            if (database.count() >= minBatchSize) {
+                eventUploader.startOneTimeUpload()
+            }
+        }
     }
 
     override fun toString(): String {
