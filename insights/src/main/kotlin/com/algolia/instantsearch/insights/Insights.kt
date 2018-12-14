@@ -158,9 +158,9 @@ class Insights internal constructor(
         eventName: String,
         indexName: String,
         queryId: String,
-        timestamp: Long = System.currentTimeMillis(),
         objectIDs: List<String>,
-        positions: List<Int>
+        positions: List<Int>,
+        timestamp: Long = System.currentTimeMillis()
     ) = click(Event.Click(
         eventName = eventName,
         indexName = indexName,

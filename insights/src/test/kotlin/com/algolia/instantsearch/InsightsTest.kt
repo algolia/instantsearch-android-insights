@@ -99,6 +99,30 @@ internal class InsightsTest {
     }
 
     @Test
+    fun testMethods() {
+        val events = mutableListOf(click, conversion, view)
+        val database = MockDatabase(indexName, events)
+        val webService = MockWebService()
+        val uploader = object : AssertingEventUploader(events, webService, database) {
+            override fun startOneTimeUpload() {
+                val trackedEvents = database.read()
+                assertEquals(5, trackedEvents.size, "Five events should have been tracked")
+                assertTrue(trackedEvents.contains(click), "The click event should have been tracked through click and clickAfterSearch")
+                assertTrue(trackedEvents.contains(click), "The conversion event should have been tracked through conversion and conversionAfterSearch")
+                assertTrue(trackedEvents.contains(click), "The view event should have been tracked through view")
+            }
+        }
+        val insights = Insights(indexName, uploader, database, webService)
+        insights.userToken = "foo"//TODO: git stash apply to use default UUID token
+
+        insights.click(eventClick.eventName, eventClick.indexName)
+        insights.clickAfterSearch(eventClick.eventName, eventClick.indexName, eventClick.queryId!!, eventClick.objectIDs!!, eventClick.positions!!)
+        insights.conversion(eventConversion.eventName, eventConversion.indexName)
+        insights.conversionAfterSearch(eventConversion.eventName, eventConversion.indexName, eventConversion.queryId!!, eventConversion.objectIDs!!)
+        insights.view(eventView.eventName, eventView.indexName)
+    }
+
+    @Test
     fun testEnabled() {
         val events = mutableListOf(click, conversion, view)
         val database = MockDatabase(indexName, events)
@@ -188,10 +212,10 @@ internal class InsightsTest {
         insights.clickAfterSearch(
             eventName = eventA,
             indexName = indexName,
-            timestamp = timestamp,
             queryId = queryId,
             objectIDs = objectIDs,
-            positions = positions
+            positions = positions,
+            timestamp = timestamp
         )
         insights.click(
             eventName = eventA,
