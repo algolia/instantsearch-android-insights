@@ -11,6 +11,7 @@ platform :android do
     update_deps_to_use_commit_hash_if_workflow_triggered_by_client()
     gradle(task: "insights:lint")
     gradle(task: "insights:test")
+    gradle(task: "insights:connectedAndroidTest")
   end
 
   desc "Deploy the library. Available options: type:major|minor|patch optional: notest:true|false (default false)"
