@@ -7,6 +7,7 @@ This document provides general guidelines about how to contribute to the project
 
 We do not use GitHub issues for general library support. We think these questions should be posted on Stack Overflow using [InstantSearch](http://http://stackoverflow.com/questions/tagged/InstantSearch) tag.
 
+
 ### Reporting issues
 
 * Use [github issues](https://github.com/algolia/InstantSearch/issues) to report a bug.
@@ -14,6 +15,7 @@ We do not use GitHub issues for general library support. We think these question
   * Make sure you are using the [latest release](https://github.com/algolia/InstantSearch/releases).
   * Check if the issue was [already reported or fixed](https://github.com/algolia/InstantSearch/issues?utf8=%E2%9C%93&q=is%3Aissue). Notice that it may not be released yet.
   * If you found a match add a brief comment "I have the same problem" or use the action `+1`. This helps prioritize the issues addressing the most common and critical first. If possible add additional information to help us reproduce and fix the issue. Please use your best judgement.
+
 * Reporting issues:
   * Please include the following information to help maintainers to fix the problem faster:
     * Android Studio version you are using.
@@ -29,6 +31,7 @@ The easiest way to start contributing is searching open issues by `help wanted` 
 * Add test coverage to the feature or fix. We only accept new feature pull requests that have related test coverage. This allows us to keep the library stable as we move forward.
 * Remember to document the new feature. We do not accept new feature pull requests without its associated documentation.
 * In case of a new feature please update the example project showing the feature.
+
 * Please only one fix or feature per pull request. This will increase the chances of your feature being merged.
 
 
@@ -53,7 +56,9 @@ We try to follow the [Kotlin coding convention](https://kotlinlang.org/docs/refe
 
 ### Feature proposal
 
+
 We would love to hear your ideas and make a discussion about it.
+
 
 * Use github issues to make feature proposals.
 * We use `type: feature request` label to mark all [feature request issues](https://github.com/algolia/InstantSearch/labels/type%3A%20feature%20request).
