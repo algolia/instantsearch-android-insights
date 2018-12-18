@@ -4,10 +4,7 @@ import android.content.Context
 import com.algolia.instantsearch.insights.converter.ConverterEventToEventInternal
 import com.algolia.instantsearch.insights.database.Database
 import com.algolia.instantsearch.insights.database.DatabaseSharedPreferences
-import com.algolia.instantsearch.insights.event.Event
-import com.algolia.instantsearch.insights.event.EventInternal
-import com.algolia.instantsearch.insights.event.EventUploader
-import com.algolia.instantsearch.insights.event.EventUploaderAndroidJob
+import com.algolia.instantsearch.insights.event.*
 import com.algolia.instantsearch.insights.webservice.WebService
 import com.algolia.instantsearch.insights.webservice.WebServiceHttp
 
@@ -97,50 +94,101 @@ class Insights internal constructor(
         eventUploader.startPeriodicUpload()
     }
 
-
+    // region Event tracking methods
     /**
      * Tracks a View event, unrelated to a specific search query.
      *
      * @param eventName the event's name, **must not be empty**.
      * @param indexName the index to target.
-     * @param timestamp the time at which the click happened. Defaults to current time.
-     * @param objectIDs the object(s)' `objectID`.
+     * @param objectIDs the viewed object(s)' `objectID`.
+     * @param timestamp the time at which the view happened. Defaults to current time.
      */
+    @JvmOverloads
     fun view(
         eventName: String,
         indexName: String,
-        timestamp: Long = System.currentTimeMillis(),
-        objectIDs: List<String>? = null
+        objectIDs: EventObjects.IDs,
+        timestamp: Long = System.currentTimeMillis()
     ) = view(
         Event.View(
             eventName = eventName,
             indexName = indexName,
             userToken = userTokenOrThrow(),
             timestamp = timestamp,
-            objectIDs = objectIDs
+            eventObjects = objectIDs
         )
     )
 
     /**
-     * Track a click event, unrelated to a specific search query.
+     * Tracks a View event, unrelated to a specific search query.
+     *
+     * @param eventName the event's name, **must not be empty**.
+     * @param indexName the index to target.
+     * @param timestamp the time at which the view happened. Defaults to current time.
+     * @param filters the clicked filter(s).
+     */
+    @JvmOverloads
+    fun view(
+        eventName: String,
+        indexName: String,
+        filters: EventObjects.Filters,
+        timestamp: Long = System.currentTimeMillis()
+    ) = view(
+        Event.View(
+            eventName = eventName,
+            indexName = indexName,
+            userToken = userTokenOrThrow(),
+            timestamp = timestamp,
+            eventObjects = filters
+        )
+    )
+
+    /**
+     * Tracks a click event, unrelated to a specific search query.
      *
      * @param eventName the event's name, **must not be empty**.
      * @param indexName the index to target.
      * @param timestamp the time at which the click happened. Defaults to current time.
-     * @param objectIDs the object(s)' `objectID`.
+     * @param objectIDs the clicked object(s)' `objectID`.
      */
+    @JvmOverloads
     fun click(
         eventName: String,
         indexName: String,
-        timestamp: Long = System.currentTimeMillis(),
-        objectIDs: List<String>? = null
+        objectIDs: EventObjects.IDs,
+        timestamp: Long = System.currentTimeMillis()
     ) = click(
         Event.Click(
             eventName = eventName,
             indexName = indexName,
             userToken = userTokenOrThrow(),
             timestamp = timestamp,
-            objectIDs = objectIDs
+            eventObjects = objectIDs
+        )
+    )
+
+
+    /**
+     * Tracks a click event, unrelated to a specific search query.
+     *
+     * @param eventName the event's name, **must not be empty**.
+     * @param indexName the index to target.
+     * @param timestamp the time at which the click happened. Defaults to current time.
+     * @param filters the clicked filter(s).
+     */
+    @JvmOverloads
+    fun click(
+        eventName: String,
+        indexName: String,
+        filters: EventObjects.Filters,
+        timestamp: Long = System.currentTimeMillis()
+    ) = click(
+        Event.Click(
+            eventName = eventName,
+            indexName = indexName,
+            userToken = userTokenOrThrow(),
+            timestamp = timestamp,
+            eventObjects = filters
         )
     )
 
@@ -154,11 +202,12 @@ class Insights internal constructor(
      * @param objectIDs the object(s)' `objectID`.
      * @param positions the clicked object(s)' position(s).
      */
+    @JvmOverloads
     fun clickAfterSearch(
         eventName: String,
         indexName: String,
         queryId: String,
-        objectIDs: List<String>,
+        objectIDs: EventObjects.IDs,
         positions: List<Int>,
         timestamp: Long = System.currentTimeMillis()
     ) = click(Event.Click(
@@ -166,8 +215,8 @@ class Insights internal constructor(
         indexName = indexName,
         userToken = userTokenOrThrow(),
         timestamp = timestamp,
+        eventObjects = objectIDs,
         queryId = queryId,
-        objectIDs = objectIDs,
         positions = positions
     ))
 
@@ -176,21 +225,46 @@ class Insights internal constructor(
      *
      * @param eventName the event's name, **must not be empty**.
      * @param indexName the index to target.
-     * @param timestamp the time at which the click happened. Defaults to current time.
+     * @param timestamp the time at which the conversion happened. Defaults to current time.
      * @param objectIDs the object(s)' `objectID`.
      */
+    @JvmOverloads
     fun conversion(
         eventName: String,
         indexName: String,
-        timestamp: Long = System.currentTimeMillis(),
-        objectIDs: List<String>? = null
+        filters: EventObjects.Filters,
+        timestamp: Long = System.currentTimeMillis()
     ) = conversion(
         Event.Conversion(
             eventName = eventName,
             indexName = indexName,
             userToken = userTokenOrThrow(),
             timestamp = timestamp,
-            objectIDs = objectIDs
+            eventObjects = filters
+        )
+    )
+
+    /**
+     * Tracks a Conversion event, unrelated to a specific search query.
+     *
+     * @param eventName the event's name, **must not be empty**.
+     * @param indexName the index to target.
+     * @param timestamp the time at which the conversion happened. Defaults to current time.
+     * @param objectIDs the object(s)' `objectID`.
+     */
+    @JvmOverloads
+    fun conversion(
+        eventName: String,
+        indexName: String,
+        objectIDs: EventObjects.IDs,
+        timestamp: Long = System.currentTimeMillis()
+    ) = conversion(
+        Event.Conversion(
+            eventName = eventName,
+            indexName = indexName,
+            userToken = userTokenOrThrow(),
+            timestamp = timestamp,
+            eventObjects = objectIDs
         )
     )
 
@@ -200,14 +274,15 @@ class Insights internal constructor(
      * @param eventName the event's name, **must not be empty**.
      * @param indexName the index to target.
      * @param queryId the related [query's identifier][https://www.algolia.com/doc/guides/insights-and-analytics/click-analytics/?language=php#identifying-the-query-result-position].
-     * @param timestamp the time at which the click happened. Defaults to current time.
+     * @param timestamp the time at which the conversion happened. Defaults to current time.
      * @param objectIDs the object(s)' `objectID`.
      */
+    @JvmOverloads
     fun conversionAfterSearch(
         eventName: String,
         indexName: String,
         queryId: String,
-        objectIDs: List<String>,
+        objectIDs: EventObjects.IDs,
         timestamp: Long = System.currentTimeMillis()
     ) = conversion(
         Event.Conversion(
@@ -215,8 +290,8 @@ class Insights internal constructor(
             indexName = indexName,
             userToken = userTokenOrThrow(),
             timestamp = timestamp,
-            queryId = queryId,
-            objectIDs = objectIDs
+            eventObjects = objectIDs,
+            queryId = queryId
         )
     )
 
@@ -235,7 +310,6 @@ class Insights internal constructor(
      */
     fun conversion(event: Event.Conversion) = track(event)
 
-
     /**
      * Method for tracking an event.
      * For a complete description of events see our [documentation][https://www.algolia.com/doc/rest-api/insights/?language=android#push-events].
@@ -253,6 +327,8 @@ class Insights internal constructor(
             }
         }
     }
+
+    // endregion
 
     override fun toString(): String {
         return "Insights(indexName='$indexName', webService=$webService)"

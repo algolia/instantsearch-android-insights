@@ -9,5 +9,6 @@ enum class EventKey(val key: String) {
     Timestamp("timestamp"),
     QueryId("queryID"),
     ObjectIds("objectIDs"),
-    Positions("positions")
+    Positions("positions"),
+    Filters("filters")
 }

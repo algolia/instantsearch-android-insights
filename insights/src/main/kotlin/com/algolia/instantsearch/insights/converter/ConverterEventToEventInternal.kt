@@ -1,9 +1,6 @@
 package com.algolia.instantsearch.insights.converter
 
-import com.algolia.instantsearch.insights.event.Event
-import com.algolia.instantsearch.insights.event.EventInternal
-import com.algolia.instantsearch.insights.event.EventKey
-import com.algolia.instantsearch.insights.event.EventType
+import com.algolia.instantsearch.insights.event.*
 
 
 internal object ConverterEventToEventInternal : Converter<Event, EventInternal> {
@@ -17,39 +14,48 @@ internal object ConverterEventToEventInternal : Converter<Event, EventInternal> 
     }
 
     private fun Event.Click.toEventInternal(): EventInternal {
-        return mapOf(
+        return listOfNotNull(
             EventKey.EventType.key to EventType.Click.key,
             EventKey.EventName.key to eventName,
             EventKey.IndexName.key to indexName,
             EventKey.Timestamp.key to timestamp,
             EventKey.QueryId.key to queryId,
             EventKey.UserToken.key to userToken,
-            EventKey.ObjectIds.key to objectIDs,
-            EventKey.Positions.key to positions
-        )
+            EventKey.Positions.key to positions,
+            objectIDsOrNull(eventObjects),
+            filtersOrNull(eventObjects)
+        ).toMap()
     }
 
     private fun Event.Conversion.toEventInternal(): EventInternal {
-        return mapOf(
+        return listOfNotNull(
             EventKey.EventType.key to EventType.Conversion.key,
             EventKey.EventName.key to eventName,
             EventKey.IndexName.key to indexName,
             EventKey.Timestamp.key to timestamp,
             EventKey.QueryId.key to queryId,
             EventKey.UserToken.key to userToken,
-            EventKey.ObjectIds.key to objectIDs
-        )
+            objectIDsOrNull(eventObjects),
+            filtersOrNull(eventObjects)
+        ).toMap()
     }
 
     private fun Event.View.toEventInternal(): EventInternal {
-        return mapOf(
+        return listOfNotNull(
             EventKey.EventType.key to EventType.View.key,
             EventKey.EventName.key to eventName,
             EventKey.IndexName.key to indexName,
             EventKey.Timestamp.key to timestamp,
             EventKey.QueryId.key to queryId,
             EventKey.UserToken.key to userToken,
-            EventKey.ObjectIds.key to objectIDs
-        )
+            objectIDsOrNull(eventObjects),
+            filtersOrNull(eventObjects)
+        ).toMap()
     }
+
+    private fun objectIDsOrNull(eventObjects: EventObjects) =
+        if (eventObjects is EventObjects.IDs) EventKey.ObjectIds.key to eventObjects.list else null
+
+    private fun filtersOrNull(eventObjects: EventObjects) =
+        if (eventObjects is EventObjects.Filters) EventKey.Filters.key to eventObjects.list else null
 }

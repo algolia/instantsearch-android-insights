@@ -8,8 +8,8 @@ sealed class Event {
         val indexName: String,
         val userToken: String,
         val timestamp: Long,
+        val eventObjects: EventObjects,
         val queryId: String? = null,
-        val objectIDs: List<String>? = null,
         val positions: List<Int>? = null
     ) : Event()
 
@@ -18,8 +18,8 @@ sealed class Event {
         val indexName: String,
         val userToken: String,
         val timestamp: Long,
-        val queryId: String? = null,
-        val objectIDs: List<String>? = null
+        val eventObjects: EventObjects,
+        val queryId: String? = null
     ) : Event()
 
     data class Conversion(
@@ -27,7 +27,7 @@ sealed class Event {
         val indexName: String,
         val userToken: String,
         val timestamp: Long,
-        val queryId: String? = null,
-        val objectIDs: List<String>? = null
+        val eventObjects: EventObjects,
+        val queryId: String? = null
     ) : Event()
 }
