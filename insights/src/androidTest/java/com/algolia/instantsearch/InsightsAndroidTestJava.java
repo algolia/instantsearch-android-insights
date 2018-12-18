@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -36,7 +37,8 @@ public class InsightsAndroidTestJava {
     @Test
     public void testInitShouldWork() {
         Insights insights = Insights.register(context, "testApp", "testKey", "index", configuration);
-        Insights insightsShared = Insights.shared("index");
+        Insights insightsShared = Insights.shared();
+        assertNotNull("shared Insights should have been registered", insightsShared);
         Event.Click click = new Event.Click("", "", "", 0,
                 new EventObjects.IDs(), "", new ArrayList<Integer>());
         assertEquals(insights, insightsShared);

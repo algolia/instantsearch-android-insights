@@ -81,32 +81,32 @@ Insights.shared("indexName").viewed("eventName", "indexName", new EventObjects.F
 
 **Kotlin**
 ```kotlin
-Insights.shared("indexName").clicked("eventName", "indexName", EventObjects.IDs("objectID1", "objectID2"))
-Insights.shared("indexName").clicked("eventName", "indexName", EventObjects.Filters("foo:bar", "foo:baz"))
-Insights.shared("indexName").clickedAfterSearch("eventName", "indexName", "queryID", EventObjects.IDs("objectID1", "objectID2"), listOf(0, 3))
+Insights.shared?.clicked("eventName", "indexName", EventObjects.IDs("objectID1", "objectID2"))
+Insights.shared?.clicked("eventName", "indexName", EventObjects.Filters("foo:bar", "foo:baz"))
+Insights.shared?.clickedAfterSearch("eventName", "indexName", "queryID", EventObjects.IDs("objectID1", "objectID2"), listOf(0, 3))
 ```
 
 **Java**
 ```java
-Insights.shared("indexName").clicked("eventName", "indexName", new EventObjects.IDs("objectID1", "objectID2"));
-Insights.shared("indexName").clicked("eventName", "indexName", new EventObjects.Filters("foo:bar", "foo:baz"));
-Insights.shared("indexName").clickedAfterSearch("eventName", "indexName", "queryID", new EventObjects.IDs("objectID1", "objectID2"), Arrays.asList(0, 3));
+Insights.shared().clicked("eventName", "indexName", new EventObjects.IDs("objectID1", "objectID2"));
+Insights.shared().clicked("eventName", "indexName", new EventObjects.Filters("foo:bar", "foo:baz"));
+Insights.shared().clickedAfterSearch("eventName", "indexName", "queryID", new EventObjects.IDs("objectID1", "objectID2"), Arrays.asList(0, 3));
 ```
 
 #### Conversion events
 
 **Kotlin**
 ```kotlin
-Insights.shared("indexName").converted("eventName", "indexName", EventObjects.IDs("objectID1", "objectID2"))
-Insights.shared("indexName").converted("eventName", "indexName", EventObjects.Filters("foo:bar", "foo:baz"))
-Insights.shared("indexName").convertedAfterSearch("eventName", "indexName", "queryID", EventObjects.IDs("objectID1", "objectID2"))
+Insights.shared?.converted("eventName", "indexName", EventObjects.IDs("objectID1", "objectID2"))
+Insights.shared?.converted("eventName", "indexName", EventObjects.Filters("foo:bar", "foo:baz"))
+Insights.shared?.convertedAfterSearch("eventName", "indexName", "queryID", EventObjects.IDs("objectID1", "objectID2"))
 ```
 
 **Java**
 ```java
-Insights.shared("indexName").converted("eventName", "indexName", new EventObjects.IDs("objectID1", "objectID2"));
-Insights.shared("indexName").converted("eventName", "indexName", new EventObjects.Filters("foo:bar", "foo:baz"));
-Insights.shared("indexName").convertedAfterSearch("eventName", "indexName", "queryID", new EventObjects.IDs("objectID1", "objectID2"));
+Insights.shared().converted("eventName", "indexName", new EventObjects.IDs("objectID1", "objectID2"));
+Insights.shared().converted("eventName", "indexName", new EventObjects.Filters("foo:bar", "foo:baz"));
+Insights.shared().convertedAfterSearch("eventName", "indexName", "queryID", new EventObjects.IDs("objectID1", "objectID2"));
 ```
 
 ### Event Batching 
@@ -114,12 +114,12 @@ By default, events are only sent by batches of 10. You can customize this settin
 
 **Kotlin**
 ```kotlin
-Insights.shared(indexName ="indexName").minBatchSize = 1 // Sends each event as soon as it is tracked
+Insights.shared?.minBatchSize = 1 // Sends each event as soon as it is tracked
 ```
 
 **Java**
 ```java
-Insights.shared(indexName ="indexName").setMinBatchSize(1); // Sends each event as soon as it is tracked
+Insights.shared().setMinBatchSize(1); // Sends each event as soon as it is tracked
 ```
 
 ### User tracking
@@ -140,10 +140,10 @@ val configuration = Insights.Configuration(
 Insights.register("testApp", "testKey", "indexName", configuration)
 
 // Application userToken, overrides global default
-Insights.shared("testApp").userToken = "bar"
+Insights.shared?.userToken = "bar"
 
 // Event usertoken, overrides previous defaults
-Insights.shared("asd").clicked(Event.clicked("eventName", "indexName", "userToken", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2")))
+Insights.shared?.clicked(Event.clicked("eventName", "indexName", "userToken", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2")))
 ```
 
 **Java**
@@ -153,10 +153,10 @@ Insights.Configuration configuration = new Insights.Configuration(5000, 5000, "f
 Insights.register(context,  "testApp", "testKey",  "indexName", configuration);
 
 // Application userToken, overrides global default
-Insights.shared("testApp").setUserToken("bar");
+Insights.shared().setUserToken("bar");
 
 // Event userToken, overrides previous defaults
-Insights.shared("asd").clicked(new Event.clicked("eventName", "indexName", "userToken", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2")));
+Insights.shared().clicked(new Event.clicked("eventName", "indexName", "userToken", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2")));
 ```
 
 ### User opt-out
@@ -164,12 +164,12 @@ You should allow users to opt-out of tracking anytime they want to. When they re
 
 **Kotlin**
 ```kotlin
-Insights.shared("testApp").enabled = false
+Insights.shared?.enabled = false
 ```
 
 **Java**
 ```java
-Insights.shared("testApp").setEnabled(false);
+Insights.shared().setEnabled(false);
 ```
 
 
@@ -178,7 +178,11 @@ Insights.shared("testApp").setEnabled(false);
 In case you want to check if the metric was sent correctly, you need to enable the logging first
 
 ```kotlin
-Insights.shared(indexName ="indexName").loggingEnabled = true
+Insights.shared?.loggingEnabled = true
+```
+
+```java
+Insights.shared().setLoggingEnabled(true)
 ```
 
 After you enabled it, you can check the output for success messages or errors

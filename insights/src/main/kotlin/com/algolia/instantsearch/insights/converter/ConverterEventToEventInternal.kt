@@ -54,8 +54,8 @@ internal object ConverterEventToEventInternal : Converter<Event, EventInternal> 
     }
 
     private fun objectIDsOrNull(eventObjects: EventObjects) =
-        if (eventObjects is EventObjects.IDs) EventKey.ObjectIds.key to eventObjects.list else null
+        if (eventObjects is EventObjects.IDs) EventKey.ObjectIds.key to eventObjects.values else null
 
     private fun filtersOrNull(eventObjects: EventObjects) =
-        if (eventObjects is EventObjects.Filters) EventKey.Filters.key to eventObjects.list else null
+        if (eventObjects is EventObjects.Filters) EventKey.Filters.key to eventObjects.values else null
 }

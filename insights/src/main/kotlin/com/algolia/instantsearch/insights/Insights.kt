@@ -371,6 +371,7 @@ class Insights internal constructor(
             previousInsights?.let {
                 System.out.println("Registering new Insights for indexName $indexName. Previous instance: $insights")
             }
+            shared = insights
             return insights
         }
 
@@ -387,5 +388,13 @@ class Insights internal constructor(
             return insightsMap[indexName]
                 ?: throw InsightsException.IndexNotRegistered()
         }
+
+        /**
+         * Access the latest registered `Insights` instance, if any.
+         */
+        @JvmStatic
+        var shared: Insights? = null
+            @JvmName("shared")
+            get() = if (field != null) field else throw InsightsException.IndexNotRegistered()
     }
 }
