@@ -106,19 +106,19 @@ internal class InsightsTest {
             override fun startOneTimeUpload() {
                 val trackedEvents = database.read()
                 assertEquals(5, trackedEvents.size, "Five events should have been tracked")
-                assertTrue(trackedEvents.contains(click), "The click event should have been tracked through click and clickAfterSearch")
-                assertTrue(trackedEvents.contains(click), "The conversion event should have been tracked through conversion and conversionAfterSearch")
-                assertTrue(trackedEvents.contains(click), "The view event should have been tracked through view")
+                assertTrue(trackedEvents.contains(click), "The clicked event should have been tracked through clicked and clickedAfterSearch")
+                assertTrue(trackedEvents.contains(click), "The converted event should have been tracked through converted and convertedAfterSearch")
+                assertTrue(trackedEvents.contains(click), "The viewed event should have been tracked through viewed")
             }
         }
         val insights = Insights(indexName, uploader, database, webService)
-        insights.userToken = "foo"//TODO: git stash apply to use default UUID token
+        insights.userToken = "foo" //TODO: git stash apply to use default UUID token
 
-        insights.click(eventClick.eventName, eventClick.indexName, eventClick.eventObjects as EventObjects.IDs)
-        insights.clickAfterSearch(eventClick.eventName, eventClick.indexName, eventClick.queryId!!, eventClick.eventObjects as EventObjects.IDs, eventClick.positions!!)
-        insights.conversion(eventConversion.eventName, eventConversion.indexName, eventClick.eventObjects as EventObjects.IDs)
-        insights.conversionAfterSearch(eventConversion.eventName, eventConversion.indexName, eventConversion.queryId!!, eventClick.eventObjects as EventObjects.IDs)
-        insights.view(eventView.eventName, eventView.indexName, eventView.eventObjects as EventObjects.Filters)
+        insights.clicked(eventClick.eventName, eventClick.indexName, eventClick.eventObjects as EventObjects.IDs)
+        insights.clickedAfterSearch(eventClick.eventName, eventClick.indexName, eventClick.queryId!!, eventClick.eventObjects as EventObjects.IDs, eventClick.positions!!)
+        insights.converted(eventConversion.eventName, eventConversion.indexName, eventClick.eventObjects as EventObjects.IDs)
+        insights.convertedAfterSearch(eventConversion.eventName, eventConversion.indexName, eventConversion.queryId!!, eventClick.eventObjects as EventObjects.IDs)
+        insights.viewed(eventView.eventName, eventView.indexName, eventView.eventObjects as EventObjects.Filters)
     }
 
     @Test
@@ -137,9 +137,9 @@ internal class InsightsTest {
         insights.minBatchSize = 1 // Given an Insights that uploads every event
 
         insights.enabled = false // When a firstEvent is sent with insight disabled
-        insights.click(eventClick)
+        insights.clicked(eventClick)
         insights.enabled = true // And a secondEvent sent with insight enabled
-        insights.conversion(eventConversion)
+        insights.converted(eventConversion)
     }
 
     @Test
@@ -208,7 +208,7 @@ internal class InsightsTest {
         insights.userToken = userToken // Given an userToken
 
         // When adding events without explicitly-provided userToken
-        insights.clickAfterSearch(
+        insights.clickedAfterSearch(
             eventName = eventA,
             indexName = indexName,
             queryId = queryId,
@@ -216,13 +216,13 @@ internal class InsightsTest {
             positions = positions,
             timestamp = timestamp
         )
-        insights.click(
+        insights.clicked(
             eventName = eventA,
             indexName = indexName,
             timestamp = timestamp,
             objectIDs = objectIDs
         )
-        insights.conversionAfterSearch(
+        insights.convertedAfterSearch(
             eventName = eventB,
             indexName = indexName,
             timestamp = timestamp,
@@ -230,7 +230,7 @@ internal class InsightsTest {
             objectIDs = objectIDs
         )
         webService.code = 200 // Given a working web service
-        insights.view(eventView)
+        insights.viewed(eventView)
     }
 
     inner class IntegrationEventUploader(

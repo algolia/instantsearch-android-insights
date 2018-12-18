@@ -29,7 +29,7 @@ import com.algolia.instantsearch.insights.webservice.WebServiceHttp
  *      "indexName": indexName,
  *      "timestamp": Date.timeIntervalBetween1970AndReferenceDate
  *   )
- *   Insights.shared(indexName = indexName).click(params = data)
+ *   Insights.shared(indexName = indexName).clicked(params = data)
  * ```
  */
 class Insights internal constructor(
@@ -104,12 +104,12 @@ class Insights internal constructor(
      * @param timestamp the time at which the view happened. Defaults to current time.
      */
     @JvmOverloads
-    fun view(
+    fun viewed(
         eventName: String,
         indexName: String,
         objectIDs: EventObjects.IDs,
         timestamp: Long = System.currentTimeMillis()
-    ) = view(
+    ) = viewed(
         Event.View(
             eventName = eventName,
             indexName = indexName,
@@ -128,12 +128,12 @@ class Insights internal constructor(
      * @param filters the clicked filter(s).
      */
     @JvmOverloads
-    fun view(
+    fun viewed(
         eventName: String,
         indexName: String,
         filters: EventObjects.Filters,
         timestamp: Long = System.currentTimeMillis()
-    ) = view(
+    ) = viewed(
         Event.View(
             eventName = eventName,
             indexName = indexName,
@@ -152,12 +152,12 @@ class Insights internal constructor(
      * @param objectIDs the clicked object(s)' `objectID`.
      */
     @JvmOverloads
-    fun click(
+    fun clicked(
         eventName: String,
         indexName: String,
         objectIDs: EventObjects.IDs,
         timestamp: Long = System.currentTimeMillis()
-    ) = click(
+    ) = clicked(
         Event.Click(
             eventName = eventName,
             indexName = indexName,
@@ -177,12 +177,12 @@ class Insights internal constructor(
      * @param filters the clicked filter(s).
      */
     @JvmOverloads
-    fun click(
+    fun clicked(
         eventName: String,
         indexName: String,
         filters: EventObjects.Filters,
         timestamp: Long = System.currentTimeMillis()
-    ) = click(
+    ) = clicked(
         Event.Click(
             eventName = eventName,
             indexName = indexName,
@@ -203,14 +203,14 @@ class Insights internal constructor(
      * @param positions the clicked object(s)' position(s).
      */
     @JvmOverloads
-    fun clickAfterSearch(
+    fun clickedAfterSearch(
         eventName: String,
         indexName: String,
         queryId: String,
         objectIDs: EventObjects.IDs,
         positions: List<Int>,
         timestamp: Long = System.currentTimeMillis()
-    ) = click(Event.Click(
+    ) = clicked(Event.Click(
         eventName = eventName,
         indexName = indexName,
         userToken = userTokenOrThrow(),
@@ -229,12 +229,12 @@ class Insights internal constructor(
      * @param objectIDs the object(s)' `objectID`.
      */
     @JvmOverloads
-    fun conversion(
+    fun converted(
         eventName: String,
         indexName: String,
         filters: EventObjects.Filters,
         timestamp: Long = System.currentTimeMillis()
-    ) = conversion(
+    ) = converted(
         Event.Conversion(
             eventName = eventName,
             indexName = indexName,
@@ -253,12 +253,12 @@ class Insights internal constructor(
      * @param objectIDs the object(s)' `objectID`.
      */
     @JvmOverloads
-    fun conversion(
+    fun converted(
         eventName: String,
         indexName: String,
         objectIDs: EventObjects.IDs,
         timestamp: Long = System.currentTimeMillis()
-    ) = conversion(
+    ) = converted(
         Event.Conversion(
             eventName = eventName,
             indexName = indexName,
@@ -278,13 +278,13 @@ class Insights internal constructor(
      * @param objectIDs the object(s)' `objectID`.
      */
     @JvmOverloads
-    fun conversionAfterSearch(
+    fun convertedAfterSearch(
         eventName: String,
         indexName: String,
         queryId: String,
         objectIDs: EventObjects.IDs,
         timestamp: Long = System.currentTimeMillis()
-    ) = conversion(
+    ) = converted(
         Event.Conversion(
             eventName = eventName,
             indexName = indexName,
@@ -298,17 +298,17 @@ class Insights internal constructor(
     /**
      * Tracks a View event constructed manually.
      */
-    fun view(event: Event.View) = track(event)
+    fun viewed(event: Event.View) = track(event)
 
     /**
      * Tracks a Click event constructed manually.
      */
-    fun click(event: Event.Click) = track(event)
+    fun clicked(event: Event.Click) = track(event)
 
     /**
      * Tracks a Conversion event, constructed manually.
      */
-    fun conversion(event: Event.Conversion) = track(event)
+    fun converted(event: Event.Conversion) = track(event)
 
     /**
      * Method for tracking an event.

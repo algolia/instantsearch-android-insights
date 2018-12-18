@@ -13,7 +13,8 @@ sealed class InsightsException(override val message: String? = null) : Exception
     class IndexNotRegistered : InsightsException("You need to call Insights.register before Insights.shared")
 
     /**
-     * Will be thrown when you call [`insights.{search,personalization}.{view,click,conversion}()`][Insights.search] without [setting an userToken][Insights.userToken] first.
+     * Will be thrown when you call [`insights.{viewed,clicked,converted}{AfterSearch}()`][Insights.viewed] without [setting an userToken][Insights.userToken] first.
      */
     class NoUserToken : InsightsException("You need to set Insights.userToken first.")
+    //TODO: Remove exception once default userToken
 }
