@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 
@@ -37,8 +38,7 @@ public class InsightsAndroidTestJava {
         Insights insights = Insights.register(context, "testApp", "testKey", "index", configuration);
         Insights insightsShared = Insights.shared("index");
         Event.Click click = new Event.Click("", "", "", 0,
-                new EventObjects.IDs(new ArrayList<String>()), "", new ArrayList<Integer>());
-
+                new EventObjects.IDs(), "", new ArrayList<Integer>());
         assertEquals(insights, insightsShared);
         insightsShared.track(click);
     }

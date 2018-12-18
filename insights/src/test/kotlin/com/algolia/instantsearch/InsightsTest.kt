@@ -30,8 +30,8 @@ internal class InsightsTest {
     private val queryId = "6de2f7eaa537fa93d8f8f05b927953b1"
     private val userToken = "foobarbaz"
     private val positions = listOf(1)
-    private val objectIDs = EventObjects.IDs(listOf("54675051"))
-    private val filters = EventObjects.Filters(listOf("foo:bar"))
+    private val objectIDs = EventObjects.IDs("54675051")
+    private val filters = EventObjects.Filters("foo:bar")
     private val timestamp = System.currentTimeMillis()
     private val configuration = Insights.Configuration(
         connectTimeoutInMilliseconds = 5000,

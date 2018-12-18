@@ -124,8 +124,8 @@ class Insights internal constructor(
      *
      * @param eventName the event's name, **must not be empty**.
      * @param indexName the index to target.
-     * @param timestamp the time at which the view happened. Defaults to current time.
      * @param filters the clicked filter(s).
+     * @param timestamp the time at which the view happened. Defaults to current time.
      */
     @JvmOverloads
     fun viewed(
@@ -148,8 +148,8 @@ class Insights internal constructor(
      *
      * @param eventName the event's name, **must not be empty**.
      * @param indexName the index to target.
-     * @param timestamp the time at which the click happened. Defaults to current time.
      * @param objectIDs the clicked object(s)' `objectID`.
+     * @param timestamp the time at which the click happened. Defaults to current time.
      */
     @JvmOverloads
     fun clicked(
@@ -173,8 +173,8 @@ class Insights internal constructor(
      *
      * @param eventName the event's name, **must not be empty**.
      * @param indexName the index to target.
-     * @param timestamp the time at which the click happened. Defaults to current time.
      * @param filters the clicked filter(s).
+     * @param timestamp the time at which the click happened. Defaults to current time.
      */
     @JvmOverloads
     fun clicked(
@@ -198,9 +198,9 @@ class Insights internal constructor(
      * @param eventName the event's name, **must not be empty**.
      * @param indexName the index to target.
      * @param queryId the related [query's identifier][https://www.algolia.com/doc/guides/insights-and-analytics/click-analytics/?language=php#identifying-the-query-result-position].
-     * @param timestamp the time at which the click happened. Defaults to current time.
      * @param objectIDs the object(s)' `objectID`.
      * @param positions the clicked object(s)' position(s).
+     * @param timestamp the time at which the click happened. Defaults to current time.
      */
     @JvmOverloads
     fun clickedAfterSearch(
@@ -226,7 +226,7 @@ class Insights internal constructor(
      * @param eventName the event's name, **must not be empty**.
      * @param indexName the index to target.
      * @param timestamp the time at which the conversion happened. Defaults to current time.
-     * @param objectIDs the object(s)' `objectID`.
+     * @param filters the converted filter(s).
      */
     @JvmOverloads
     fun converted(
@@ -249,8 +249,8 @@ class Insights internal constructor(
      *
      * @param eventName the event's name, **must not be empty**.
      * @param indexName the index to target.
-     * @param timestamp the time at which the conversion happened. Defaults to current time.
      * @param objectIDs the object(s)' `objectID`.
+     * @param timestamp the time at which the conversion happened. Defaults to current time.
      */
     @JvmOverloads
     fun converted(
@@ -274,8 +274,8 @@ class Insights internal constructor(
      * @param eventName the event's name, **must not be empty**.
      * @param indexName the index to target.
      * @param queryId the related [query's identifier][https://www.algolia.com/doc/guides/insights-and-analytics/click-analytics/?language=php#identifying-the-query-result-position].
-     * @param timestamp the time at which the conversion happened. Defaults to current time.
      * @param objectIDs the object(s)' `objectID`.
+     * @param timestamp the time at which the conversion happened. Defaults to current time.
      */
     @JvmOverloads
     fun convertedAfterSearch(
