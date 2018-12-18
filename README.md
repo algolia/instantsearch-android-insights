@@ -61,36 +61,52 @@ Insights.register(context,  "testApp", "testKey",  "indexName", configuration);
 
 Once that you registered your **index** with the **Application ID** and the **API Key** you can easily start sending metrics
 
-#### Search events
+
+#### View events
 
 **Kotlin**
 ```kotlin
-Insights.shared("indexName").search.click("eventName", "indexName", System.currentTimeMillis(), "queryId", listOf("objectID1", "objectID2"))
+Insights.shared("indexName").viewed("eventName", "indexName", EventObjects.IDs("objectID1", "objectID2"))
+Insights.shared("indexName").viewed("eventName", "indexName", EventObjects.Filters("foo:bar", "foo:baz"))
 ```
 
 **Java**
 ```java
-Insights.shared("indexName").search().click("eventName", "indexName", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2"));
+Insights.shared("indexName").viewed("eventName", "indexName", new EventObjects.IDs("objectID1", "objectID2"));
+Insights.shared("indexName").viewed("eventName", "indexName", new EventObjects.Filters("foo:bar", "foo:baz"));
+
 ```
 
-#### Personalization events
+#### Click events
 
 **Kotlin**
 ```kotlin
-Insights.shared("indexName").personalization.view("eventName", "indexName", System.currentTimeMillis(), "queryId", listOf("objectID1", "objectID2"), listOf(1, 2))
-
-Insights.shared("indexName").personalization.click("eventName", "indexName", System.currentTimeMillis(), "queryId", listOf("objectID1", "objectID2"))
-
-Insights.shared("indexName").personalization.conversion("eventName", "indexName", System.currentTimeMillis(), "queryId", listOf("objectID1", "objectID2"))
+Insights.shared("indexName").clicked("eventName", "indexName", EventObjects.IDs("objectID1", "objectID2"))
+Insights.shared("indexName").clicked("eventName", "indexName", EventObjects.Filters("foo:bar", "foo:baz"))
+Insights.shared("indexName").clickedAfterSearch("eventName", "indexName", "queryID", EventObjects.IDs("objectID1", "objectID2"), listOf(0, 3))
 ```
 
 **Java**
 ```java
-Insights.shared("indexName").personalization().view("eventName", "indexName", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2"), Arrays.asList(1, 2));
+Insights.shared("indexName").clicked("eventName", "indexName", new EventObjects.IDs("objectID1", "objectID2"));
+Insights.shared("indexName").clicked("eventName", "indexName", new EventObjects.Filters("foo:bar", "foo:baz"));
+Insights.shared("indexName").clickedAfterSearch("eventName", "indexName", "queryID", new EventObjects.IDs("objectID1", "objectID2"), Arrays.asList(0, 3));
+```
 
-Insights.shared("indexName").personalization().click("eventName", "indexName", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2"));
+#### Conversion events
 
-Insights.shared("indexName").personalization().conversion("eventName", "indexName", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2"));
+**Kotlin**
+```kotlin
+Insights.shared("indexName").converted("eventName", "indexName", EventObjects.IDs("objectID1", "objectID2"))
+Insights.shared("indexName").converted("eventName", "indexName", EventObjects.Filters("foo:bar", "foo:baz"))
+Insights.shared("indexName").convertedAfterSearch("eventName", "indexName", "queryID", EventObjects.IDs("objectID1", "objectID2"))
+```
+
+**Java**
+```java
+Insights.shared("indexName").converted("eventName", "indexName", new EventObjects.IDs("objectID1", "objectID2"));
+Insights.shared("indexName").converted("eventName", "indexName", new EventObjects.Filters("foo:bar", "foo:baz"));
+Insights.shared("indexName").convertedAfterSearch("eventName", "indexName", "queryID", new EventObjects.IDs("objectID1", "objectID2"));
 ```
 
 ### Event Batching 
@@ -127,7 +143,7 @@ Insights.register("testApp", "testKey", "indexName", configuration)
 Insights.shared("testApp").userToken = "bar"
 
 // Event usertoken, overrides previous defaults
-Insights.shared("asd").search.click(Event.Click("eventName", "indexName", "userToken", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2")))
+Insights.shared("asd").clicked(Event.clicked("eventName", "indexName", "userToken", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2")))
 ```
 
 **Java**
@@ -140,7 +156,7 @@ Insights.register(context,  "testApp", "testKey",  "indexName", configuration);
 Insights.shared("testApp").setUserToken("bar");
 
 // Event userToken, overrides previous defaults
-Insights.shared("asd").search().click(new Event.Click("eventName", "indexName", "userToken", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2")));
+Insights.shared("asd").clicked(new Event.clicked("eventName", "indexName", "userToken", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2")));
 ```
 
 ### User opt-out
@@ -169,7 +185,7 @@ After you enabled it, you can check the output for success messages or errors
 
 ```
 // Success
-D/Algolia Insights - indexName Sync succeded for Click(params: {"position": 2, "queryID": 74e382ecaf889f9f2a3df0d4a9742dfb,"objectID": 85725102})
+D/Algolia Insights - indexName Sync succeeded for Click(params: {"position": 2, "queryID": 74e382ecaf889f9f2a3df0d4a9742dfb,"objectID": 85725102})
 
 // Error
 D/Algolia Insights - indexName The objectID field is missing (Code: 422)
