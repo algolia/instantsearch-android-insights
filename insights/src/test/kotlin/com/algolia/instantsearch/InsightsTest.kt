@@ -5,7 +5,10 @@ import com.algolia.instantsearch.insights.Insights
 import com.algolia.instantsearch.insights.converter.ConverterEventInternalToString
 import com.algolia.instantsearch.insights.converter.ConverterEventToEventInternal
 import com.algolia.instantsearch.insights.converter.ConverterStringToEventInternal
-import com.algolia.instantsearch.insights.event.*
+import com.algolia.instantsearch.insights.event.Event
+import com.algolia.instantsearch.insights.event.EventInternal
+import com.algolia.instantsearch.insights.event.EventObjects
+import com.algolia.instantsearch.insights.event.EventUploader
 import com.algolia.instantsearch.insights.webservice.WebService
 import com.algolia.instantsearch.insights.webservice.WebServiceHttp
 import com.algolia.instantsearch.insights.webservice.uploadEvents
@@ -114,11 +117,11 @@ internal class InsightsTest {
         val insights = Insights(indexName, uploader, database, webService)
         insights.userToken = "foo" //TODO: git stash apply to use default UUID token
 
-        insights.clicked(eventClick.eventName, eventClick.indexName, eventClick.eventObjects as EventObjects.IDs)
-        insights.clickedAfterSearch(eventClick.eventName, eventClick.indexName, eventClick.queryId!!, eventClick.eventObjects as EventObjects.IDs, eventClick.positions!!)
-        insights.converted(eventConversion.eventName, eventConversion.indexName, eventClick.eventObjects as EventObjects.IDs)
-        insights.convertedAfterSearch(eventConversion.eventName, eventConversion.indexName, eventConversion.queryId!!, eventClick.eventObjects as EventObjects.IDs)
-        insights.viewed(eventView.eventName, eventView.indexName, eventView.eventObjects as EventObjects.Filters)
+        insights.clicked(eventClick.eventName, eventClick.eventObjects as EventObjects.IDs)
+        insights.clickedAfterSearch(eventClick.eventName, eventClick.queryId!!, eventClick.eventObjects as EventObjects.IDs, eventClick.positions!!)
+        insights.converted(eventConversion.eventName, eventClick.eventObjects as EventObjects.IDs)
+        insights.convertedAfterSearch(eventConversion.eventName, eventConversion.queryId!!, eventClick.eventObjects as EventObjects.IDs)
+        insights.viewed(eventView.eventName, eventView.eventObjects as EventObjects.Filters)
     }
 
     @Test
@@ -210,7 +213,6 @@ internal class InsightsTest {
         // When adding events without explicitly-provided userToken
         insights.clickedAfterSearch(
             eventName = eventA,
-            indexName = indexName,
             queryId = queryId,
             objectIDs = objectIDs,
             positions = positions,
@@ -218,13 +220,11 @@ internal class InsightsTest {
         )
         insights.clicked(
             eventName = eventA,
-            indexName = indexName,
             timestamp = timestamp,
             objectIDs = objectIDs
         )
         insights.convertedAfterSearch(
             eventName = eventB,
-            indexName = indexName,
             timestamp = timestamp,
             queryId = queryId,
             objectIDs = objectIDs
