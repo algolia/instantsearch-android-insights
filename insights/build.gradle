@@ -106,6 +106,8 @@ dependencies {
     implementation dependency_jvm.kotlin_stdlib
     implementation dependency_android.androidJob
 
+    implementation dependency_android.annotations
+
     androidTestImplementation dependency_android.espresso
     androidTestImplementation dependency_jvm.kotlin_test
     androidTestImplementation dependency_jvm.kotlin_test_junit
