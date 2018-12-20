@@ -5,7 +5,6 @@ sealed class Event {
 
     data class Click(
         val eventName: String,
-        val indexName: String,
         val userToken: String,
         val timestamp: Long,
         val eventObjects: EventObjects,
@@ -15,7 +14,6 @@ sealed class Event {
 
     data class View(
         val eventName: String,
-        val indexName: String,
         val userToken: String,
         val timestamp: Long,
         val eventObjects: EventObjects,
@@ -24,7 +22,6 @@ sealed class Event {
 
     data class Conversion(
         val eventName: String,
-        val indexName: String,
         val userToken: String,
         val timestamp: Long,
         val eventObjects: EventObjects,

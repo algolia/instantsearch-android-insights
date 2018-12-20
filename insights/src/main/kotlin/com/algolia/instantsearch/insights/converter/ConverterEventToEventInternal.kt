@@ -3,17 +3,19 @@ package com.algolia.instantsearch.insights.converter
 import com.algolia.instantsearch.insights.event.*
 
 
-internal object ConverterEventToEventInternal : Converter<Event, EventInternal> {
+internal object ConverterEventToEventInternal : Converter<Pair<Event, String>, EventInternal> {
 
-    override fun convert(input: Event): EventInternal {
-        return when (input) {
-            is Event.View -> input.toEventInternal()
-            is Event.Conversion -> input.toEventInternal()
-            is Event.Click -> input.toEventInternal()
+    override fun convert(input: Pair<Event, String>): EventInternal {
+        val (event, indexName) = input
+
+        return when (event) {
+            is Event.View -> event.toEventInternal(indexName)
+            is Event.Conversion -> event.toEventInternal(indexName)
+            is Event.Click -> event.toEventInternal(indexName)
         }
     }
 
-    private fun Event.Click.toEventInternal(): EventInternal {
+    private fun Event.Click.toEventInternal(indexName: String): EventInternal {
         return listOfNotNull(
             EventKey.EventType.key to EventType.Click.key,
             EventKey.EventName.key to eventName,
@@ -27,7 +29,7 @@ internal object ConverterEventToEventInternal : Converter<Event, EventInternal> 
         ).toMap()
     }
 
-    private fun Event.Conversion.toEventInternal(): EventInternal {
+    private fun Event.Conversion.toEventInternal(indexName: String): EventInternal {
         return listOfNotNull(
             EventKey.EventType.key to EventType.Conversion.key,
             EventKey.EventName.key to eventName,
@@ -40,7 +42,7 @@ internal object ConverterEventToEventInternal : Converter<Event, EventInternal> 
         ).toMap()
     }
 
-    private fun Event.View.toEventInternal(): EventInternal {
+    private fun Event.View.toEventInternal(indexName: String): EventInternal {
         return listOfNotNull(
             EventKey.EventType.key to EventType.View.key,
             EventKey.EventName.key to eventName,

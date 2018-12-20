@@ -91,7 +91,6 @@ class Insights internal constructor(
     ) = viewed(
         Event.View(
             eventName = eventName,
-            indexName = indexName,
             userToken = userTokenOrThrow(),
             timestamp = timestamp,
             eventObjects = objectIDs
@@ -113,7 +112,6 @@ class Insights internal constructor(
     ) = viewed(
         Event.View(
             eventName = eventName,
-            indexName = indexName,
             userToken = userTokenOrThrow(),
             timestamp = timestamp,
             eventObjects = filters
@@ -124,7 +122,6 @@ class Insights internal constructor(
      * Tracks a click event, unrelated to a specific search query.
      *
      * @param eventName the event's name, **must not be empty**.
-     * @param indexName the index to target.
      * @param objectIDs the clicked object(s)' `objectID`.
      * @param timestamp the time at which the click happened. Defaults to current time.
      */
@@ -136,7 +133,6 @@ class Insights internal constructor(
     ) = clicked(
         Event.Click(
             eventName = eventName,
-            indexName = indexName,
             userToken = userTokenOrThrow(),
             timestamp = timestamp,
             eventObjects = objectIDs
@@ -159,7 +155,6 @@ class Insights internal constructor(
     ) = clicked(
         Event.Click(
             eventName = eventName,
-            indexName = indexName,
             userToken = userTokenOrThrow(),
             timestamp = timestamp,
             eventObjects = filters
@@ -184,7 +179,6 @@ class Insights internal constructor(
         timestamp: Long = System.currentTimeMillis()
     ) = clicked(Event.Click(
         eventName = eventName,
-        indexName = indexName,
         userToken = userTokenOrThrow(),
         timestamp = timestamp,
         eventObjects = objectIDs,
@@ -207,7 +201,6 @@ class Insights internal constructor(
     ) = converted(
         Event.Conversion(
             eventName = eventName,
-            indexName = indexName,
             userToken = userTokenOrThrow(),
             timestamp = timestamp,
             eventObjects = filters
@@ -229,7 +222,6 @@ class Insights internal constructor(
     ) = converted(
         Event.Conversion(
             eventName = eventName,
-            indexName = indexName,
             userToken = userTokenOrThrow(),
             timestamp = timestamp,
             eventObjects = objectIDs
@@ -253,7 +245,6 @@ class Insights internal constructor(
     ) = converted(
         Event.Conversion(
             eventName = eventName,
-            indexName = indexName,
             userToken = userTokenOrThrow(),
             timestamp = timestamp,
             eventObjects = objectIDs,
@@ -282,7 +273,7 @@ class Insights internal constructor(
      * @param [event] An [Event] that you want to track.
      */
     fun track(event: Event) {
-        track(ConverterEventToEventInternal.convert(event))
+        track(ConverterEventToEventInternal.convert(event to indexName))
     }
 
     private fun track(event: EventInternal) {

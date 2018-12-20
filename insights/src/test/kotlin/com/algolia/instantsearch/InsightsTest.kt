@@ -42,7 +42,6 @@ internal class InsightsTest {
     )
     private val eventClick = Event.Click(
         eventA,
-        indexName,
         userToken,
         timestamp,
         objectIDs,
@@ -51,7 +50,6 @@ internal class InsightsTest {
     )
     private val eventConversion = Event.Conversion(
         eventB,
-        indexName,
         userToken,
         timestamp,
         objectIDs,
@@ -59,15 +57,14 @@ internal class InsightsTest {
     )
     private val eventView = Event.View(
         eventC,
-        indexName,
         userToken,
         timestamp,
         filters,
         queryId
     )
-    private val click = ConverterEventToEventInternal.convert(eventClick)
-    private val conversion = ConverterEventToEventInternal.convert(eventConversion)
-    private val view = ConverterEventToEventInternal.convert(eventView)
+    private val click = ConverterEventToEventInternal.convert(eventClick to indexName)
+    private val conversion = ConverterEventToEventInternal.convert(eventConversion to indexName)
+    private val view = ConverterEventToEventInternal.convert(eventView to indexName)
     private val webService
         get() = WebServiceHttp(
             appId = appId,
@@ -79,7 +76,7 @@ internal class InsightsTest {
 
     @Test
     fun testEventConverters() {
-        val internal = ConverterEventToEventInternal.convert(eventClick)
+        val internal = ConverterEventToEventInternal.convert(eventClick to indexName)
         val string = ConverterEventInternalToString.convert(internal)
         val event = ConverterStringToEventInternal.convert(string)
         assertEquals(internal, event)
@@ -242,13 +239,12 @@ internal class InsightsTest {
         override fun startOneTimeUpload() {
             val clickEventNotForSearch = Event.Click(
                 eventName = eventA,
-                indexName = indexName,
                 userToken = userToken,
                 timestamp = timestamp,
                 eventObjects = objectIDs,
                 positions = null // A Click event not for Search has no positions
             )
-            val clickEventInternal = ConverterEventToEventInternal.convert(clickEventNotForSearch)
+            val clickEventInternal = ConverterEventToEventInternal.convert(clickEventNotForSearch to indexName)
 
             when (count) {
                 0 -> assertEquals(listOf(click), database.read(), "failed 0") // expect added first
