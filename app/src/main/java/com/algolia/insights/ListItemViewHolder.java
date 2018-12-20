@@ -29,7 +29,6 @@ class ListItemViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View view) {
                 Insights.shared(App.indexName).converted(
                         "conversion",
-                        App.indexName,
                         new EventObjects.IDs(item.getObjectId()),
                         System.currentTimeMillis()
                 );
@@ -40,7 +39,6 @@ class ListItemViewHolder extends RecyclerView.ViewHolder {
             public void onClick(View view) {
                 Insights.shared(App.indexName).clicked(
                         "click",
-                        App.indexName,
                         new EventObjects.IDs(item.getObjectId()),
                         System.currentTimeMillis()
                 );
