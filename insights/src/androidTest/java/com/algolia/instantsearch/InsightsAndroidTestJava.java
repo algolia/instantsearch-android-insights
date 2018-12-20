@@ -5,15 +5,18 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.algolia.instantsearch.insights.Insights;
-import com.algolia.instantsearch.insights.InstantSearchInsightsException;
+import com.algolia.instantsearch.insights.InsightsException;
+import com.algolia.instantsearch.insights.event.Event;
+import com.algolia.instantsearch.insights.event.EventObjects;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.Collections;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 
 @RunWith(AndroidJUnit4.class)
@@ -27,17 +30,18 @@ public class InsightsAndroidTestJava {
         try {
             Insights.shared("index");
         } catch (Exception exception) {
-            assertEquals(exception.getClass(), InstantSearchInsightsException.IndexNotRegistered.class);
+            assertEquals(exception.getClass(), InsightsException.IndexNotRegistered.class);
         }
     }
 
     @Test
     public void testInitShouldWork() {
         Insights insights = Insights.register(context, "testApp", "testKey", "index", configuration);
-        Insights insightsShared = Insights.shared("index");
-        Map<String, ?> map = Collections.emptyMap();
-
+        Insights insightsShared = Insights.shared();
+        assertNotNull("shared Insights should have been registered", insightsShared);
+        Event.Click click = new Event.Click("", "", "", 0,
+                new EventObjects.IDs(), "", new ArrayList<Integer>());
         assertEquals(insights, insightsShared);
-        insightsShared.click(map);
+        insightsShared.track(click);
     }
 }

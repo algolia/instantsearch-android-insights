@@ -1,11 +1,33 @@
 package com.algolia.instantsearch.insights.event
 
 
-internal sealed class Event(open val params: Map<String, Any>) {
+sealed class Event {
 
-    data class View(override val params: Map<String, Any>) : Event(params)
+    data class Click(
+        val eventName: String,
+        val indexName: String,
+        val userToken: String,
+        val timestamp: Long,
+        val eventObjects: EventObjects,
+        val queryId: String? = null,
+        val positions: List<Int>? = null
+    ) : Event()
 
-    data class Click(override val params: Map<String, Any>) : Event(params)
+    data class View(
+        val eventName: String,
+        val indexName: String,
+        val userToken: String,
+        val timestamp: Long,
+        val eventObjects: EventObjects,
+        val queryId: String? = null
+    ) : Event()
 
-    data class Conversion(override val params: Map<String, Any>) : Event(params)
+    data class Conversion(
+        val eventName: String,
+        val indexName: String,
+        val userToken: String,
+        val timestamp: Long,
+        val eventObjects: EventObjects,
+        val queryId: String? = null
+    ) : Event()
 }
