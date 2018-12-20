@@ -4,8 +4,6 @@ import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import com.algolia.instantsearch.insights.Insights
 import com.algolia.instantsearch.insights.InstantSearchInsightsException
-import com.algolia.instantsearch.insights.event.EventUploaderAndroidJob
-import com.evernote.android.job.JobManager
 import org.junit.Test
 import org.junit.runner.RunWith
 import kotlin.test.assertEquals
@@ -31,13 +29,5 @@ class InsightsAndroidTest {
         val insights = Insights.register(context, "testApp", "testKey", "index", AndroidTestUtils.configuration)
         val insightsShared = Insights.shared("index")
         assertEquals(insights, insightsShared)
-    }
-
-    @Test
-    fun testPeriodicAndroidJob() {
-        (0 until 10).forEach {
-            EventUploaderAndroidJob(context).startPeriodicUpload()
-        }
-        assertEquals(1, JobManager.instance().allJobRequests.size)
     }
 }
