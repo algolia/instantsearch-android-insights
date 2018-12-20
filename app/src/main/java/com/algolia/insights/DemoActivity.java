@@ -6,11 +6,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-
 import com.algolia.search.saas.AlgoliaException;
 import com.algolia.search.saas.CompletionHandler;
 import com.algolia.search.saas.Query;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
