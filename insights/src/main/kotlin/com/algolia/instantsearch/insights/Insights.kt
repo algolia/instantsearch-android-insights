@@ -11,26 +11,7 @@ import com.algolia.instantsearch.insights.webservice.WebServiceHttp
 /**
  * Main class used for interacting with the InstantSearch Insights library.
  * In order to send insights, you first need to register an APP ID and API key for a given Index.
- * Once registered, you can simply call `Insights.shared(index:  String)` to send your events.
- * Example:
- * ```
- *   val indexName = "myAwesomeIndex"
- *   Insights.register(
- *      context = context,
- *      appId = "APPID",
- *      apiKey = "APIKEY",
- *      indexName = indexName
- *   )
- *   val clickData = mapOf(
- *      "eventName": "My super event",
- *      "queryID": "6de2f7eaa537fa93d8f8f05b927953b1",
- *      "position": 1,
- *      "objectID": "54675051",
- *      "indexName": indexName,
- *      "timestamp": Date.timeIntervalBetween1970AndReferenceDate
- *   )
- *   Insights.shared(indexName = indexName).clicked(params = data)
- * ```
+ * Once registered, you can simply call `Insights.shared(index: String)` to send your events.
  */
 class Insights internal constructor(
     private val indexName: String,
@@ -99,14 +80,12 @@ class Insights internal constructor(
      * Tracks a View event, unrelated to a specific search query.
      *
      * @param eventName the event's name, **must not be empty**.
-     * @param indexName the index to target.
      * @param objectIDs the viewed object(s)' `objectID`.
      * @param timestamp the time at which the view happened. Defaults to current time.
      */
     @JvmOverloads
     fun viewed(
         eventName: String,
-        indexName: String,
         objectIDs: EventObjects.IDs,
         timestamp: Long = System.currentTimeMillis()
     ) = viewed(
@@ -123,14 +102,12 @@ class Insights internal constructor(
      * Tracks a View event, unrelated to a specific search query.
      *
      * @param eventName the event's name, **must not be empty**.
-     * @param indexName the index to target.
      * @param filters the clicked filter(s).
      * @param timestamp the time at which the view happened. Defaults to current time.
      */
     @JvmOverloads
     fun viewed(
         eventName: String,
-        indexName: String,
         filters: EventObjects.Filters,
         timestamp: Long = System.currentTimeMillis()
     ) = viewed(
@@ -154,7 +131,6 @@ class Insights internal constructor(
     @JvmOverloads
     fun clicked(
         eventName: String,
-        indexName: String,
         objectIDs: EventObjects.IDs,
         timestamp: Long = System.currentTimeMillis()
     ) = clicked(
@@ -172,14 +148,12 @@ class Insights internal constructor(
      * Tracks a click event, unrelated to a specific search query.
      *
      * @param eventName the event's name, **must not be empty**.
-     * @param indexName the index to target.
      * @param filters the clicked filter(s).
      * @param timestamp the time at which the click happened. Defaults to current time.
      */
     @JvmOverloads
     fun clicked(
         eventName: String,
-        indexName: String,
         filters: EventObjects.Filters,
         timestamp: Long = System.currentTimeMillis()
     ) = clicked(
@@ -196,7 +170,6 @@ class Insights internal constructor(
      * Tracks a Click event after a search has been done.
      *
      * @param eventName the event's name, **must not be empty**.
-     * @param indexName the index to target.
      * @param queryId the related [query's identifier][https://www.algolia.com/doc/guides/insights-and-analytics/click-analytics/?language=php#identifying-the-query-result-position].
      * @param objectIDs the object(s)' `objectID`.
      * @param positions the clicked object(s)' position(s).
@@ -205,7 +178,6 @@ class Insights internal constructor(
     @JvmOverloads
     fun clickedAfterSearch(
         eventName: String,
-        indexName: String,
         queryId: String,
         objectIDs: EventObjects.IDs,
         positions: List<Int>,
@@ -224,14 +196,12 @@ class Insights internal constructor(
      * Tracks a Conversion event, unrelated to a specific search query.
      *
      * @param eventName the event's name, **must not be empty**.
-     * @param indexName the index to target.
      * @param timestamp the time at which the conversion happened. Defaults to current time.
      * @param filters the converted filter(s).
      */
     @JvmOverloads
     fun converted(
         eventName: String,
-        indexName: String,
         filters: EventObjects.Filters,
         timestamp: Long = System.currentTimeMillis()
     ) = converted(
@@ -248,14 +218,12 @@ class Insights internal constructor(
      * Tracks a Conversion event, unrelated to a specific search query.
      *
      * @param eventName the event's name, **must not be empty**.
-     * @param indexName the index to target.
      * @param objectIDs the object(s)' `objectID`.
      * @param timestamp the time at which the conversion happened. Defaults to current time.
      */
     @JvmOverloads
     fun converted(
         eventName: String,
-        indexName: String,
         objectIDs: EventObjects.IDs,
         timestamp: Long = System.currentTimeMillis()
     ) = converted(
@@ -272,7 +240,6 @@ class Insights internal constructor(
      * Tracks a Conversion event after a search has been done.
      *
      * @param eventName the event's name, **must not be empty**.
-     * @param indexName the index to target.
      * @param queryId the related [query's identifier][https://www.algolia.com/doc/guides/insights-and-analytics/click-analytics/?language=php#identifying-the-query-result-position].
      * @param objectIDs the object(s)' `objectID`.
      * @param timestamp the time at which the conversion happened. Defaults to current time.
@@ -280,7 +247,6 @@ class Insights internal constructor(
     @JvmOverloads
     fun convertedAfterSearch(
         eventName: String,
-        indexName: String,
         queryId: String,
         objectIDs: EventObjects.IDs,
         timestamp: Long = System.currentTimeMillis()
