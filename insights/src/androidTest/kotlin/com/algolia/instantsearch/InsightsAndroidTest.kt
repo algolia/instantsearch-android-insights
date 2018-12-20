@@ -31,6 +31,13 @@ class InsightsAndroidTest {
     @Test
     fun testSharedAfterRegister() {
         val insights = Insights.register(context, "testApp", "testKey", "index", configuration)
+        val insightsShared = Insights.shared
+        assertEquals(insights, insightsShared)
+    }
+
+    @Test
+    fun testSharedNamedAfterRegister() {
+        val insights = Insights.register(context, "testApp", "testKey", "index", configuration)
         val insightsShared = Insights.shared("index")
         assertEquals(insights, insightsShared)
     }
