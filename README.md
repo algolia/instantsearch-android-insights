@@ -29,7 +29,7 @@ Add the following dependency to your `Gradle` file
 ```gradle
 dependencies {
     // [...]
-    implementation 'com.algolia.instantsearch-android:insights:1.+'
+    implementation 'com.algolia.instantsearch-android:insights:2.0.0-beta02'
     // [...]
 }
 ```
@@ -67,14 +67,14 @@ Once that you registered your **index** with the **Application ID** and the **AP
 
 **Kotlin**
 ```kotlin
-Insights.shared("indexName").viewed("eventName", "indexName", EventObjects.IDs("objectID1", "objectID2"))
-Insights.shared("indexName").viewed("eventName", "indexName", EventObjects.Filters("foo:bar", "foo:baz"))
+Insights.shared("indexName").viewed("eventName", EventObjects.IDs("objectID1", "objectID2"))
+Insights.shared("indexName").viewed("eventName", EventObjects.Filters("foo:bar", "foo:baz"))
 ```
 
 **Java**
 ```java
-Insights.shared("indexName").viewed("eventName", "indexName", new EventObjects.IDs("objectID1", "objectID2"));
-Insights.shared("indexName").viewed("eventName", "indexName", new EventObjects.Filters("foo:bar", "foo:baz"));
+Insights.shared("indexName").viewed("eventName", new EventObjects.IDs("objectID1", "objectID2"));
+Insights.shared("indexName").viewed("eventName", new EventObjects.Filters("foo:bar", "foo:baz"));
 
 ```
 
@@ -82,32 +82,32 @@ Insights.shared("indexName").viewed("eventName", "indexName", new EventObjects.F
 
 **Kotlin**
 ```kotlin
-Insights.shared?.clicked("eventName", "indexName", EventObjects.IDs("objectID1", "objectID2"))
-Insights.shared?.clicked("eventName", "indexName", EventObjects.Filters("foo:bar", "foo:baz"))
-Insights.shared?.clickedAfterSearch("eventName", "indexName", "queryID", EventObjects.IDs("objectID1", "objectID2"), listOf(0, 3))
+Insights.shared?.clicked("eventName", EventObjects.IDs("objectID1", "objectID2"))
+Insights.shared?.clicked("eventName", EventObjects.Filters("foo:bar", "foo:baz"))
+Insights.shared?.clickedAfterSearch("eventName", "queryID", EventObjects.IDs("objectID1", "objectID2"), listOf(0, 3))
 ```
 
 **Java**
 ```java
-Insights.shared().clicked("eventName", "indexName", new EventObjects.IDs("objectID1", "objectID2"));
-Insights.shared().clicked("eventName", "indexName", new EventObjects.Filters("foo:bar", "foo:baz"));
-Insights.shared().clickedAfterSearch("eventName", "indexName", "queryID", new EventObjects.IDs("objectID1", "objectID2"), Arrays.asList(0, 3));
+Insights.shared().clicked("eventName", new EventObjects.IDs("objectID1", "objectID2"));
+Insights.shared().clicked("eventName", new EventObjects.Filters("foo:bar", "foo:baz"));
+Insights.shared().clickedAfterSearch("eventName", "queryID", new EventObjects.IDs("objectID1", "objectID2"), Arrays.asList(0, 3));
 ```
 
 #### Conversion events
 
 **Kotlin**
 ```kotlin
-Insights.shared?.converted("eventName", "indexName", EventObjects.IDs("objectID1", "objectID2"))
-Insights.shared?.converted("eventName", "indexName", EventObjects.Filters("foo:bar", "foo:baz"))
-Insights.shared?.convertedAfterSearch("eventName", "indexName", "queryID", EventObjects.IDs("objectID1", "objectID2"))
+Insights.shared?.converted("eventName", EventObjects.IDs("objectID1", "objectID2"))
+Insights.shared?.converted("eventName", EventObjects.Filters("foo:bar", "foo:baz"))
+Insights.shared?.convertedAfterSearch("eventName", "queryID", EventObjects.IDs("objectID1", "objectID2"))
 ```
 
 **Java**
 ```java
-Insights.shared().converted("eventName", "indexName", new EventObjects.IDs("objectID1", "objectID2"));
-Insights.shared().converted("eventName", "indexName", new EventObjects.Filters("foo:bar", "foo:baz"));
-Insights.shared().convertedAfterSearch("eventName", "indexName", "queryID", new EventObjects.IDs("objectID1", "objectID2"));
+Insights.shared().converted("eventName", new EventObjects.IDs("objectID1", "objectID2"));
+Insights.shared().converted("eventName", new EventObjects.Filters("foo:bar", "foo:baz"));
+Insights.shared().convertedAfterSearch("eventName", "queryID", new EventObjects.IDs("objectID1", "objectID2"));
 ```
 
 ### Event Batching
@@ -144,7 +144,7 @@ Insights.register("testApp", "testKey", "indexName", configuration)
 Insights.shared?.userToken = "bar"
 
 // Event usertoken, overrides previous defaults
-Insights.shared?.clicked(Event.clicked("eventName", "indexName", "userToken", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2")))
+Insights.shared?.clicked(Event.Click("eventName", "userToken", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2")))
 ```
 
 **Java**
@@ -157,7 +157,7 @@ Insights.register(context,  "testApp", "testKey",  "indexName", configuration);
 Insights.shared().setUserToken("bar");
 
 // Event userToken, overrides previous defaults
-Insights.shared().clicked(new Event.clicked("eventName", "indexName", "userToken", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2")));
+Insights.shared().clicked(new Event.Click("eventName", "userToken", System.currentTimeMillis(), "queryId", Arrays.asList("objectID1", "objectID2")));
 ```
 
 ### User opt-out
