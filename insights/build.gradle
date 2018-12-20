@@ -16,7 +16,7 @@ ext {
     REPO = WEBSITE + ".git"
     LICENSE = 'MIT'
     LICENSE_URL = "http://www.opensource.org/licenses/mit-license.php"
-    VERSION = insights
+    VERSION = '1.1.0'
     VERSION_DESC = 'Version ' + VERSION
 
     VERSION_APPCOMPAT = '28.0.0'
@@ -38,7 +38,7 @@ android {
     }
 
     lintOptions {
-        abortOnError false
+        abortOnError true
     }
 
     buildTypes {
@@ -104,8 +104,7 @@ artifacts {
 
 dependencies {
     implementation dependency_jvm.kotlin_stdlib
-    implementation dependency_android.work_manager
-    implementation dependency_android.appcompat
+    implementation dependency_android.androidJob
 
     androidTestImplementation dependency_android.espresso
     androidTestImplementation dependency_jvm.kotlin_test

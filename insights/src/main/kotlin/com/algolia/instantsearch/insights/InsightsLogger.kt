@@ -9,7 +9,7 @@ internal object InsightsLogger {
     var enabled: MutableMap<String, Boolean> = mutableMapOf()
 
     fun log(indexName: String, message: String) {
-        if (enabled.getOrDefault(indexName, false)) {
+        if (enabled[indexName] == true) {
             Log.d(tag, "Index=$indexName: $message")
         }
     }
