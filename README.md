@@ -31,7 +31,7 @@ Add the following dependency to your `Gradle` file
 ```gradle
 dependencies {
     // [...]
-    implementation 'com.algolia.instantsearch-android:insights:2.0.0-beta02'
+    implementation 'com.algolia.instantsearch-android:insights:2.0.0'
     // [...]
 }
 ```
