@@ -1,5 +1,9 @@
 # Change log for InstantSearch Insights Android
 
+#### Version 2.0.0
+
+- Stable release of Insights v2.
+
 #### Version 2.0.0-beta02
 
 - Remove indexName parameter from public methods.
