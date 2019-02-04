@@ -1,6 +1,6 @@
 package com.algolia.instantsearch.insights.webservice
 
-import com.algolia.instantsearch.insights.event.Event
+import com.algolia.instantsearch.insights.event.EventInternal
 
 
 internal interface WebService {
@@ -10,5 +10,5 @@ internal interface WebService {
         val code: Int
     )
 
-    fun sendEvent(event: Event): Response
+    fun send(vararg event: EventInternal): Response
 }

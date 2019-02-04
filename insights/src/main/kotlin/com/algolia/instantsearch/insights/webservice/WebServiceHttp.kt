@@ -1,8 +1,9 @@
 package com.algolia.instantsearch.insights.webservice
 
-import com.algolia.instantsearch.insights.converter.ConverterParameterToString
-import com.algolia.instantsearch.insights.event.Event
-import com.algolia.instantsearch.insights.event.EventType
+import com.algolia.instantsearch.insights.converter.ConverterEventInternalToString
+import com.algolia.instantsearch.insights.event.EventInternal
+import org.json.JSONArray
+import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -16,23 +17,18 @@ internal class WebServiceHttp(
 ) : WebService {
 
 
-    enum class Environment(private val baseUrl: String) {
+    enum class Environment(baseUrl: String) {
         Prod("https://insights.algolia.io"),
         Debug("http://localhost:8080");
 
-        fun buildUrl(eventType: EventType): String {
-            return "$baseUrl/1/searches/${eventType.route}"
-        }
+        val url: String = "$baseUrl/1/events"
     }
 
-    override fun sendEvent(event: Event): WebService.Response {
-        val eventType = when (event) {
-            is Event.Click -> EventType.Click
-            is Event.View -> EventType.View
-            is Event.Conversion -> EventType.Conversion
-        }
-        val string = ConverterParameterToString.convert(event.params)
-        val url = URL(environment.buildUrl(eventType))
+    override fun send(vararg event: EventInternal): WebService.Response {
+        val array = JSONArray(ConverterEventInternalToString.convert(event.toList()).map(::JSONObject))
+        val string = JSONObject().put("events", array).toString()
+
+        val url = URL(environment.url)
         val connection = (url.openConnection() as HttpURLConnection).also {
             it.setRequestProperty("Content-Type", "application/json; charset=UTF-8")
             it.setRequestProperty("Accept", "application/json")
@@ -54,4 +50,10 @@ internal class WebServiceHttp(
             code = responseCode
         )
     }
+
+    override fun toString(): String {
+        return "WebServiceHttp(appId='$appId', apiKey='$apiKey', connectTimeoutInMilliseconds=$connectTimeoutInMilliseconds, readTimeoutInMilliseconds=$readTimeoutInMilliseconds)"
+    }
+
+
 }

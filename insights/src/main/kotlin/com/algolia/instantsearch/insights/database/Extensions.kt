@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 
 
-internal var SharedPreferences.serializedEvents by SharedPreferencesDelegate.StringSet(setOf())
+internal var SharedPreferences.events by SharedPreferencesDelegate.StringSet(setOf())
 
 internal fun Context.sharedPreferences(name: String, mode: Int = Context.MODE_PRIVATE): SharedPreferences {
     return getSharedPreferences(name, mode)
