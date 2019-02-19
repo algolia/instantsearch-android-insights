@@ -203,6 +203,27 @@ D/Algolia Insights - indexName The objectID field is missing (Code: 422)
 
 To get a more meaningful search experience, please follow our [Getting Started Guide](https://community.algolia.com/instantsearch-android/getting-started.html).
 
+## Upload mechanism
+
+Events are stored in a `SharedPreference` database. Each time an event is successfuly uploaded, it is removed from the database.
+An event can be updated using two distinct mechanisms:
+
+### Single upload attempt
+
+Every time a new event is stored in the database, the following check is performed:
+
+If the number of events is superior or equal to `minBatchSize`, an attempt at uploading all events is performed.
+If the attempt fails, because of a network issue for example, it will not be retried, and events remain stored in the database.
+If you set `minBatchSize` to `1`, an upload attempt will be performed each time a new event is generated.
+
+### Periodic upload
+
+The Insights library relies on a third party library [android-job](https://github.com/evernote/android-job/).
+Every 15 minutes, a job will run in the background, whether the application is launched in the foreground or not.
+Each time a job runs, it will attempt to upload all events stored in the database. If it fails, because of a network issue for example, it will be retried later.
+The 15 minutes delay between each attempt is enforced by the Android system. It does not allow for a shorter delay, for battery saving reason.
+You can however configure a longer delay, by setting an higher value than `15` to the variable `debouncingIntervalInMinutes`. Any value below 15 will be ignored, and the 15 minutes delay will remain.
+
 ## Getting Help
 
 - **Need help**? Ask a question to the [Algolia Community](https://discourse.algolia.com/) or on [Stack Overflow](http://stackoverflow.com/questions/tagged/algolia).
