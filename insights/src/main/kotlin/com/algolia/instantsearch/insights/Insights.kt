@@ -87,7 +87,7 @@ class Insights internal constructor(
     fun viewed(
         eventName: String,
         objectIDs: EventObjects.IDs,
-        timestamp: Long = System.currentTimeMillis()
+        timestamp: Long? = null
     ) = viewed(
         Event.View(
             eventName = eventName,
@@ -108,7 +108,7 @@ class Insights internal constructor(
     fun viewed(
         eventName: String,
         filters: EventObjects.Filters,
-        timestamp: Long = System.currentTimeMillis()
+        timestamp: Long? = null
     ) = viewed(
         Event.View(
             eventName = eventName,
@@ -129,7 +129,7 @@ class Insights internal constructor(
     fun clicked(
         eventName: String,
         objectIDs: EventObjects.IDs,
-        timestamp: Long = System.currentTimeMillis()
+        timestamp: Long? = null
     ) = clicked(
         Event.Click(
             eventName = eventName,
@@ -151,7 +151,7 @@ class Insights internal constructor(
     fun clicked(
         eventName: String,
         filters: EventObjects.Filters,
-        timestamp: Long = System.currentTimeMillis()
+        timestamp: Long? = null
     ) = clicked(
         Event.Click(
             eventName = eventName,
@@ -176,7 +176,7 @@ class Insights internal constructor(
         queryId: String,
         objectIDs: EventObjects.IDs,
         positions: List<Int>,
-        timestamp: Long = System.currentTimeMillis()
+        timestamp: Long? = null
     ) = clicked(Event.Click(
         eventName = eventName,
         userToken = userTokenOrThrow(),
@@ -197,7 +197,7 @@ class Insights internal constructor(
     fun converted(
         eventName: String,
         filters: EventObjects.Filters,
-        timestamp: Long = System.currentTimeMillis()
+        timestamp: Long? = null
     ) = converted(
         Event.Conversion(
             eventName = eventName,
@@ -218,7 +218,7 @@ class Insights internal constructor(
     fun converted(
         eventName: String,
         objectIDs: EventObjects.IDs,
-        timestamp: Long = System.currentTimeMillis()
+        timestamp: Long? = null
     ) = converted(
         Event.Conversion(
             eventName = eventName,
@@ -241,7 +241,7 @@ class Insights internal constructor(
         eventName: String,
         queryId: String,
         objectIDs: EventObjects.IDs,
-        timestamp: Long = System.currentTimeMillis()
+        timestamp: Long? = null
     ) = converted(
         Event.Conversion(
             eventName = eventName,
