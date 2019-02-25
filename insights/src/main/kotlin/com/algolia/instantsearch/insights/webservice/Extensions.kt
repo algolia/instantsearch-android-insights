@@ -6,8 +6,8 @@ import com.algolia.instantsearch.insights.event.EventInternal
 import com.algolia.instantsearch.insights.event.EventResponse
 
 
-internal fun List<EventResponse>.filterEventsWhenException(): List<EventResponse> {
-    return this.filter { it.code == -1 }
+internal fun List<EventResponse>.filterFailedEvents(): List<EventResponse> {
+    return this.filterNot { it.code.isValidHttpCode() }
 }
 
 internal fun Int.isValidHttpCode() = this == 200 || this == 201
@@ -40,7 +40,7 @@ internal fun WebService.uploadEvents(database: Database, indexName: String): Lis
 
     InsightsLogger.log(indexName, "Flushing remaining ${events.size} events.")
 
-    val failedEvents = sendEvents(indexName, events).filterEventsWhenException()
+    val failedEvents = sendEvents(indexName, events).filterFailedEvents()
 
     database.overwrite(failedEvents.map { it.event })
     return failedEvents
