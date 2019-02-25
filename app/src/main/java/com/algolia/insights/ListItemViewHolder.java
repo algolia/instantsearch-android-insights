@@ -9,6 +9,9 @@ import com.algolia.instantsearch.insights.Insights;
 import com.algolia.instantsearch.insights.event.EventObjects;
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
 
@@ -27,8 +30,9 @@ class ListItemViewHolder extends RecyclerView.ViewHolder {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Insights.shared(App.indexName).converted(
+                Insights.shared(App.indexName).convertedAfterSearch(
                         "conversion",
+                        item.getQueryId(),
                         new EventObjects.IDs(item.getObjectId()),
                         System.currentTimeMillis()
                 );
@@ -37,9 +41,14 @@ class ListItemViewHolder extends RecyclerView.ViewHolder {
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Insights.shared(App.indexName).clicked(
+                List<Integer> positions = new ArrayList<>(1);
+
+                positions.add(item.getPosition());
+                Insights.shared(App.indexName).clickedAfterSearch(
                         "click",
+                        item.getQueryId(),
                         new EventObjects.IDs(item.getObjectId()),
+                        positions,
                         System.currentTimeMillis()
                 );
             }

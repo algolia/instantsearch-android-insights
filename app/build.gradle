@@ -29,9 +29,9 @@ tasks.withType(Test) {
 }
 
 dependencies {
-//    implementation project(":insights")
+    implementation project(":insights")
 
-    implementation dependency_android.insights
+//    implementation dependency_android.insights
     implementation dependency_android.appcompat
     implementation dependency_android.recycler_view
     implementation dependency_android.algolia_client

@@ -25,6 +25,7 @@ public class App extends Application {
         insights = Insights.register(this, appId, apiKey, indexName, configuration);
         insights.setLoggingEnabled(true);
         insights.setUserToken("userToken");
+        insights.setMinBatchSize(1);
 
         client = new Client(appId, apiKey);
         index = client.getIndex(indexName);
