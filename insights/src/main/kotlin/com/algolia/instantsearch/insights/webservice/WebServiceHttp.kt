@@ -35,6 +35,7 @@ internal class WebServiceHttp(
             it.setRequestProperty("X-Algolia-Application-Id", appId)
             it.setRequestProperty("X-Algolia-API-Key", apiKey)
             it.setRequestProperty("Content-Length", string.length.toString())
+            it.setRequestProperty("User-Agent", computeUserAgent())
             it.requestMethod = "POST"
             it.connectTimeout = connectTimeoutInMilliseconds
             it.readTimeout = readTimeoutInMilliseconds
