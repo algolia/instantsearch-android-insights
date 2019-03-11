@@ -25,30 +25,27 @@ class AndroidTestDatabaseSharedPreferences {
     private val objectIDs = EventObjects.IDs("54675051")
     private val timestamp = System.currentTimeMillis()
     private val eventClick = Event.Click(
-        eventA,
-        indexName,
-        userToken,
-        timestamp,
-        objectIDs,
-        queryId,
-        positions
-    )
+        eventName = eventA,
+        timestamp = timestamp,
+        eventObjects = objectIDs,
+        userToken = userToken,
+        positions = positions,
+        queryId = queryId
+    ) to indexName
     private val eventConversion = Event.Conversion(
-        eventB,
-        indexName,
-        userToken,
-        timestamp,
-        objectIDs,
-        queryId
-    )
+        eventName = eventB,
+        userToken = userToken,
+        timestamp = timestamp,
+        eventObjects = objectIDs,
+        queryId = queryId
+    ) to indexName
     private val eventView = Event.View(
-        eventC,
-        indexName,
-        userToken,
-        timestamp,
-        objectIDs,
-        queryId
-    )
+        eventName = eventC,
+        timestamp = timestamp,
+        eventObjects = objectIDs,
+        queryId = queryId,
+        userToken = userToken
+    ) to indexName
     private val click = ConverterEventToEventInternal.convert(eventClick)
     private val view = ConverterEventToEventInternal.convert(eventView)
     private val conversion = ConverterEventToEventInternal.convert(eventConversion)
