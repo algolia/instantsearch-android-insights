@@ -45,6 +45,7 @@ android {
         all {
             buildConfigField "String", "ALGOLIA_APPLICATION_ID", "\"$System.env.ALGOLIA_APPLICATION_ID\""
             buildConfigField "String", "ALGOLIA_API_KEY", "\"$System.env.ALGOLIA_API_KEY\""
+            buildConfigField "String", "INSIGHTS_VERSION", "\"$VERSION\""
         }
         release {
             minifyEnabled false
