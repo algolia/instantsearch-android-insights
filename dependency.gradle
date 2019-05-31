@@ -4,7 +4,7 @@ ext.with {
     benManes = '0.20.0'
     constraintLayout = '1.1.2'
     dokka = '0.9.17'
-    espresso = '3.1.0'
+    espresso = '3.2.0'
     glide = '4.8.0'
     sdkCompile = 28
     sdkMin = 14
@@ -19,7 +19,8 @@ ext.with {
     bintray = '1.8.4'
     maven = '2.1'
     workmanager = '2.0.1'
-    junitext = '1.1.0'
+    junitext = '1.1.1'
+    runner = '1.2.0'
 
 
     dependency_jvm = [
@@ -40,6 +41,7 @@ ext.with {
             insights         : "com.algolia.instantsearch-android:insights:$insights",
             androidJob       : "com.evernote:android-job:$androidJob",
             stetho           : "com.facebook.stetho:stetho:$stetho",
-            "workmanager"    : "androidx.work:work-runtime-ktx:$workmanager"
+            workmanager      : "androidx.work:work-runtime-ktx:$workmanager",
+            runner           : "androidx.test:runner:$runner"
     ]
 }

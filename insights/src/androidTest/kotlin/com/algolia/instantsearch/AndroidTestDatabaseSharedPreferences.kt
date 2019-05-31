@@ -1,7 +1,8 @@
 package com.algolia.instantsearch
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.algolia.instantsearch.insights.converter.ConverterEventToEventInternal
 import com.algolia.instantsearch.insights.database.DatabaseSharedPreferences
 import com.algolia.instantsearch.insights.event.Event
@@ -14,7 +15,7 @@ import kotlin.test.assertTrue
 @RunWith(AndroidJUnit4::class)
 class AndroidTestDatabaseSharedPreferences {
 
-    private val context get() = InstrumentationRegistry.getContext()
+    private val context get() = ApplicationProvider.getApplicationContext<Context>()
     private val eventA = "EventA"
     private val eventB = "EventB"
     private val eventC = "EventC"

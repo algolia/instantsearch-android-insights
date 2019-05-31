@@ -1,7 +1,8 @@
 package com.algolia.instantsearch
 
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import android.content.Context
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.algolia.instantsearch.insights.Insights
 import com.algolia.instantsearch.insights.InsightsException
 import org.junit.Test
@@ -13,7 +14,7 @@ import kotlin.test.assertTrue
 @RunWith(AndroidJUnit4::class)
 class InsightsAndroidTest {
 
-    private val context get() = InstrumentationRegistry.getContext()
+    private val context get() = ApplicationProvider.getApplicationContext<Context>()
     private val configuration = Insights.Configuration(
         connectTimeoutInMilliseconds = 5000,
         readTimeoutInMilliseconds = 5000

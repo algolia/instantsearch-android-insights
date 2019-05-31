@@ -1,12 +1,13 @@
 package com.algolia.instantsearch
 
 import android.os.Build
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.algolia.instantsearch.insights.BuildConfig
 import com.algolia.instantsearch.insights.webservice.computeUserAgent
 import org.junit.Test
 import org.junit.runner.RunWith
-import android.support.test.runner.AndroidJUnit4
-import com.algolia.instantsearch.insights.BuildConfig
 import kotlin.test.assertEquals
+
 
 @RunWith(AndroidJUnit4::class)
 internal class UserAgentTest {

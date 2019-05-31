@@ -34,7 +34,7 @@ android {
         versionCode versionCode
         versionName versionName
         consumerProguardFiles "proguard-rules.pro"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     lintOptions {
@@ -105,11 +105,9 @@ artifacts {
 
 dependencies {
     implementation dependency_jvm.kotlin_stdlib
-    implementation dependency_android.androidJob
     implementation dependency_android.workmanager
 
-    implementation dependency_android.annotations
-
+    androidTestImplementation dependency_android.runner
     androidTestImplementation dependency_android.espresso
     androidTestImplementation dependency_android.junit_ext
     androidTestImplementation dependency_jvm.kotlin_test

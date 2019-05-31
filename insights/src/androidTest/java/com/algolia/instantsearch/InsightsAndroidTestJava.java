@@ -1,8 +1,8 @@
 package com.algolia.instantsearch;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 import com.algolia.instantsearch.insights.Insights;
 import com.algolia.instantsearch.insights.InsightsException;
 import com.algolia.instantsearch.insights.event.Event;
@@ -19,7 +19,7 @@ import static org.junit.Assert.assertNotNull;
 @RunWith(AndroidJUnit4.class)
 public class InsightsAndroidTestJava {
 
-    private Context context = InstrumentationRegistry.getContext();
+    private Context context = ApplicationProvider.getApplicationContext();
     private Insights.Configuration configuration = new Insights.Configuration(5000, 5000);
 
     @Test
