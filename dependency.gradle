@@ -1,10 +1,10 @@
 ext.with {
     algolia_client = '3.23.13'
-    appcompat = '28.0.0'
+    appcompat = '1.0.0'
     benManes = '0.20.0'
     constraintLayout = '1.1.2'
     dokka = '0.9.17'
-    espresso = '3.0.2'
+    espresso = '3.1.0'
     glide = '4.8.0'
     sdkCompile = 28
     sdkMin = 14
@@ -18,6 +18,8 @@ ext.with {
     stetho = '1.5.0'
     bintray = '1.8.4'
     maven = '2.1'
+    workmanager = '2.0.1'
+    junitext = '1.1.0'
 
 
     dependency_jvm = [
@@ -27,15 +29,17 @@ ext.with {
             json             : "org.json:json:$json"
     ]
     dependency_android = [
-            annotations      : "com.android.support:support-annotations:$appcompat",
-            appcompat        : "com.android.support:appcompat-v7:$appcompat",
-            recycler_view    : "com.android.support:recyclerview-v7:$appcompat",
-            espresso         : "com.android.support.test.espresso:espresso-core:$espresso",
+            annotations      : "androidx.annotation:annotation:$appcompat",
+            appcompat        : "androidx.appcompat:appcompat:$appcompat",
+            recycler_view    : "androidx.recyclerview:recyclerview:$appcompat",
+            espresso         : "androidx.test.espresso:espresso-core:$espresso",
+            junit_ext        : "androidx.test.ext:junit:$junitext",
             algolia_client   : "com.algolia:algoliasearch-android:$algolia_client",
-            constraint_layout: "com.android.support.constraint:constraint-layout:$constraintLayout",
+            constraint_layout: "androidx.constraintlayout:constraintlayout:$constraintLayout",
             glide            : "com.github.bumptech.glide:glide:$glide",
             insights         : "com.algolia.instantsearch-android:insights:$insights",
             androidJob       : "com.evernote:android-job:$androidJob",
-            stetho           : "com.facebook.stetho:stetho:$stetho"
+            stetho           : "com.facebook.stetho:stetho:$stetho",
+            "workmanager"    : "androidx.work:work-runtime-ktx:$workmanager"
     ]
 }

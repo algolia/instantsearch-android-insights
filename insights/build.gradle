@@ -106,10 +106,12 @@ artifacts {
 dependencies {
     implementation dependency_jvm.kotlin_stdlib
     implementation dependency_android.androidJob
+    implementation dependency_android.workmanager
 
     implementation dependency_android.annotations
 
     androidTestImplementation dependency_android.espresso
+    androidTestImplementation dependency_android.junit_ext
     androidTestImplementation dependency_jvm.kotlin_test
     androidTestImplementation dependency_jvm.kotlin_test_junit
     testImplementation dependency_jvm.kotlin_test

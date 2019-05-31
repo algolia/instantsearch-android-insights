@@ -1,6 +1,6 @@
 package com.algolia.insights;
 
-import android.support.v7.util.DiffUtil;
+import androidx.recyclerview.widget.DiffUtil;
 
 
 class ListItemCallback extends DiffUtil.ItemCallback<ListItem> {
