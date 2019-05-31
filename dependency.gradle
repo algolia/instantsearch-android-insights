@@ -9,7 +9,7 @@ ext.with {
     sdkCompile = 28
     sdkMin = 14
     sdkTarget = 28
-    kotlins = '1.3.20'
+    kotlins = '1.3.31'
     codeVersion = 1
     versionName = '1.0'
     insights = '2.0.0'
@@ -21,13 +21,13 @@ ext.with {
 
 
     dependency_jvm = [
-            kotlin_stdlib    : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlins",
+            kotlin_stdlib    : "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlins",
             kotlin_test_junit: "org.jetbrains.kotlin:kotlin-test-junit:$kotlins",
             kotlin_test      : "org.jetbrains.kotlin:kotlin-test:$kotlins",
             json             : "org.json:json:$json"
     ]
     dependency_android = [
-            annotations       : "com.android.support:support-annotations:$appcompat",
+            annotations      : "com.android.support:support-annotations:$appcompat",
             appcompat        : "com.android.support:appcompat-v7:$appcompat",
             recycler_view    : "com.android.support:recyclerview-v7:$appcompat",
             espresso         : "com.android.support.test.espresso:espresso-core:$espresso",
