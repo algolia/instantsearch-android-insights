@@ -1,10 +1,11 @@
 package com.algolia.instantsearch.insights.event
 
+import android.content.Context
 import androidx.work.*
 import java.util.concurrent.TimeUnit
 
 
-internal class EventUploaderWorkManager : EventUploader {
+internal class EventUploaderWorkManager(private val context: Context) : EventUploader {
 
     enum class WorkerName {
         PeriodicUpload,
@@ -22,7 +23,7 @@ internal class EventUploaderWorkManager : EventUploader {
         ).build()
 
         WorkManager
-            .getInstance()
+            .getInstance(context)
             .enqueueUniquePeriodicWork(WorkerName.PeriodicUpload.name, ExistingPeriodicWorkPolicy.KEEP, worker)
     }
 
@@ -34,7 +35,7 @@ internal class EventUploaderWorkManager : EventUploader {
         }.build()
 
         WorkManager
-            .getInstance()
+            .getInstance(context)
             .beginUniqueWork(EventUploaderWorkManager.WorkerName.OneTimeUpload.name, ExistingWorkPolicy.KEEP, worker)
             .enqueue()
     }

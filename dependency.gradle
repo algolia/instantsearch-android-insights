@@ -17,7 +17,7 @@ ext.with {
     stetho = '1.5.0'
     bintray = '1.8.4'
     maven = '2.1'
-    workmanager = '2.0.1'
+    workmanager = '2.1.0-alpha03'
     junitext = '1.1.1'
     runner = '1.2.0'
 

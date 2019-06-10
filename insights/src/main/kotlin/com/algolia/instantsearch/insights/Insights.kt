@@ -312,7 +312,7 @@ class Insights internal constructor(
             indexName: String,
             configuration: Configuration = Configuration(5000, 5000)
         ): Insights {
-            val eventUploader = EventUploaderWorkManager()
+            val eventUploader = EventUploaderWorkManager(context)
             val database = DatabaseSharedPreferences(context, indexName)
             val webService = WebServiceHttp(
                 appId = appId,
