@@ -105,7 +105,7 @@ artifacts {
 
 dependencies {
     implementation dependency_jvm.kotlin_stdlib
-    implementation dependency_android.workmanager
+    api dependency_android.workmanager
 
     androidTestImplementation dependency_android.runner
     androidTestImplementation dependency_android.espresso
