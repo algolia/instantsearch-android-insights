@@ -36,7 +36,7 @@ internal class EventUploaderWorkManager(private val context: Context) : EventUpl
 
         WorkManager
             .getInstance(context)
-            .beginUniqueWork(EventUploaderWorkManager.WorkerName.OneTimeUpload.name, ExistingWorkPolicy.KEEP, worker)
+            .beginUniqueWork(WorkerName.OneTimeUpload.name, ExistingWorkPolicy.KEEP, worker)
             .enqueue()
     }
 }

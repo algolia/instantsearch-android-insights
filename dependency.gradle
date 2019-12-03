@@ -1,23 +1,23 @@
 ext.with {
     algolia_client = '3.23.13'
-    appcompat = '1.0.0'
+    appcompat = '1.1.0'
     benManes = '0.20.0'
-    constraintLayout = '1.1.2'
+    constraintLayout = '1.1.3'
     dokka = '0.9.17'
     espresso = '3.2.0'
     glide = '4.8.0'
-    sdkCompile = 28
+    sdkCompile = 29
     sdkMin = 14
-    sdkTarget = 28
-    kotlins = '1.3.31'
+    sdkTarget = 29
+    kotlins = '1.3.61'
     codeVersion = 1
     versionName = '1.0'
-    insights = '3.0.0-alpha03'
+    insights = '3.0.0'
     json = '20180813'
     stetho = '1.5.0'
     bintray = '1.8.4'
     maven = '2.1'
-    workmanager = '2.1.0-alpha03'
+    workmanager = '2.2.0'
     junitext = '1.1.1'
     runner = '1.2.0'
 
