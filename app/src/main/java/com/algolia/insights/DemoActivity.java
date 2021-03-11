@@ -1,14 +1,11 @@
 package com.algolia.insights;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
-import com.algolia.search.saas.AlgoliaException;
-import com.algolia.search.saas.CompletionHandler;
-import com.algolia.search.saas.Query;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.recyclerview.widget.RecyclerView;
+import com.algolia.search.model.search.Query;
+import java.nio.channels.CompletionHandler;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

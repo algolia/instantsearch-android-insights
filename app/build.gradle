@@ -2,14 +2,14 @@ apply plugin: 'com.android.application'
 apply from: '../dependency.gradle'
 
 android {
-    compileSdkVersion sdkCompile
+    compileSdkVersion 30
 
     defaultConfig {
         applicationId "com.algolia.insights"
-        minSdkVersion sdkMin
-        targetSdkVersion sdkTarget
+        minSdkVersion 21
+        targetSdkVersion 30
         versionCode versionCode
-        versionName versionName
+        versionName '1.0'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     lintOptions {
@@ -20,6 +20,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -32,10 +36,8 @@ tasks.withType(Test) {
 dependencies {
     implementation project(":insights")
 
-//    implementation dependency_android.insights
     implementation dependency_android.appcompat
     implementation dependency_android.recycler_view
-    implementation dependency_android.algolia_client
     implementation dependency_android.constraint_layout
     implementation dependency_android.glide
     implementation dependency_android.stetho
