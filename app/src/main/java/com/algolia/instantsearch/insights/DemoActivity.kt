@@ -15,7 +15,6 @@ import com.algolia.instantsearch.insights.extension.configureRecyclerView
 import com.algolia.instantsearch.insights.extension.configureSearchView
 import com.algolia.search.client.ClientSearch
 import com.algolia.search.configuration.ConfigurationSearch
-import com.algolia.search.helper.deserialize
 import com.algolia.search.model.insights.EventName
 import io.ktor.client.features.logging.LogLevel
 import kotlinx.android.synthetic.main.demo_activity.*
