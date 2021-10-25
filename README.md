@@ -1,8 +1,6 @@
-# ⚠️ Migrated
-
-InstantSearch Insights has been migrated to the main [InstantSearch repository](https://github.com/algolia/instantsearch-android).  
-You still can use the Insights part of the InstantSearch separately by following the [provided instructions](https://github.com/algolia/instantsearch-android#insights).  
-This repository is no longer supported, please create your issues and submit your contributions to the main InstantSearch repository.
+> ⚠️ InstantSearch Insights has been migrated to the main [InstantSearch repository](https://github.com/algolia/instantsearch-android).  
+> You still can use the Insights part of the InstantSearch separately by following the [provided instructions](https://github.com/algolia/instantsearch-android#insights).  
+> This repository is no longer supported, please create your issues and submit your contributions to the main InstantSearch repository.
 
 # Algolia InstantSearch Insights for Android
 
